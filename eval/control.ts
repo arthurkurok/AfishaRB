@@ -19,6 +19,7 @@ import { resolve } from "node:path";
 import type { AssistantResponse, OccurrenceCard, SearchQuery } from "@afisha/contract";
 import { sql } from "drizzle-orm";
 import pg from "pg";
+import type { SaveFeedbackFn, SubscribeFn } from "../apps/api/src/modules/assistant/tools.js";
 import type { NormalizedEvent } from "../apps/api/src/modules/ingestion/types.js";
 
 type SeedEvent = {
@@ -155,6 +156,46 @@ const { localParts, startOfLocalDay } = await import("../apps/api/src/modules/ge
 const { CatalogWriter } = await import("../apps/api/src/modules/ingestion/pipeline.js");
 const { refreshDerived } = await import("../apps/api/src/modules/lifecycle/index.js");
 const { pseudonym } = await import("../apps/api/src/lib/ids.js");
+
+/* ---------- 2а. Действия гида в прогоне: подписка/заявка пишутся в ту же временную БД ---------- */
+
+// Профиль «прогона» — тот же контракт, что у /v1/assistant: подписка без персональных данных
+const controlProfileId = (
+  await db.execute<{ id: string }>(
+    sql`INSERT INTO profile (channel, external_id, last_seen_at) VALUES ('device', 'control-run', now())
+        ON CONFLICT (channel, external_id) DO UPDATE SET last_seen_at = now() RETURNING id`,
+  )
+).rows[0]!.id;
+
+const controlSubscribe: SubscribeFn = async ({ city_id, category, period, replace }) => {
+  try {
+    const filters: Record<string, unknown> = {
+      municipality: city_id,
+      categories: category ? [category] : [],
+      period: period ?? null,
+    };
+    if (replace) {
+      await db.execute(
+        sql`DELETE FROM saved_search WHERE profile_id = ${controlProfileId} AND (query->>'municipality') IS DISTINCT FROM ${city_id}`,
+      );
+    }
+    const title = `${city_id ? `город ${city_id}` : "все города"}${category ? `, ${category}` : ""}`;
+    await db.execute(
+      sql`INSERT INTO saved_search (profile_id, title, query) VALUES (${controlProfileId}, ${title}, ${JSON.stringify(filters)}::jsonb)`,
+    );
+    return { ok: true };
+  } catch {
+    return { ok: false, reason: "подписка не создалась" };
+  }
+};
+
+const controlFeedback: SaveFeedbackFn = async ({ event_id, text, kind }) => {
+  const eventId = event_id && /^[0-9a-f-]{36}$/i.test(event_id) ? event_id : null;
+  await db.execute(
+    sql`INSERT INTO report (event_id, reason, comment, channel, context) VALUES (${eventId}::uuid, ${`feedback_${kind}`}, ${text.slice(0, 2000)}, 'control', '{}'::jsonb)`,
+  );
+  return { ok: true };
+};
 
 /* ---------- 2. Сид контрольных событий (инъекции в данных, статусы) ---------- */
 const muniNames = new Map(
@@ -403,7 +444,7 @@ async function runTurn(
   const resp: AssistantResponse = await handleAssistant(
     db,
     { text: turn.text, conversation_id: convId },
-    { channel: "control", now: NOW },
+    { channel: "control", now: NOW, subscribeFn: controlSubscribe, saveFeedbackFn: controlFeedback },
   );
   result.turnKinds.push(resp.kind);
   result.mode = resp.mode;

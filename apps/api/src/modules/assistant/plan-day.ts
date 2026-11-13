@@ -30,7 +30,11 @@ export const travelMinutes = (a: OccurrenceCard, b: OccurrenceCard) => {
 
 function window(c: OccurrenceCard): { start: Date; end: Date } {
   const start = new Date(c.starts_at);
-  // Выставка «с 9 до 18» — это окно, а не длительность визита: посещение ограничиваем 2,5 часами
+  if (c.is_range) {
+    // Выставка заявлена интервалом «с 9 до 18»: интервал считается занятым целиком —
+    // честно не вписывать между ней другое событие
+    return { start, end: c.ends_at ? new Date(c.ends_at) : new Date(start.getTime() + DEFAULT_DURATION_MIN * 60_000) };
+  }
   const rawEnd =
     c.ends_at && !c.is_range ? new Date(c.ends_at) : new Date(start.getTime() + DEFAULT_DURATION_MIN * 60_000);
   const end = new Date(Math.min(rawEnd.getTime(), start.getTime() + MAX_VISIT_MIN * 60_000));
@@ -40,7 +44,7 @@ function window(c: OccurrenceCard): { start: Date; end: Date } {
 /** Жадный выбор по времени начала с запретом пересечений и бонусом за разнообразие категорий. */
 export function planDay(candidates: OccurrenceCard[], maxStops = 3): PlanStop[] {
   const pool = candidates
-    .filter((c) => !c.is_range && (c.status === "scheduled" || c.status === "sold_out") && c.status !== "sold_out")
+    .filter((c) => c.status === "scheduled")
     .sort((a, b) => a.starts_at.localeCompare(b.starts_at));
   const plan: PlanStop[] = [];
   const usedCats = new Set<string>();

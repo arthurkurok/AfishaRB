@@ -38,6 +38,7 @@ export const emptySlots = (): Slots => ({
   pushkin: false,
   accessible: false,
   text: null,
+  duration_max_min: null,
 });
 
 const WEEKDAYS: [RegExp, number][] = [
@@ -124,10 +125,10 @@ const CATEGORY_RULES: [RegExp, CategoryCode][] = [
     /концерт|музык|оркестр|джаз|(?<![\p{L}])рок(?![\p{L}])|(?<![\p{L}])хор(?![\p{L}])|органн|филармони|курай|вокал|песн/u,
     "music",
   ],
-  [/музе|выставк|экспозици|экскурси|галере|картин|күргәҙмә/u, "museum"],
+  [/музе|выставк|экспозици|галере|картин|күргәҙмә/u, "museum"],
   [/(?<![\p{L}])кино(?![\p{L}])|кинотеатр|фильм|мульт/u, "cinema"],
   [/праздник|фестивал|сабантуй|йыйын|фольклор|народн|ярмарк|гуляни|национальн|байрам/u, "folk"],
-  [/лекци|мастер-?класс|встреч|клуб|квиз|викторин|библиотек|беседа|чтени|творческ/, "education"],
+  [/лекци|мастер-?класс|встреч|клуб|квиз|викторин|библиотек|беседа|чтени|творческ|экскурси/u, "education"],
   [/детск|для детей|малыш|сказк/, "kids"],
 ];
 
@@ -374,6 +375,40 @@ export function parseTimeOfDay(t: string): Slots["time_of_day"] {
 
 const toHHMM = (h: string, m?: string) => `${Number(h).toString().padStart(2, "0")}:${(m ?? "00").padStart(2, "0")}`;
 
+const HOUR_WORDS: Record<string, number> = {
+  полтора: 1.5,
+  один: 1,
+  одну: 1,
+  два: 2,
+  две: 2,
+  три: 3,
+  четыре: 4,
+  пять: 5,
+  шест: 6,
+  сем: 7,
+  восьм: 8,
+  девят: 9,
+  десят: 10,
+};
+
+/** «не дольше двух часов», «укладываемся в 90 минут», «длительность до 1,5 ч» — верхняя граница длительности. */
+export function parseDurationMax(t: string): number | null {
+  const clean = t.toLowerCase().replaceAll("ё", "е");
+  for (const m of clean.matchAll(
+    /(?:не дольше|не длиннее|длительност\p{L}*\s*(?:до|не больше)?|уклад\p{L}*\s*в|не больше)\s*(\d+(?:[.,]\d+)?|полтора|\p{L}+)\s*(минут\p{L}*|час\p{L}*|ч(?![\p{L}]))/gu,
+  )) {
+    const rawNum = m[1]!.replace(",", ".");
+    const unit = m[2]!;
+    const word = Number.isNaN(Number(rawNum))
+      ? (Object.entries(HOUR_WORDS).find(([stem]) => rawNum.startsWith(stem))?.[1] ?? null)
+      : Number(rawNum);
+    if (word === null) continue;
+    const minutes = /минут/.test(unit) ? Math.round(word) : Math.round(word * 60);
+    if (minutes >= 15 && minutes <= 12 * 60) return minutes;
+  }
+  return null;
+}
+
 /**
  * Время начала сеанса из запроса: «после 19:00» → from, «не позже 20:00»/«закончить до 20:00» → until.
  * Перебираем все совпадения: «до 1000 рублей … не позже 20:00» — цена отбрасывается, время берётся.
@@ -391,7 +426,11 @@ export function parseTimeRange(t: string): { from: string | null; until: string 
   for (const m of t.matchAll(/(?:не позже|не позднее|законч\p{L}*|до)\s*(\d{1,2})(?::(\d{2}))?(?!\d)/gu)) {
     const h = Number(m[1]);
     // «до 1500 рублей» и «до 20 минут» не время: час 10–23, либо двоеточие, либо слово «часов»
-    if (h >= 10 && h <= 23 && (m[2] !== undefined || /час/.test(m[0]!) || /(?:не позже|не позднее|законч)/.test(m[0]!))) {
+    if (
+      h >= 10 &&
+      h <= 23 &&
+      (m[2] !== undefined || /час/.test(m[0]!) || /(?:не позже|не позднее|законч)/.test(m[0]!))
+    ) {
       until = toHHMM(m[1]!, m[2]);
       break;
     }
@@ -461,6 +500,11 @@ export function parseMunicipality(t: string, munis: MunicipalityRef[]): Municipa
   return best?.m ?? fuzzyMunicipality(words, munis);
 }
 
+// Слова-вопросы и связки не несут поискового смысла: «сколько стоит билет на ближайший балет» —
+// смысл в «балет», остальное мешает полнотекстовому поиску (требует «сколько & стоит & билет»)
+const QUESTION_WORDS =
+  /(?<![\p{L}])(?:сколько|стоит|стоимост\p{L}*|цен\p{L}*|билет(?:ы|ов|а|ам)?|ближайш\p{L}*|подскаж\p{L}*|пожалуйста|могу|можно|хот\p{L}*|ищ\p{L}*|найд\p{L}*|покаж\p{L}*|посовет\p{L}*|посмотре\p{L}*|пойти|пойд[её]м|сходи\p{L}*|куда|где|есть|когда|долго|длит\p{L}*|интересн\p{L}*|мероприят\p{L}*|событ\p{L}*|афиш\p{L}*|культур\p{L}*|развлеч\p{L}*|программ\p{L}*|вариант\p{L}*|подборк\p{L}*|эт\p{L}*|прошл\p{L}*|следующ\p{L}*|недел\p{L}*|месяц\p{L}*|выходн\p{L}*|сегодня|завтра|хочется|посоветуете)(?![\p{L}])/gu;
+
 export function parseRules(text: string, now: Date, munis: MunicipalityRef[]): Slots {
   const t = normalizeText(text);
   const s = emptySlots();
@@ -476,7 +520,12 @@ export function parseRules(text: string, now: Date, munis: MunicipalityRef[]): S
     s.intent = "offtopic";
     return s;
   }
-  if (/спланиру|маршрут|план на день|программу на день|день в уфе|на весь день/.test(t)) s.intent = "plan_day";
+  if (
+    /спланиру|маршрут|программу на день|на весь день|(?:сделай|составь|подбери|придумай|построй)?\s*план на (?![\p{L}]* (?:месяц|год))/u.test(
+      t,
+    )
+  )
+    s.intent = "plan_day";
   // Вопрос о судьбе конкретного события («отменили ли X?», «X перенесли?», «билетов нет?»):
   // это не поиск афиши — статус смотрим в данных, включая отменённые и перенесённые сеансы.
   // «Отменённые события в Уфе» — не вопрос (поиск фильтром), сюда не попадает.
@@ -485,7 +534,11 @@ export function parseRules(text: string, now: Date, munis: MunicipalityRef[]): S
     /(?:отмени|перенес|отменен|перенесен)\p{L}* ли(?![\p{L}])/u.test(t) ||
     /(?:отменили|перенесли)\s*$/u.test(t) ||
     /билетов? нет(?![\p{L}])/u.test(t) ||
-    /билеты? распродан/u.test(t)
+    /билеты? распродан/u.test(t) ||
+    // вопросы о конкретном событии: время начала, длительность, цена — всё из карточки, без догадок
+    /во сколько (?:начина\p{L}*|стартует|ид[её]т)/u.test(t) ||
+    /сколько длит\p{L}*/u.test(t) ||
+    /сколько стоит/u.test(t)
   )
     s.intent = "event_question";
   const d = parseDates(t, now);
@@ -499,6 +552,7 @@ export function parseRules(text: string, now: Date, munis: MunicipalityRef[]): S
   const tr = parseTimeRange(t);
   s.time_from = tr.from;
   s.time_until = tr.until;
+  s.duration_max_min = parseDurationMax(t);
   const b = parseBudget(t);
   s.budget = b.budget;
   s.budget_per = b.per;
@@ -536,6 +590,7 @@ export function parseRules(text: string, now: Date, munis: MunicipalityRef[]): S
   for (const [rx] of WEEKDAYS) rest = rest.replace(new RegExp(`\\S*${rx.source}\\S*`, "gu"), " ");
   if (mu) for (const stem of mu.stems) rest = rest.replace(new RegExp(`\\S*${stem}\\S*`, "gu"), " ");
   for (const [rx] of TAG_RULES) rest = rest.replace(new RegExp(`\\S*(${rx.source})\\S*`, "gu"), " ");
+  rest = rest.replace(QUESTION_WORDS, " ");
   rest = rest
     .split(/\s+/)
     .filter(

@@ -93,8 +93,10 @@ export async function searchOccurrences(db: Db, query: SearchQuery, now: Date = 
 
   const where: SQL[] = [
     sql`e.moderation_status = 'published'`,
+    // «афиша на дату» — сеансы, НАЧИНАЮЩИЕСЯ в окне: длящаяся выставка показывается через
+    // «до конца месяца» (ends_before), а не подмешивается в конкретный день
+    sql`o.starts_at >= ${win.startUtc}`,
     sql`o.starts_at < ${win.endUtc}`,
-    sql`coalesce(o.ends_at, o.starts_at) >= ${win.startUtc}`,
   ];
   if (!query.include_ended) where.push(sql`o.status NOT IN ('ended', 'cancelled', 'postponed', 'rescheduled')`);
   if (query.hide_sold_out) where.push(sql`o.status <> 'sold_out'`);
@@ -121,22 +123,30 @@ export async function searchOccurrences(db: Db, query: SearchQuery, now: Date = 
   if (query.time_of_day?.length) {
     const parts: SQL[] = [];
     const hour = sql`extract(hour FROM o.starts_at AT TIME ZONE ${REGION_TZ})`;
+    // границы как в интерфейсе: утро до 12, день 12–18, вечер после 18; без исключений для
+    // «длящихся» сеансов — у выставки тоже есть время начала, «вечером» она не началась
     if (query.time_of_day.includes("morning")) parts.push(sql`${hour} < 12`);
-    if (query.time_of_day.includes("day")) parts.push(sql`(${hour} >= 12 AND ${hour} < 17)`);
-    if (query.time_of_day.includes("evening")) parts.push(sql`${hour} >= 17`);
-    where.push(sql`(o.is_range OR ${sql.join(parts, sql` OR `)})`);
+    if (query.time_of_day.includes("day")) parts.push(sql`(${hour} >= 12 AND ${hour} < 18)`);
+    if (query.time_of_day.includes("evening")) parts.push(sql`${hour} >= 18`);
+    where.push(sql`(${sql.join(parts, sql` OR `)})`);
   }
   // «после 19:00», «не позже 20:00» — фильтр по времени начала сеанса в поясе региона
   if (query.time_from && /^\d{1,2}:\d{2}$/.test(query.time_from)) {
     const [h, m] = query.time_from.split(":").map(Number) as [number, number];
     where.push(
-      sql`(o.is_range OR (extract(hour FROM o.starts_at AT TIME ZONE ${REGION_TZ}) * 60 + extract(minute FROM o.starts_at AT TIME ZONE ${REGION_TZ})) >= ${h * 60 + m})`,
+      sql`(extract(hour FROM o.starts_at AT TIME ZONE ${REGION_TZ}) * 60 + extract(minute FROM o.starts_at AT TIME ZONE ${REGION_TZ})) >= ${h * 60 + m}`,
     );
   }
   if (query.time_until && /^\d{1,2}:\d{2}$/.test(query.time_until)) {
     const [h, m] = query.time_until.split(":").map(Number) as [number, number];
     where.push(
-      sql`(o.is_range OR (extract(hour FROM o.starts_at AT TIME ZONE ${REGION_TZ}) * 60 + extract(minute FROM o.starts_at AT TIME ZONE ${REGION_TZ})) <= ${h * 60 + m})`,
+      sql`(extract(hour FROM o.starts_at AT TIME ZONE ${REGION_TZ}) * 60 + extract(minute FROM o.starts_at AT TIME ZONE ${REGION_TZ})) <= ${h * 60 + m}`,
+    );
+  }
+  // «не дольше двух часов»: сеанс с неизвестным окончанием не отбрасываем — длительность не подтверждена
+  if (query.duration_max_min !== undefined) {
+    where.push(
+      sql`(o.ends_at IS NULL OR (extract(epoch FROM (o.ends_at - o.starts_at)) / 60) <= ${query.duration_max_min})`,
     );
   }
   if (q) {

@@ -70,7 +70,14 @@ export function summaryText(n: number, slots: Slots, relaxed: string[], lang: La
       : " по республике";
   const when = slots.date_label ? `${slots.date_label}` : "ближайшие дни";
   const head = `Нашёл ${n} ${plural(n, "вариант", "варианта", "вариантов")}: ${when}${where}.`;
-  return relaxed.length ? `${head} Точных совпадений не было, поэтому ${relaxed.join(", ")}.` : head;
+  // возрастной ценз упоминаем, только если в запросе есть дети: знак — из карточки события (ТЗ 7.1)
+  const kidsNote =
+    (slots.with_kids || slots.kids_ages.length > 0) && lang === "ru"
+      ? " Все варианты можно детям — возрастной ценз проверяю по карточке события."
+      : "";
+  return relaxed.length
+    ? `${head} Точных совпадений не было, поэтому ${relaxed.join(", ")}.${kidsNote}`
+    : `${head}${kidsNote}`;
 }
 
 const BA_LABELS: Record<string, string> = {
@@ -108,8 +115,10 @@ export function chipsFor(s: Slots, lang: "ru" | "ba" = "ru", municipalityBa: str
       : { morning: "утро", day: "день", evening: "вечер" };
     add("time_of_day", s.time_of_day.map((x) => tod[x]).join(", "), "user", { time_of_day: [] });
   }
-  if (s.time_from) add("time_from", ba ? `${s.time_from}-дән һуң` : `после ${s.time_from}`, "user", { time_from: null });
-  if (s.time_until) add("time_until", ba ? `${s.time_until}-ғә тиклем` : `не позже ${s.time_until}`, "user", { time_until: null });
+  if (s.time_from)
+    add("time_from", ba ? `${s.time_from}-дән һуң` : `после ${s.time_from}`, "user", { time_from: null });
+  if (s.time_until)
+    add("time_until", ba ? `${s.time_until}-ғә тиклем` : `не позже ${s.time_until}`, "user", { time_until: null });
   if (s.municipality_label) {
     const label = ba
       ? (BA_LABELS[s.municipality_label] ?? municipalityBa ?? s.municipality_label)

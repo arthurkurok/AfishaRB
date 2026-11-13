@@ -361,16 +361,17 @@ describe("Гид: лимит шагов на один ответ (ТЗ 6.5)", ()
   it("AFISHA_AGENT_MAX_STEPS=2: конвейер обрезается и отвечает тем, что уже найдено", async () => {
     config.AFISHA_AGENT_MAX_STEPS = 2;
     try {
-      // «квантовая физика» не находится; релаксация требует третьего вызова — он срезается лимитом
+      // «концерт» даёт категорию music: строгий поиск пуст, релаксация идёт по шагам
+      // (даты → месяц, категории → все) — второй шаг срезается лимитом в 2 вызова
       const r = await handleAssistant(
         db,
-        { text: "квантовая физика в Сибае", municipality_id: "sibay" },
+        { text: "концерт квантовой физики в Сибае", municipality_id: "sibay" },
         { channel: "test" },
       );
       expect(r.trace.steps).toHaveLength(2);
       expect(r.trace.steps.every((s) => s.tool === "search_events")).toBe(true);
       expect(r.kind).toBe("empty"); // честное «пока таких нет», а не выдумка
-      const row = await traceRow("квантовая физика в Сибае");
+      const row = await traceRow("концерт квантовой физики в Сибае");
       const agent = row.verifier.agent!;
       expect(agent.tool_calls).toBe(2);
       expect(agent.limited).toBe(true);

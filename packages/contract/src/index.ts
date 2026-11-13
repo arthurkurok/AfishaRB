@@ -209,6 +209,13 @@ export const SearchQuery = z.object({
     .regex(/^\d{1,2}:\d{2}$/)
     .optional()
     .describe("HH:MM — начало не позже этого времени"),
+  duration_max_min: z.coerce
+    .number()
+    .int()
+    .min(15)
+    .max(720)
+    .optional()
+    .describe("Только сеансы не длиннее (в минутах); длительность неизвестна — подходит"),
   municipality: csv(z.string()).optional(),
   near: z.string().optional().describe("lat,lon"),
   radius_km: z.coerce.number().min(0.5).max(200).optional(),
@@ -281,6 +288,11 @@ export const Slots = z.object({
   pushkin: z.boolean(),
   accessible: z.boolean(),
   text: z.string().nullable().describe("Остаток запроса для полнотекстового поиска"),
+  duration_max_min: z
+    .number()
+    .int()
+    .nullable()
+    .describe("«не дольше двух часов» — верхняя граница длительности сеанса"),
 });
 export type Slots = z.infer<typeof Slots>;
 

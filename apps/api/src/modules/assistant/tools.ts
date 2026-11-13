@@ -103,8 +103,17 @@ const SearchEventsArgs = z.object({
   accessible: z.boolean().optional(),
   /** Вопрос о судьбе события («отменили?»): ищем и среди отменённых/перенесённых/прошедших */
   include_ended: z.boolean().optional(),
-  time_from: z.string().regex(/^\d{1,2}:\d{2}$/).optional().describe("HH:MM — начало не раньше"),
-  time_until: z.string().regex(/^\d{1,2}:\d{2}$/).optional().describe("HH:MM — начало не позже"),
+  time_from: z
+    .string()
+    .regex(/^\d{1,2}:\d{2}$/)
+    .optional()
+    .describe("HH:MM — начало не раньше"),
+  time_until: z
+    .string()
+    .regex(/^\d{1,2}:\d{2}$/)
+    .optional()
+    .describe("HH:MM — начало не позже"),
+  duration_max_min: z.coerce.number().int().min(15).max(720).optional().describe("Не дольше (минут)"),
   sort: z.enum(["relevance", "date", "price", "distance", "popular", "ending"]).optional(),
   offset: z.number().int().min(0).max(10_000).optional(),
 });
@@ -200,6 +209,7 @@ function buildSearchQuery(args: SearchArgs, ctx: ToolContext): { query: SearchQu
     time_of_day: args.time_of_day,
     time_from: args.time_from,
     time_until: args.time_until,
+    duration_max_min: args.duration_max_min,
     municipality: municipality.length ? municipality : undefined,
     near: args.near,
     radius_km: args.radius_km,
@@ -237,6 +247,7 @@ function searchArgsFromQuery(q: SearchQuery, ctx: ToolContext): Record<string, u
   if (q.time_of_day?.length) args.time_of_day = q.time_of_day;
   if (q.time_from) args.time_from = q.time_from;
   if (q.time_until) args.time_until = q.time_until;
+  if (q.duration_max_min !== undefined) args.duration_max_min = q.duration_max_min;
   if (q.near) args.near = q.near;
   if (q.radius_km) args.radius_km = q.radius_km;
   if (q.tags?.length) args.tags = q.tags;

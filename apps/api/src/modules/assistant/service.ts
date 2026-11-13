@@ -44,17 +44,17 @@ import {
   CLARIFY_CITY_BA,
   CONFIRM_NO_LABEL,
   CONFIRM_YES_LABEL,
-  FAREWELL_TEXT,
-  INJECTION_REFUSAL_TEXT,
-  INVENT_REFUSAL_TEXT,
   chipsFor,
   confirmFeedbackQuestion,
   confirmMoveSubscriptionQuestion,
   confirmSubscribeQuestion,
+  FAREWELL_TEXT,
   FEEDBACK_DONE_TEXT,
   FEEDBACK_UNAVAILABLE_TEXT,
   HELP_TEXT,
   HELP_TEXT_BA,
+  INJECTION_REFUSAL_TEXT,
+  INVENT_REFUSAL_TEXT,
   OFFTOPIC_TEXT,
   OFFTOPIC_TEXT_BA,
   SUBSCRIBE_DONE_TEXT,
@@ -311,7 +311,10 @@ export function isFarewell(text: string | undefined): boolean {
 export function isInventRequest(text: string | undefined): boolean {
   if (!text) return false;
   const t = norm(text);
-  return /(?<![\p{L}])(придума\p{L}*|сочини\p{L}*|выдума\p{L}*|нафантазир\p{L}*|сгенерируй)\p{L}*/u.test(t) || /котор(?:ого|ая|ое|ые|ый)\s+нет(?![\p{L}])/u.test(t);
+  return (
+    /(?<![\p{L}])(придума\p{L}*|сочини\p{L}*|выдума\p{L}*|нафантазир\p{L}*|сгенерируй)\p{L}*/u.test(t) ||
+    /котор(?:ого|ая|ое|ые|ый)\s+нет(?![\p{L}])/u.test(t)
+  );
 }
 
 /** «Отменённые события» — запрос списка отменённых, которых в выдаче нет (ТЗ 6.1). */
@@ -374,6 +377,7 @@ function toQuery(s: Slots, req: AssistantRequest): SearchQuery {
     age: s.kids_ages.length ? Math.min(...s.kids_ages) : s.with_kids ? 12 : undefined,
     pushkin: s.pushkin || undefined,
     accessible: s.accessible || undefined,
+    duration_max_min: s.duration_max_min ?? undefined,
     q: s.text ?? undefined,
     limit: 30,
     lang: req.lang,
@@ -499,15 +503,17 @@ async function clarifyQuestion(
 /** Честная релаксация: ослабляем по одному ограничению и говорим об этом прямо. */
 async function relaxSearch(runner: ToolRunner, s: Slots, req: AssistantRequest, now: Date) {
   const month = resolveWindow({ when: "month" }, now);
+  // Релаксируем только то, что НЕ названо явно с точным значением: время суток, «после 19:00»,
+  // жанр/текст и длительность — часть сути запроса, их снятие даёт карточки, нарушающие запрос
+  // (ТЗ 9.2: выполнение ограничений; честнее пустой ответ с объяснением, чем «любое время дня»).
   const steps: { label: string; patch: Partial<Slots> }[] = [
-    { label: "показываю любое время дня", patch: { time_of_day: [], time_from: null, time_until: null } },
     {
       label: "расширил даты до ближайшего месяца",
       patch: { date_from: month.from, date_to: month.to, date_label: "ближайший месяц" },
     },
     { label: "поднял бюджет на 20 %", patch: { budget: s.budget ? Math.round(s.budget * 1.2) : null } },
-    { label: "убрал уточнение по названию", patch: { text: null } },
-    { label: "показываю все категории", patch: { categories: [], tags: [] } },
+    // теги — часть сути запроса («джаз», «фестиваль»), их не снимаем: лучше пустой ответ, чем мимо жанра
+    { label: "показываю все категории", patch: { categories: [] } },
   ];
   let cur = s;
   const relaxed: string[] = [];
@@ -858,6 +864,34 @@ export async function handleAssistant(
       return finish({ ...base, kind: "empty", text: UNKNOWN_PLACE_TEXT(place), chips: [] });
     }
   }
+  // «А что-нибудь похожее» без контекста диалога: нечему быть похожим — один вопрос (ТЗ 7.3),
+  // а не угадывание; если в запросе есть опоры (категория, город) — отвечаем сразу обычным поиском
+  if (
+    !req.patch &&
+    /похож/u.test(text ?? "") &&
+    conv.shown.length === 0 &&
+    !slots.categories.length &&
+    !slots.tags.length &&
+    !slots.text
+  ) {
+    plan.push("similar_no_context");
+    conv.lastClarify = true;
+    return finish({
+      ...base,
+      kind: "clarify",
+      text: "Похожее к чему? Мы пока ничего не подбирали. Назовите событие, которое понравилось, или спросите, например: «спектакли в Уфе в субботу».",
+      clarify: {
+        slot: "similar",
+        question: "Похожее к чему?",
+        options: [
+          { id: "kids", label: "Что-нибудь для детей", patch: { with_kids: true } },
+          { id: "weekend_ufa", label: "Выходные в Уфе", patch: { __when: "weekend", municipality_id: "ufa" } },
+          { id: "skip", label: "Неважно, покажи что есть", patch: { __skip: true } },
+        ],
+      },
+      chips: [],
+    });
+  }
 
   // Действия, меняющие данные (ТЗ 7.6): сначала подтверждение, выполнение — только после «да»
   const action = detectAction(text, slots, req, ctx.subscribeFn !== undefined, ctx.saveFeedbackFn !== undefined);
@@ -950,7 +984,18 @@ export async function handleAssistant(
       const d = humanDate(hit.starts_at.slice(0, 10)).toLowerCase();
       const st = label[hit.status] ?? hit.status;
       const reason = hit.status_reason ? ` Причина по данным источника: ${hit.status_reason.toLowerCase()}.` : "";
-      return `«${hit.event.title}», ${d}, ${hit.venue?.name ?? "площадка"}: сеанс ${st}.${reason}`;
+      // время, цена и длительность — только из карточки; неизвестное не называем вовсе
+      const time = humanTime(new Date(hit.starts_at));
+      const price = hit.event.price.is_free
+        ? "вход свободный"
+        : hit.event.price.min !== null && hit.event.price.min !== undefined
+          ? `билеты от ${hit.event.price.min} ₽`
+          : "цена в источнике не указана";
+      const dur =
+        hit.ends_at !== null && hit.ends_at !== undefined
+          ? `, длительность ${Math.max(1, Math.round((new Date(hit.ends_at).getTime() - new Date(hit.starts_at).getTime()) / 60_000))} мин`
+          : "";
+      return `«${hit.event.title}», ${d} в ${time}, ${hit.venue?.name ?? "площадка"}: сеанс ${st}, ${price}${dur}.${reason}`;
     });
     return finish({
       ...base,
