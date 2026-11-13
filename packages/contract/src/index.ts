@@ -370,6 +370,8 @@ export const FeedbackRequest = z.object({
   lang: Lang.optional(),
   original: z.string().max(1000).optional().describe("Исходная строка — для правки перевода"),
   suggestion: z.string().max(1000).optional().describe("Предлагаемый вариант — для правки перевода"),
+  /** Honeypot: скрытое поле, которое не заполняет человек. Заполнено — робот, заявка тихо отбрасывается. */
+  website: z.string().max(200).optional(),
 });
 export type FeedbackRequest = z.infer<typeof FeedbackRequest>;
 

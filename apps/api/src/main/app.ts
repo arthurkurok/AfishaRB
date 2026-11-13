@@ -54,12 +54,17 @@ export async function buildApp(opts: { logger?: boolean } = {}): Promise<Fastify
     max: 60,
     timeWindow: "1 minute",
     keyGenerator: (req) => req.ip,
-    errorResponseBuilder: (_req, ctx) => ({
-      type: "about:blank",
-      title: "Слишком много запросов",
-      status: 429,
-      detail: `Лимит ${ctx.max} запросов в минуту`,
-    }),
+    // Возвращаем именно Error со statusCode: плагин бросает объект, и setErrorHandler
+    // по statusCode распознаёт 429 (plain object превратился бы в 500 — проверено тестом).
+    errorResponseBuilder: (_req, ctx) => {
+      const err = new Error(`Слишком много запросов — лимит ${ctx.max}, попробуйте позже`) as Error & {
+        status: number;
+        statusCode: number;
+      };
+      err.statusCode = ctx.statusCode;
+      err.status = ctx.statusCode;
+      return err;
+    },
   });
   await app.register(swagger, {
     openapi: {

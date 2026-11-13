@@ -3,6 +3,7 @@ import Link from "next/link";
 import { LogoMark } from "@/brand/logo";
 import { API_BASE, CONTACT_EMAIL } from "@/lib/config";
 import { localePath } from "@/lib/hrefs";
+import { FeedbackForm } from "./feedback-form";
 import styles from "./footer.module.css";
 
 export function SiteFooter({ lang, t }: { lang: Lang; t: Translate }) {
@@ -36,6 +37,9 @@ export function SiteFooter({ lang, t }: { lang: Lang; t: Translate }) {
             <a href={`${API_BASE}/feeds/rss`}>RSS</a>
           </li>
         </ul>
+        <div className={styles.feedback}>
+          <FeedbackForm />
+        </div>
         <p className={`caption ${styles.sources}`}>{t("footer.sources")}</p>
       </div>
     </footer>

@@ -1,0 +1,55 @@
+.form {
+  display: grid;
+  gap: 10px;
+  max-width: 420px;
+}
+
+.kind {
+  display: grid;
+  gap: 4px;
+}
+
+.kind select {
+  padding: 8px 10px;
+  border: 1px solid var(--line, #d8d3cb);
+  border-radius: 10px;
+  background: var(--bg, #fff);
+  font: inherit;
+}
+
+.textLabel {
+  display: grid;
+  gap: 4px;
+}
+
+.text {
+  padding: 10px;
+  border: 1px solid var(--line, #d8d3cb);
+  border-radius: 10px;
+  background: var(--bg, #fff);
+  font: inherit;
+  resize: vertical;
+}
+
+.row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+/* honeypot: вне экрана, не в порядке табуляции */
+.honeypot {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+
+.status {
+  color: var(--ok, #2e7d32);
+}
+
+.error {
+  color: var(--danger, #c62828);
+}

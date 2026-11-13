@@ -7,6 +7,7 @@ import type {
   AssistantResponse,
   Category,
   EventDetail,
+  FeedbackRequest,
   Municipality,
   ReportRequest,
   SearchResult,
@@ -22,6 +23,7 @@ import { API_BASE, API_BASE_SERVER, REVALIDATE_SECONDS } from "./config";
 
 export type CatalogStats = z.infer<typeof Stats>;
 export type ReportBody = z.infer<typeof ReportRequest>;
+export type FeedbackBody = z.infer<typeof FeedbackRequest>;
 
 export class ApiError extends Error {
   constructor(
@@ -105,6 +107,14 @@ export function getStats(opts?: GetOptions): Promise<CatalogStats> {
 
 export function postReport(body: ReportBody): Promise<{ ok: true }> {
   return request(apiUrl("/v1/reports"), {
+    method: "POST",
+    headers: { "content-type": "application/json", "x-afisha-channel": "web" },
+    body: JSON.stringify(body),
+  });
+}
+
+export function sendFeedback(body: FeedbackBody): Promise<{ ok: boolean }> {
+  return request(apiUrl("/v1/feedback"), {
     method: "POST",
     headers: { "content-type": "application/json", "x-afisha-channel": "web" },
     body: JSON.stringify(body),

@@ -55,6 +55,10 @@
   max-width: 60ch;
 }
 
+.feedback {
+  justify-self: start;
+}
+
 @media (min-width: 960px) {
   .inner {
     grid-template-columns: auto 1fr;
@@ -62,5 +66,8 @@
   }
   .sources {
     grid-column: 1 / -1;
+  }
+  .feedback {
+    grid-column: 2;
   }
 }

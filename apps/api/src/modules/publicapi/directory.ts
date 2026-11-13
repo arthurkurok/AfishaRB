@@ -233,6 +233,8 @@ export function registerDirectoryApi(app: FastifyInstance, db: Db): void {
   r.post(
     "/v1/feedback",
     {
+      // ТЗ 12: публичная форма — лимит 5 в час с адреса и honeypot против спам-роботов
+      config: { rateLimit: { max: 5, timeWindow: "1 hour" } },
       schema: {
         operationId: "sendFeedback",
         tags: ["Обратная связь"],
@@ -242,6 +244,8 @@ export function registerDirectoryApi(app: FastifyInstance, db: Db): void {
       },
     },
     async (req, reply) => {
+      // honeypot: заполнил скрытое поле — робот; отвечаем как обычно, заявку не создаём
+      if (req.body.website) return reply.code(202).send({ ok: true });
       await db.insert(report).values({
         reason: `feedback_${req.body.kind}`,
         comment: req.body.text,

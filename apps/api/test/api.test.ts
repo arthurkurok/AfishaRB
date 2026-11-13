@@ -1,8 +1,9 @@
 /** HTTP API через fastify.inject: новые справочники, избранное без регистрации, правила ранжирования, Telegram initData. */
 import { createHmac } from "node:crypto";
+import { sql } from "drizzle-orm";
 import type { FastifyInstance } from "fastify";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
-import { closeDb } from "../src/db/client.js";
+import { closeDb, getDb } from "../src/db/client.js";
 import { buildApp } from "../src/main/app.js";
 import { verifyTelegramInitData } from "../src/modules/accounts/index.js";
 import { RANKING_WEIGHTS } from "../src/modules/search/index.js";
@@ -73,6 +74,43 @@ describe("справочники и поиск", () => {
       payload: { kind: "translation", text: "Неточность", original: "Бушлай", suggestion: "Түләүһеҙ", lang: "ba" },
     });
     expect(r.statusCode).toBe(202);
+  });
+
+  it("honeypot: заполненное скрытое поле — тихий отказ без записи в журнал", async () => {
+    const db = getDb();
+    const before = Number(
+      (await db.execute<{ n: number }>(sql`SELECT count(*)::int AS n FROM report WHERE reason LIKE 'feedback_%'`))
+        .rows[0]!.n,
+    );
+    const r = await app.inject({
+      method: "POST",
+      url: "/v1/feedback",
+      payload: { kind: "idea", text: "Куплю билеты дешевле", website: "http://spam.example" },
+    });
+    expect(r.statusCode).toBe(202); // робот не должен понять, что отброшен
+    const after = Number(
+      (await db.execute<{ n: number }>(sql`SELECT count(*)::int AS n FROM report WHERE reason LIKE 'feedback_%'`))
+        .rows[0]!.n,
+    );
+    expect(after).toBe(before); // записи нет
+  });
+
+  it("лимит: не больше 5 заявок в час с адреса, дальше — 429", async () => {
+    let accepted = 0;
+    let limited = 0;
+    for (let i = 0; i < 10; i++) {
+      const r = await app.inject({
+        method: "POST",
+        url: "/v1/feedback",
+        payload: { kind: "other", text: `Проверка лимита №${i + 1}` },
+      });
+      if (r.statusCode === 202) accepted++;
+      else if (r.statusCode === 429) limited++;
+      else throw new Error(`неожиданный статус ${r.statusCode}`);
+    }
+    // 1 (перевод) + 1 (honeypot) уже потрачено из 5 → в цикле приняты 3, остальные — 429
+    expect(accepted).toBe(3);
+    expect(limited).toBe(7);
   });
 });
 
