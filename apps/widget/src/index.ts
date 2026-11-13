@@ -26,6 +26,7 @@ function customCss(o: WidgetOptions): string {
     rules.push(`--color-accent:${o.accent}`, `--color-on-accent:${onAccent}`);
   }
   if (o.radius !== null) rules.push(`--radius-l:${o.radius}px`, `--radius-m:${Math.round(o.radius * 0.65)}px`);
+  if (o.height !== null) rules.push(`--widget-min-height:${o.height}px`);
   return rules.length ? `:host{${rules.join(";")}}` : "";
 }
 

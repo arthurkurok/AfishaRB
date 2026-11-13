@@ -8,6 +8,9 @@ export const LAYOUTS = ["carousel", "list", "grid", "compact"] as const;
 export type Layout = (typeof LAYOUTS)[number];
 export type Theme = "light" | "dark" | "auto";
 export type WidgetLang = "ru" | "ba";
+/** Период показа: совпадает с параметром when открытого API. */
+export const PERIODS = ["today", "tomorrow", "weekend", "week", "month"] as const;
+export type Period = (typeof PERIODS)[number];
 
 const CATEGORIES: readonly CategoryCode[] = ["theatre", "music", "museum", "kids", "folk", "cinema", "education"];
 const TAGS: readonly TagCode[] = [
@@ -35,6 +38,8 @@ export const OBSERVED = [
   "age",
   "limit",
   "layout",
+  "period",
+  "height",
   "lang",
   "theme",
   "accent",
@@ -54,6 +59,10 @@ export interface WidgetOptions {
   age: number | null;
   limit: number;
   layout: Layout;
+  /** Период показа (when в API): сегодня/завтра/выходные/неделя/месяц. */
+  period: Period;
+  /** Высота контейнера в пикселях: 360–1600, применяется как min-height. */
+  height: number | null;
   lang: WidgetLang;
   theme: Theme;
   accent: string | null;
@@ -101,6 +110,9 @@ export function parseOptions(
   const theme = attr("theme");
   const layout = attr("layout");
   const accent = attr("accent");
+  const period = attr("period");
+  const height = attr("height");
+  const heightNum = Number(height);
   return {
     municipality: (attr("municipality") ?? "")
       .split(",")
@@ -115,6 +127,11 @@ export function parseOptions(
     age: age !== null && age !== "" && Number.isInteger(ageNum) && ageNum >= 0 && ageNum <= 17 ? ageNum : null,
     limit: Number.isFinite(limit) && limit >= 1 ? Math.min(24, Math.floor(limit)) : 8,
     layout: (LAYOUTS as readonly string[]).includes(layout ?? "") ? (layout as Layout) : "carousel",
+    period: (PERIODS as readonly string[]).includes(period ?? "") ? (period as Period) : "month",
+    height:
+      height !== null && height !== "" && Number.isFinite(heightNum) && heightNum >= 360 && heightNum <= 1600
+        ? Math.floor(heightNum)
+        : null,
     lang: lang.toLowerCase().startsWith("ba") ? "ba" : "ru",
     theme: theme === "light" || theme === "dark" ? theme : "auto",
     accent: accent && HEX.test(accent) ? accent : null,
@@ -130,7 +147,7 @@ export function parseOptions(
 /** Параметры GET /v1/occurrences. По умолчанию — ближайший месяц, по релевантности. */
 export function apiQuery(o: WidgetOptions): URLSearchParams {
   const p = new URLSearchParams();
-  p.set("when", "month");
+  p.set("when", o.period);
   if (o.municipality.length) p.set("municipality", o.municipality.join(","));
   if (o.venue) p.set("venue", o.venue);
   if (o.organization) p.set("organization", o.organization);

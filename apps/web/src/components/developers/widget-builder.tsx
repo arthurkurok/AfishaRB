@@ -16,8 +16,10 @@ import {
   iframeSnippet,
   LAYOUTS,
   type Layout,
+  PERIODS,
   THEMES,
   type WidgetOptions,
+  type WidgetPeriod,
   type WidgetTheme,
   widgetAttributes,
 } from "@/lib/widget-snippet";
@@ -46,6 +48,8 @@ export function WidgetBuilder({
     age: "",
     limit: 6,
     layout: "carousel",
+    period: "month",
+    height: 480,
     lang,
     theme: "auto",
     accent: DEFAULT_ACCENT,
@@ -175,6 +179,21 @@ export function WidgetBuilder({
             </select>
           </div>
           <div className="field">
+            <label htmlFor={`${uid}-period`}>{t("developers.period")}</label>
+            <select
+              id={`${uid}-period`}
+              className="select"
+              value={o.period}
+              onChange={(e) => set("period", e.target.value as WidgetPeriod)}
+            >
+              {PERIODS.map((p) => (
+                <option key={p} value={p}>
+                  {t(`when.${p}` as "when.today")}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="field">
             <label htmlFor={`${uid}-limit`}>{t("developers.limit")}</label>
             <input
               id={`${uid}-limit`}
@@ -184,6 +203,19 @@ export function WidgetBuilder({
               className="input"
               value={o.limit}
               onChange={(e) => set("limit", Math.max(1, Math.min(24, Number(e.target.value) || 1)))}
+            />
+          </div>
+          <div className="field">
+            <label htmlFor={`${uid}-height`}>{t("developers.height")}</label>
+            <input
+              id={`${uid}-height`}
+              type="number"
+              min={360}
+              max={1600}
+              step={10}
+              className="input"
+              value={o.height}
+              onChange={(e) => set("height", Math.max(360, Math.min(1600, Number(e.target.value) || 360)))}
             />
           </div>
           <div className="field">

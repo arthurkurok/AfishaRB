@@ -46,6 +46,22 @@ describe("parseOptions", () => {
   it('free="false" выключает фильтр', () => {
     expect(parseOptions(attrs({ free: "false" }), defaults).free).toBe(false);
   });
+
+  it("period: валидное значение проходит, мусор — по умолчанию month", () => {
+    expect(parseOptions(attrs({ period: "weekend" }), defaults).period).toBe("weekend");
+    expect(parseOptions(attrs({ period: "год" }), defaults).period).toBe("month");
+    expect(parseOptions(attrs({}), defaults).period).toBe("month");
+  });
+
+  it("height: 360–1600, мусор и выход за границы — null", () => {
+    expect(parseOptions(attrs({ height: "480" }), defaults).height).toBe(480);
+    expect(parseOptions(attrs({ height: "360" }), defaults).height).toBe(360);
+    expect(parseOptions(attrs({ height: "1600" }), defaults).height).toBe(1600);
+    expect(parseOptions(attrs({ height: "100" }), defaults).height).toBeNull();
+    expect(parseOptions(attrs({ height: "9999" }), defaults).height).toBeNull();
+    expect(parseOptions(attrs({ height: "высоко" }), defaults).height).toBeNull();
+    expect(parseOptions(attrs({}), defaults).height).toBeNull();
+  });
 });
 
 describe("запросы и ссылки", () => {
@@ -60,6 +76,11 @@ describe("запросы и ссылки", () => {
       lang: "ru",
       limit: "4",
     });
+  });
+
+  it("period попадает в параметр when", () => {
+    const o = parseOptions(attrs({ period: "today" }), defaults);
+    expect(apiQuery(o).get("when")).toBe("today");
   });
 
   it("ссылки ведут на сайт с языковым префиксом", () => {

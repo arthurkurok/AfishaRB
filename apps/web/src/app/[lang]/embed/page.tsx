@@ -30,8 +30,15 @@ export default async function EmbedPage({ params, searchParams }: Props) {
   const sp = await searchParams;
   const layout = (["carousel", "list", "grid", "compact"] as const).find((l) => l === one(sp.layout)) ?? "list";
   const theme = (["auto", "light", "dark"] as const).find((x) => x === one(sp.theme)) ?? "auto";
+  const period =
+    (["today", "tomorrow", "weekend", "week", "month"] as const).find((p) => p === one(sp.period)) ?? "month";
   const limit = Math.min(24, Math.max(1, Number(one(sp.limit)) || 6));
-  const q = new URLSearchParams({ lang, limit: String(limit), when: "month" });
+  const q = new URLSearchParams({ lang, limit: String(limit), when: period });
+  const heightNum = Number(one(sp.height));
+  const height =
+    one(sp.height) !== "" && Number.isFinite(heightNum) && heightNum >= 360 && heightNum <= 1600
+      ? Math.floor(heightNum)
+      : 360;
   const slug = one(sp.municipality);
   if (/^[a-z0-9-]{2,80}(,[a-z0-9-]{2,80})*$/.test(slug)) q.set("municipality", slug);
   for (const key of ["venue", "organization"]) {
@@ -54,6 +61,7 @@ export default async function EmbedPage({ params, searchParams }: Props) {
   const accent = one(sp.accent);
   const radius = Number(one(sp.radius));
   const style: Record<string, string> = {};
+  style["--embed-min-height"] = `${height}px`;
   if (/^#[0-9a-f]{6}$/i.test(accent)) {
     style["--color-accent"] = accent;
     // Текст на акценте — светлый или тёмный, что контрастнее.

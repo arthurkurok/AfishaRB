@@ -9,6 +9,8 @@ export const LAYOUTS = ["carousel", "list", "grid", "compact"] as const;
 export type Layout = (typeof LAYOUTS)[number];
 export const THEMES = ["auto", "light", "dark"] as const;
 export type WidgetTheme = (typeof THEMES)[number];
+export const PERIODS = ["today", "tomorrow", "weekend", "week", "month"] as const;
+export type WidgetPeriod = (typeof PERIODS)[number];
 
 export interface WidgetOptions {
   municipality: string;
@@ -18,6 +20,10 @@ export interface WidgetOptions {
   age: string;
   limit: number;
   layout: Layout;
+  /** Период показа: сегодня / завтра / выходные / неделя / месяц. */
+  period: WidgetPeriod;
+  /** Минимальная высота контейнера в пикселях (360–1600). */
+  height: number;
   lang: Lang;
   theme: WidgetTheme;
   accent: string;
@@ -38,7 +44,9 @@ export function widgetAttributes(o: WidgetOptions, defaults: { accent: string })
   if (o.pushkin) attrs.push(["pushkin", "true"]);
   if (o.age !== "") attrs.push(["age", o.age]);
   attrs.push(["layout", o.layout]);
+  attrs.push(["period", o.period]);
   attrs.push(["limit", String(o.limit)]);
+  attrs.push(["height", String(o.height)]);
   attrs.push(["lang", o.lang]);
   attrs.push(["theme", o.theme]);
   if (o.accent && o.accent.toLowerCase() !== defaults.accent.toLowerCase()) attrs.push(["accent", o.accent]);
@@ -66,7 +74,7 @@ export function iframeSnippet(o: WidgetOptions, env: { siteUrl: string; accent: 
   const origin = new URL(env.siteUrl).origin;
   return [
     `<iframe id="afisha-rb-frame" src="${escAttr(src)}" title="${escAttr(env.title)}" loading="lazy"`,
-    `  style="display:block;width:100%;min-height:360px;border:0"></iframe>`,
+    `  style="display:block;width:100%;min-height:${o.height}px;border:0"></iframe>`,
     `<script>`,
     `  window.addEventListener("message", function (e) {`,
     `    if (e.origin !== "${origin}" || !e.data || e.data.type !== "afisha:height") return;`,

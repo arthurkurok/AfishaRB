@@ -4,6 +4,8 @@
   flex-direction: column;
   gap: var(--space-3);
   background: var(--color-bg);
+  /* Минимальная высота iframe-варианта: параметр height (360–1600), по умолчанию 360 */
+  min-height: var(--embed-min-height, 360px);
 }
 .title {
   font-size: var(--type-title-size);

@@ -12,10 +12,10 @@ const decl = (vars: Record<string, string>) =>
 export const TOKENS_CSS = `:host{${decl(lightVars)};${decl(baseVars)};color-scheme:light}:host([theme=dark]){${decl(darkVars)};color-scheme:dark}@media (prefers-color-scheme:dark){:host(:not([theme=light])){${decl(darkVars)};color-scheme:dark}}`;
 
 export const WIDGET_CSS = `
-:host{display:block;contain:content;font:inherit;color:var(--color-ink)}
+:host{display:block;contain:content;font:inherit;color:var(--color-ink);--widget-min-height:360px}
 :host([hidden]){display:none}
 *,*::before,*::after{box-sizing:border-box}
-.w{background:var(--color-bg);border-radius:var(--radius-l);padding:var(--space-4);font-family:inherit;line-height:1.4}
+.w{background:var(--color-bg);border-radius:var(--radius-l);padding:var(--space-4);font-family:inherit;line-height:1.4;min-height:var(--widget-min-height)}
 .head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:var(--space-2);margin:0 0 var(--space-3)}
 h2{margin:0;font-size:var(--type-title-size);line-height:var(--type-title-line);font-weight:700}
 a{color:var(--color-accent)}
