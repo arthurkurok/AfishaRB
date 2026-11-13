@@ -53,6 +53,10 @@ WORKDIR /app
 COPY --from=build /out/package.json ./package.json
 COPY --from=build /out/node_modules ./node_modules
 COPY --from=build /repo/apps/web/.next ./.next
+# next start пишет кэш (fetch-cache, route-cache) — отдаём каталог процессу (uid 10001)
+RUN mkdir -p .next/server/route-cache && chown -R 10001:10001 .next
+# Шрифты для OG-картинки: opengraph-image читает их из src/assets/fonts по process.cwd()
+COPY --from=build /repo/apps/web/src/assets/fonts ./src/assets/fonts
 COPY --from=build /repo/apps/web/public ./public
 COPY --from=build /repo/apps/web/next.config.ts ./next.config.ts
 USER 10001:10001
