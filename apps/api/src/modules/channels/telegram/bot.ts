@@ -2,7 +2,7 @@
  * Telegram-бот (docs/03-functional-spec.md §3). Тонкий адаптер: вся логика — в Гиде, поиске и каталоге.
  * Telegram в РФ заблокирован, поэтому Bot API вызывается через исходящий прокси (AFISHA_TELEGRAM_PROXY).
  */
-import { randomBytes } from "node:crypto";
+import { randomBytes, randomUUID } from "node:crypto";
 import type { AssistantResponse, OccurrenceCard, QuickReply } from "@afisha/contract";
 import { sql } from "drizzle-orm";
 import { Bot, type Context, InlineKeyboard, Keyboard } from "grammy";
@@ -48,8 +48,17 @@ async function getProfile(db: Db, chatId: number): Promise<Profile> {
   return r.rows[0]!;
 }
 
-// Идентификатор диалога бота — HMAC от chat_id: не угадывается и не принимается публичным API (BL-8)
-const conversationId = (chatId: number) => `tg-${pseudonym(String(chatId), "tg-conv")}`;
+// Идентификатор диалога бота — HMAC от chat_id: не угадывается и не принимается публичным API (BL-8).
+// /cancel выдаёт чату свежий идентификатор: Гид забывает контекст диалога, история трассировки остаётся.
+const conversations = new Map<number, string>();
+const conversationId = (chatId: number) => {
+  let conv = conversations.get(chatId);
+  if (!conv) {
+    conv = `tg-${pseudonym(String(chatId), "tg-conv")}`;
+    conversations.set(chatId, conv);
+  }
+  return conv;
+};
 
 /** Кнопки категорий: подпись и код (шарятся поиском и подписками). */
 const CAT_BUTTONS: [label: string, code: string][] = [
@@ -257,6 +266,14 @@ export function createBot(db: Db, token: string): Bot {
     ctx.reply(T.about, { parse_mode: "HTML", link_preview_options: { is_disabled: true } }),
   );
   bot.command("privacy", (ctx) => ctx.reply(T.privacy, { parse_mode: "HTML" }));
+  // Сброс диалога (ТЗ §6, сценарий «начать заново»): свежий идентификатор конверсации —
+  // Гид забывает контекст и уточнённые слоты, кнопки-уточнения старого диалога погашены
+  bot.command("cancel", async (ctx) => {
+    const old = conversations.get(ctx.chat.id);
+    conversations.set(ctx.chat.id, `tg-${randomUUID()}`);
+    if (old) for (const [k, v] of callbacks) if (v.conv === old) callbacks.delete(k);
+    await ctx.reply(T.cancelled);
+  });
   bot.command("nopersonal", async (ctx) => {
     await db.execute(
       sql`UPDATE profile SET personalization = false WHERE channel = 'telegram' AND external_id = ${String(ctx.chat.id)}`,
@@ -538,6 +555,7 @@ export async function setBotCommands(bot: Bot) {
   await bot.api.setMyCommands([
     { command: "today", description: "Что сегодня" },
     { command: "weekend", description: "На выходных" },
+    { command: "cancel", description: "Начать диалог заново" },
     { command: "help", description: "Что умеет Гид" },
     { command: "unsubscribe", description: "Отписаться от всех подписок" },
     { command: "privacy", description: "Персональные данные" },

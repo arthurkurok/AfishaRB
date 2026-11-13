@@ -135,6 +135,42 @@ describe("Telegram-бот", () => {
     expect(n.n).toBe(1);
   });
 
+  it("/cancel: Гид забывает диалог — новая конверсация, старые кнопки погашены", async () => {
+    const bot = makeBot();
+    calls.length = 0;
+    // запись в assistant_trace вставляется асинхронно (fire-and-forget) — ждём появления
+    const maxTraceId = async () =>
+      Number((await db.execute<{ m: string }>(sql`SELECT max(id) AS m FROM assistant_trace`)).rows[0]?.m ?? 0);
+    const nextTrace = async (afterId: number) => {
+      for (let i = 0; i < 40; i++) {
+        const r = (
+          await db.execute<{ id: string; conversation_id: string }>(
+            sql`SELECT id, conversation_id FROM assistant_trace WHERE id > ${afterId} ORDER BY id ASC LIMIT 1`,
+          )
+        ).rows[0];
+        if (r) return r;
+        await new Promise((res) => setTimeout(res, 25));
+      }
+      throw new Error("нет новой записи assistant_trace");
+    };
+    // запрос с уточнением — оставляет кнопки, привязанные к конверсации
+    await bot.handleUpdate(msg("Куда пойти в субботу с ребёнком до 1000 рублей"));
+    const q = sent().at(-1)!;
+    const ageButton = (q.payload.reply_markup.inline_keyboard.flat() as { callback_data: string }[])[0]!;
+    const since = await maxTraceId();
+    const t1 = await nextTrace(since - 1);
+    // сброс диалога
+    await bot.handleUpdate(msg("/cancel"));
+    expect(textOf(sent().at(-1)!)).toMatch(/заново/i);
+    // кнопка-уточнение старого диалога больше не действует
+    await bot.handleUpdate(press(ageButton.callback_data));
+    expect(textOf(sent().at(-1)!)).toMatch(/устарела/);
+    // новый запрос уходит в новую конверсацию (id в трассировке псевдонимизированы)
+    await bot.handleUpdate(msg("что сегодня"));
+    const t2 = await nextTrace(Number(t1.id));
+    expect(t2.conversation_id).not.toBe(t1.conversation_id);
+  });
+
   it("отмена в кабинете учреждения → уведомление подписчику в Telegram", async () => {
     makeBot(); // регистрирует транспорт telegram
     calls.length = 0;
