@@ -212,6 +212,12 @@ const at = (day: string, hhmm: string) => {
 function seedEvent(ev: SeedEvent): NormalizedEvent {
   const start = at(ev.start_day, ev.start_time);
   const end = ev.end_time ? at(ev.start_day, ev.end_time) : new Date(start.getTime() + 2 * 3600_000);
+  // теги — как в реальном каталоге: «Экскурсия …» приходит с тегом excursion, иначе поиск
+  // по тегу (гид честно сузивает «экскурсию» тегом) не находит контрольное событие
+  const tags: string[] = [];
+  if (/^экскурси/iu.test(ev.title)) tags.push("excursion");
+  if (/мастер-?класс/iu.test(ev.title)) tags.push("master_class");
+  if (/фестивал/iu.test(ev.title)) tags.push("festival");
   return {
     sourceId: "culture_ru",
     externalId: `ctrl-${ev.external_id}`,
@@ -219,7 +225,7 @@ function seedEvent(ev: SeedEvent): NormalizedEvent {
     summary: (ev.description ?? "Контрольное событие прогонки").slice(0, 300),
     descriptionHtml: `<p>${ev.description ?? "Контрольное событие прогонки"}</p>`,
     categories: ev.categories as NormalizedEvent["categories"],
-    tags: [],
+    tags: tags as NormalizedEvent["tags"],
     sourceGenres: [],
     ageRating: ev.age_rating,
     priceMin: ev.is_free ? null : String(ev.price_min ?? 0),

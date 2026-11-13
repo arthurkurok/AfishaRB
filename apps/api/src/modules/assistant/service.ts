@@ -433,7 +433,7 @@ async function clarifyQuestion(
     if (differs(a, b)) {
       conv.asked.add("kids");
       return {
-        slot: "kids",
+        slot: "kids_ages",
         question:
           lang === "ba" ? CLARIFY_AGE_BA : "Сколько лет ребёнку? От этого зависит возрастной ценз (0+, 6+, 12+).",
         options: [
@@ -504,16 +504,15 @@ async function clarifyQuestion(
 async function relaxSearch(runner: ToolRunner, s: Slots, req: AssistantRequest, now: Date) {
   const month = resolveWindow({ when: "month" }, now);
   // Релаксируем только то, что НЕ названо явно с точным значением: время суток, «после 19:00»,
-  // жанр/текст и длительность — часть сути запроса, их снятие даёт карточки, нарушающие запрос
-  // (ТЗ 9.2: выполнение ограничений; честнее пустой ответ с объяснением, чем «любое время дня»).
+  // жанр/текст, длительность и КАТЕГОРИЯ — часть сути запроса, их снятие даёт карточки,
+  // нарушающие запрос (ТЗ 9.2: выполнение ограничений; честнее пустой ответ с объяснением,
+  // чем «спектакль → любая категория»). Релаксируем даты и бюджет — об этом честно сообщаем.
   const steps: { label: string; patch: Partial<Slots> }[] = [
     {
       label: "расширил даты до ближайшего месяца",
       patch: { date_from: month.from, date_to: month.to, date_label: "ближайший месяц" },
     },
     { label: "поднял бюджет на 20 %", patch: { budget: s.budget ? Math.round(s.budget * 1.2) : null } },
-    // теги — часть сути запроса («джаз», «фестиваль»), их не снимаем: лучше пустой ответ, чем мимо жанра
-    { label: "показываю все категории", patch: { categories: [] } },
   ];
   let cur = s;
   const relaxed: string[] = [];
@@ -772,9 +771,16 @@ export async function handleAssistant(
     conv.skipClarify = false;
     plan.push("parse_rules");
     const parsed = parseRules(text, now, munis);
-    const refine = REFINE_RE.test(text.trim().toLowerCase()) && conv.slots.intent === "search" && conv.shown.length > 0;
+    // ответ на уточнение прошлого хода («8 лет») — это уточнение, а не новый поиск: контекст сохраняем
+    const refine =
+      (REFINE_RE.test(text.trim().toLowerCase()) || conv.lastClarify) &&
+      conv.slots.intent === "search" &&
+      conv.shown.length > 0;
     slots = mergeSlots(conv.slots, parsed, refine);
-    if (!refine) conv.asked.clear();
+    if (!refine) {
+      conv.asked.clear();
+      conv.lastClarify = false;
+    }
     // LLM дополняет то, что правила не поняли (тематика, намерение); даты/цены/возраст остаются от правил
     if (mode === "llm" && (parsed.intent === "smalltalk" || (parsed.categories.length === 0 && !parsed.text))) {
       plan.push("llm_extract");
@@ -1160,8 +1166,10 @@ export async function handleAssistant(
     // вопрос уместен, только если возраст реально меняет выдачу; допущение «младше 12» видно в чипах
     if (differs(a, b)) {
       conv.asked.add("kids");
+      // ответ на кнопки возраста («8 лет») — уточнение прошлого запроса, а не новый поиск
+      conv.lastClarify = true;
       ageClarify = {
-        slot: "kids",
+        slot: "kids_ages",
         question:
           lang === "ba" ? CLARIFY_AGE_BA : "Сколько лет ребёнку? От этого зависит возрастной ценз (0+, 6+, 12+).",
         options: [
