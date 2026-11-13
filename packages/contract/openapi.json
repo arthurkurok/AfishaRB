@@ -3,7 +3,7 @@
   "info": {
     "title": "Афиша культуры Башкортостана — открытый API",
     "version": "1.0.0",
-    "description": "Достоверные культурные события Республики Башкортостан: поиск, паспорт события с источниками и историей изменений, справочники, фиды. Даты — в часовом поясе региона (+05:00).",
+    "description": "Достоверные культурные события Республики Башкортостан: поиск, паспорт события с источниками и историей изменений, справочники, фиды. Даты — в часовом поясе региона (+05:00). Ошибки — RFC 9457 (application/problem+json). Лимит без ключа — 60 запросов в минуту.",
     "license": {
       "name": "Данные: типовые условия использования открытых данных РФ; изображения — по лицензии правообладателей",
       "url": "http://data.gov.ru/information-usage"
@@ -1419,7 +1419,10 @@
         "type": "object",
         "properties": {
           "conversation_id": {
-            "type": "string"
+            "description": "Идентификатор диалога, выданный сервером в прошлом ответе",
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
           },
           "text": {
             "type": "string",
@@ -1975,6 +1978,7 @@
             "minimum": 0
           },
           "ticket_url": {
+            "description": "Только http(s)",
             "type": "string",
             "format": "uri"
           },
@@ -3421,7 +3425,10 @@
         "type": "object",
         "properties": {
           "conversation_id": {
-            "type": "string"
+            "description": "Идентификатор диалога, выданный сервером в прошлом ответе",
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
           },
           "text": {
             "type": "string",
@@ -3988,6 +3995,7 @@
             "minimum": 0
           },
           "ticket_url": {
+            "description": "Только http(s)",
             "type": "string",
             "format": "uri"
           },
@@ -5644,247 +5652,6 @@
           }
         }
       }
-    },
-    "/admin/occurrences/{id}/status": {
-      "post": {
-        "operationId": "changeOccurrenceStatus",
-        "summary": "Изменить статус сеанса (отмена, перенос, распродано) — подписчики получат уведомление",
-        "tags": [
-          "Кабинет и министерство"
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "status": {
-                    "type": "string",
-                    "enum": [
-                      "scheduled",
-                      "cancelled",
-                      "rescheduled",
-                      "postponed",
-                      "sold_out"
-                    ]
-                  },
-                  "reason": {
-                    "type": "string",
-                    "maxLength": 300
-                  },
-                  "new_starts_at": {
-                    "type": "string",
-                    "format": "date-time",
-                    "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
-                  }
-                },
-                "required": [
-                  "status"
-                ]
-              }
-            }
-          }
-        },
-        "parameters": [
-          {
-            "schema": {
-              "type": "string",
-              "format": "uuid",
-              "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
-            },
-            "in": "path",
-            "name": "id",
-            "required": true
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Default Response"
-          }
-        }
-      }
-    },
-    "/admin/moderation/tasks": {
-      "get": {
-        "operationId": "listModerationTasks",
-        "summary": "Очередь модерации",
-        "tags": [
-          "Кабинет и министерство"
-        ],
-        "parameters": [
-          {
-            "schema": {
-              "type": "string"
-            },
-            "in": "query",
-            "name": "kind",
-            "required": false
-          },
-          {
-            "schema": {
-              "default": "open",
-              "type": "string"
-            },
-            "in": "query",
-            "name": "state",
-            "required": false
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Default Response"
-          }
-        }
-      }
-    },
-    "/admin/moderation/tasks/{id}/resolve": {
-      "post": {
-        "operationId": "resolveModerationTask",
-        "summary": "Решение по задаче: объединить дубли / разные события / отклонить",
-        "tags": [
-          "Кабинет и министерство"
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "action": {
-                    "type": "string",
-                    "enum": [
-                      "merge",
-                      "distinct",
-                      "dismiss"
-                    ]
-                  }
-                },
-                "required": [
-                  "action"
-                ]
-              }
-            }
-          }
-        },
-        "parameters": [
-          {
-            "schema": {
-              "type": "string",
-              "format": "uuid",
-              "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
-            },
-            "in": "path",
-            "name": "id",
-            "required": true
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Default Response"
-          }
-        }
-      }
-    },
-    "/admin/dashboard": {
-      "get": {
-        "operationId": "getDashboard",
-        "summary": "«Пульс культуры»: предложение, спрос, спрос без предложения, качество данных",
-        "tags": [
-          "Кабинет и министерство"
-        ],
-        "parameters": [
-          {
-            "schema": {
-              "default": 30,
-              "type": "number",
-              "minimum": 1,
-              "maximum": 365
-            },
-            "in": "query",
-            "name": "days",
-            "required": false
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Default Response"
-          }
-        }
-      }
-    },
-    "/admin/events/extract": {
-      "post": {
-        "operationId": "extractEventDraft",
-        "summary": "ИИ-помощник: черновик карточки из текста анонса или поста VK",
-        "tags": [
-          "Кабинет и министерство"
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "text": {
-                    "type": "string",
-                    "minLength": 10,
-                    "maxLength": 8000
-                  }
-                },
-                "required": [
-                  "text"
-                ]
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Default Response"
-          }
-        }
-      }
-    },
-    "/admin/events": {
-      "post": {
-        "operationId": "createCabinetEvent",
-        "summary": "Создать событие из кабинета учреждения (официальный источник, публикуется сразу)",
-        "tags": [
-          "Кабинет и министерство"
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CabinetEventCreateInput"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Default Response"
-          }
-        }
-      }
-    },
-    "/admin/reports": {
-      "get": {
-        "operationId": "listReports",
-        "summary": "Жалобы пользователей «неверная информация»",
-        "tags": [
-          "Кабинет и министерство"
-        ],
-        "responses": {
-          "200": {
-            "description": "Default Response"
-          }
-        }
-      }
     }
   },
   "servers": [
@@ -5913,10 +5680,6 @@
     {
       "name": "Избранное",
       "description": "Без регистрации: заголовок X-Device-Id (приложения, сайт) или X-Telegram-Init-Data (Mini App)"
-    },
-    {
-      "name": "Кабинет и министерство",
-      "description": "Требует Authorization: Bearer <токен>"
     }
   ]
 }
