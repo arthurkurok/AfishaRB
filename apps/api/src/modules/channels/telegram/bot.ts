@@ -16,9 +16,9 @@ import { log } from "../../../lib/log.js";
 import { handleAssistant } from "../../assistant/index.js";
 import { getEventDetail } from "../../catalog/index.js";
 import { CITY_ORDER } from "../../geo/index.js";
-import { registerTransport } from "../../notify/index.js";
+import { registerTransport, subscriptionTitle, subscriptionUrl } from "../../notify/index.js";
 import { searchOccurrences } from "../../search/index.js";
-import { cardCaption, escapeHtml, MENU, T } from "./texts.js";
+import { cardCaption, escapeHtml, MENU, SUBS, T } from "./texts.js";
 
 type Profile = {
   id: string;
@@ -50,6 +50,17 @@ async function getProfile(db: Db, chatId: number): Promise<Profile> {
 
 // Идентификатор диалога бота — HMAC от chat_id: не угадывается и не принимается публичным API (BL-8)
 const conversationId = (chatId: number) => `tg-${pseudonym(String(chatId), "tg-conv")}`;
+
+/** Кнопки категорий: подпись и код (шарятся поиском и подписками). */
+const CAT_BUTTONS: [label: string, code: string][] = [
+  ["🎭 Театр", "theatre"],
+  ["🎵 Музыка", "music"],
+  ["🖼 Музеи и выставки", "museum"],
+  ["🧸 Детям", "kids"],
+  ["🌾 Праздники", "folk"],
+  ["🎬 Кино", "cinema"],
+  ["📚 Лекции и встречи", "education"],
+];
 
 function proxyAgent() {
   const p = config.AFISHA_TELEGRAM_PROXY;
@@ -114,7 +125,7 @@ async function renderAssistant(ctx: Context, db: Db, profile: Profile, r: Assist
   }
 }
 
-async function cityKeyboard(db: Db) {
+async function cityKeyboard(db: Db, prefix = "city") {
   const rows = (
     await db.execute<{ id: string; name: string }>(
       sql`SELECT id, name->>'ru' AS name FROM municipality WHERE id = ANY(${`{${CITY_ORDER.join(",")}}`}::text[])`,
@@ -125,10 +136,10 @@ async function cityKeyboard(db: Db) {
   CITY_ORDER.filter((id) => byId.has(id))
     .slice(0, 8)
     .forEach((id, i) => {
-      kb.text(byId.get(id)!, `city:${id}`);
+      kb.text(byId.get(id)!, `${prefix}:${id}`);
       if (i % 2 === 1) kb.row();
     });
-  return kb.row().text("Вся республика", "city:all");
+  return kb.row().text("Вся республика", `${prefix}:all`);
 }
 
 export function createBot(db: Db, token: string): Bot {
@@ -171,6 +182,7 @@ export function createBot(db: Db, token: string): Bot {
     .requestLocation(MENU.near)
     .text(MENU.favorites)
     .row()
+    .text(MENU.subscriptions)
     .text(MENU.settings)
     .resized()
     .persistent();
@@ -242,18 +254,23 @@ export function createBot(db: Db, token: string): Bot {
     );
   });
 
-  const categoriesKb = () =>
-    new InlineKeyboard()
-      .text("🎭 Театр", "cat:theatre")
-      .text("🎵 Музыка", "cat:music")
-      .row()
-      .text("🖼 Музеи и выставки", "cat:museum")
-      .text("🧸 Детям", "cat:kids")
-      .row()
-      .text("🌾 Праздники", "cat:folk")
-      .text("🎬 Кино", "cat:cinema")
-      .row()
-      .text("📚 Лекции и встречи", "cat:education");
+  const categoriesKb = () => {
+    const kb = new InlineKeyboard();
+    CAT_BUTTONS.forEach(([label, code], i) => {
+      kb.text(label, `cat:${code}`);
+      if (i % 2 === 1) kb.row();
+    });
+    return kb;
+  };
+  /** Выбор категории для новой подписки: город уже выбран и «едет» в callback_data. */
+  const subCatKb = (city: string) => {
+    const kb = new InlineKeyboard();
+    CAT_BUTTONS.forEach(([label, code], i) => {
+      kb.text(label, `subcat:${city}|${code}`);
+      if (i % 2 === 1) kb.row();
+    });
+    return kb.row().text(SUBS.catAll, `subcat:${city}|all`);
+  };
   bot.hears(MENU.categories, (ctx) => ctx.reply("Что интересно?", { reply_markup: categoriesKb() }));
   const CAT_TEXT: Record<string, string> = {
     theatre: "спектакли",
@@ -297,6 +314,109 @@ export function createBot(db: Db, token: string): Bot {
         "В избранном пока пусто. Нажмите ☆ под карточкой — и я сообщу, если событие перенесут или отменят.",
       );
     for (const { event_id } of ids) await sendEventById(ctx, profile, event_id);
+  });
+
+  /* ---------- Подписки на город и категорию (ТЗ: раздел 3) ---------- */
+
+  type SubRow = {
+    id: string;
+    title: string;
+    query: { municipality?: string | null; categories?: string[]; period?: string | null };
+  };
+
+  /** Экран «Подписки»: список + кнопки «Отписаться» на каждой + «Новая подписка». */
+  const showSubscriptions = async (ctx: Context, profileId: string) => {
+    const subs = (
+      await db.execute<SubRow>(
+        sql`SELECT id, title, query FROM saved_search WHERE profile_id = ${profileId} ORDER BY created_at`,
+      )
+    ).rows;
+    const kb = new InlineKeyboard();
+    if (subs.length === 0) {
+      await ctx.reply(SUBS.empty, { reply_markup: kb.text("➕ Новая подписка", "sub:new") });
+      return;
+    }
+    for (const s of subs) {
+      kb.row()
+        .url(
+          s.title.slice(0, 40),
+          subscriptionUrl(s.query.municipality ?? null, s.query.categories ?? [], s.query.period ?? null),
+        )
+        .text("Отписаться", `sub:del:${s.id}`);
+    }
+    kb.row().text("➕ Новая подписка", "sub:new");
+    const lines = subs.map((s) => `• ${s.title}`).join("\n");
+    await ctx.reply(`${SUBS.listTitle}\n${lines}`, {
+      reply_markup: kb,
+      link_preview_options: { is_disabled: true },
+    });
+  };
+
+  bot.hears(MENU.subscriptions, async (ctx) => {
+    const profile = await getProfile(db, ctx.chat.id);
+    await showSubscriptions(ctx, profile.id);
+  });
+
+  // Отписка от всех подписок одной командой (ТЗ: «отписка одной командой»)
+  bot.command("unsubscribe", async (ctx) => {
+    const profile = await getProfile(db, ctx.chat.id);
+    const deleted = (
+      await db.execute<{ id: string }>(sql`DELETE FROM saved_search WHERE profile_id = ${profile.id} RETURNING id`)
+    ).rows;
+    await ctx.reply(deleted.length === 0 ? SUBS.none : SUBS.unsubscribed(deleted.length));
+  });
+
+  bot.callbackQuery("sub:new", async (ctx) => {
+    await ctx.answerCallbackQuery();
+    await ctx.reply(SUBS.askCity, { reply_markup: await cityKeyboard(db, "subcity") });
+  });
+
+  bot.callbackQuery(/^subcity:([\w-]+)$/, async (ctx) => {
+    await ctx.answerCallbackQuery();
+    await ctx.reply(SUBS.askCat, { reply_markup: subCatKb(ctx.match[1]!) });
+  });
+
+  // город|категория → подписка; дубликат по тем же фильтрам не создаём
+  bot.callbackQuery(/^subcat:([\w-]+)\|(\w+)$/, async (ctx) => {
+    const cityId = ctx.match[1] === "all" ? null : ctx.match[1]!;
+    const cat = ctx.match[2] === "all" ? null : ctx.match[2]!;
+    const profile = await getProfile(db, ctx.chat!.id);
+    if (!cityId && !cat) {
+      await ctx.answerCallbackQuery();
+      await ctx.reply(SUBS.needFilter, { reply_markup: await cityKeyboard(db, "subcity") });
+      return;
+    }
+    const muniName = cityId
+      ? ((await db.execute<{ name: string }>(sql`SELECT name->>'ru' AS name FROM municipality WHERE id = ${cityId}`))
+          .rows[0]?.name ?? null)
+      : null;
+    const filters = { municipality: cityId, categories: cat ? [cat] : [], period: null };
+    const title = subscriptionTitle(muniName, filters.categories);
+    const created = (
+      await db.execute<{ id: string }>(sql`
+        INSERT INTO saved_search (profile_id, title, query)
+        SELECT ${profile.id}, ${title}, ${JSON.stringify(filters)}::jsonb
+        WHERE NOT EXISTS (
+          SELECT 1 FROM saved_search WHERE profile_id = ${profile.id} AND query = ${JSON.stringify(filters)}::jsonb)
+        RETURNING id`)
+    ).rows;
+    await ctx.answerCallbackQuery();
+    if (created.length === 0) {
+      await ctx.reply(`Подписка «${title}» уже есть.`);
+      return;
+    }
+    await ctx.reply(SUBS.created(title));
+  });
+
+  bot.callbackQuery(/^sub:del:([0-9a-f-]{36})$/, async (ctx) => {
+    const profile = await getProfile(db, ctx.chat!.id);
+    const deleted = (
+      await db.execute<{ id: string }>(
+        sql`DELETE FROM saved_search WHERE id = ${ctx.match[1]} AND profile_id = ${profile.id} RETURNING id`,
+      )
+    ).rows;
+    await ctx.answerCallbackQuery({ text: deleted.length ? "Отписано" : "Уже отписано" });
+    if (deleted.length) await showSubscriptions(ctx, profile.id);
   });
 
   bot.hears(MENU.settings, async (ctx) => {
@@ -387,8 +507,10 @@ export function createBot(db: Db, token: string): Bot {
   // Транспорт уведомлений
   registerTransport("telegram", async (n) => {
     try {
+      // у дайджеста своя кнопка «Смотреть все» (n.url), у изменений — карточка события
+      const url = n.url ?? (n.eventId ? webUrl(`/e/${n.eventId}`) : undefined);
       await bot.api.sendMessage(Number(n.externalId), n.text, {
-        reply_markup: new InlineKeyboard().url("Открыть событие", webUrl(`/e/${n.eventId}`)),
+        ...(url ? { reply_markup: new InlineKeyboard().url(n.urlLabel ?? "Открыть событие", url) } : {}),
       });
       return true;
     } catch (err) {
@@ -405,6 +527,7 @@ export async function setBotCommands(bot: Bot) {
     { command: "today", description: "Что сегодня" },
     { command: "weekend", description: "На выходных" },
     { command: "help", description: "Что умеет Гид" },
+    { command: "unsubscribe", description: "Отписаться от всех подписок" },
     { command: "privacy", description: "Персональные данные" },
     { command: "nopersonal", description: "Выключить персонализацию" },
   ]);

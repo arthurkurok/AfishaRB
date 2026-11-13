@@ -7,13 +7,19 @@ import { PgBoss } from "pg-boss";
 import { getDb } from "../db/client.js";
 import { config } from "../lib/config.js";
 import { log } from "../lib/log.js";
+import { createBot } from "../modules/channels/telegram/bot.js";
 import { runDedup } from "../modules/dedup/index.js";
 import { fetchRegion, loadCultureRu } from "../modules/ingestion/index.js";
 import { markEnded, refreshDerived } from "../modules/lifecycle/index.js";
+import { sendSubscriptionDigests } from "../modules/notify/index.js";
 
 const db = getDb();
 const raw = join(config.AFISHA_DATA_DIR, "raw", "culture_ru");
 const TZ = config.AFISHA_REGION_TZ;
+
+// Транспорт Telegram для дайджестов подписок: бот без long polling (опросом владеет отдельный
+// процесс pnpm bot), здесь нужен только sendMessage. Без токена дайджесты просто не отправляются.
+if (config.AFISHA_TELEGRAM_BOT_TOKEN) createBot(db, config.AFISHA_TELEGRAM_BOT_TOKEN);
 
 /** Имя очереди → расписание (cron в часовом поясе региона) и обработчик. */
 const JOBS: Record<string, { cron: string; run: () => Promise<unknown> }> = {
@@ -31,6 +37,9 @@ const JOBS: Record<string, { cron: string; run: () => Promise<unknown> }> = {
   "lifecycle-mark-ended": { cron: "*/5 * * * *", run: async () => ({ ended: await markEnded(db) }) },
   // Свежесть, индекс полноты, поисковые поля: каждый час
   "lifecycle-refresh-derived": { cron: "40 * * * *", run: async () => refreshDerived(db) },
+  // Дайджесты по подпискам: ежечасная проверка; на подписку — не чаще одного сообщения в сутки
+  // (saved_search.last_notified_at), тихие часы и пустые дайджесты пропускаются (modules/notify/digest.ts)
+  "digest-subscriptions": { cron: "20 * * * *", run: async () => sendSubscriptionDigests(db) },
 };
 
 const boss = new PgBoss({ connectionString: config.AFISHA_DATABASE_URL, schema: "pgboss" });

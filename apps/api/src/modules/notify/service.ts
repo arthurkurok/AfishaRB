@@ -13,15 +13,20 @@ export type OutgoingNotification = {
   channel: string;
   externalId: string;
   lang: string;
-  eventId: string;
+  eventId?: string;
   title: string;
   text: string;
-  changeId: number;
+  changeId?: number;
+  /** Кнопка-ссылка в сообщении; у дайджеста — «Смотреть все» на поиск по фильтрам подписки. */
+  url?: string;
+  urlLabel?: string;
 };
 export type Transport = (n: OutgoingNotification) => Promise<boolean>;
 
 const transports = new Map<string, Transport>();
 export const registerTransport = (channel: string, t: Transport) => transports.set(channel, t);
+/** Транспорт канала (null — канал не умеет получать сообщения, например веб-устройство). */
+export const getTransport = (channel: string): Transport | undefined => transports.get(channel);
 
 type Row = {
   change_id: number;

@@ -389,6 +389,39 @@ export type RankingRules = z.infer<typeof RankingRules>;
 export const FavoriteList = z.object({ event_ids: z.array(Uuid), items: z.array(OccurrenceCard) });
 export type FavoriteList = z.infer<typeof FavoriteList>;
 
+/* ---------- Подписки на поиск (ТЗ: разделы 3, 6.2, 12) ---------- */
+
+export const SubscriptionPeriod = z
+  .enum(["today", "week", "weekend"])
+  .describe("Период дайджеста: сегодня, неделя, выходные; null — все предстоящие события");
+export type SubscriptionPeriod = z.infer<typeof SubscriptionPeriod>;
+
+export const SubscriptionCreate = z.object({
+  municipality: z.string().describe("Город: slug из GET /v1/municipalities").optional(),
+  categories: z
+    .array(CategoryCode)
+    .max(7)
+    .describe("Категории; обязателен хотя бы один фильтр — город или категория")
+    .optional(),
+  title: z.string().min(1).max(120).optional().describe("Название подписки; по умолчанию «город · категории»"),
+  period: SubscriptionPeriod.nullable().optional(),
+});
+export type SubscriptionCreate = z.infer<typeof SubscriptionCreate>;
+
+export const Subscription = z.object({
+  id: Uuid,
+  title: z.string(),
+  municipality: z.string().nullable().describe("Город подписки; null — вся республика"),
+  categories: z.array(CategoryCode),
+  period: SubscriptionPeriod.nullable(),
+  created_at: DateTimeTz,
+  last_notified_at: DateTimeTz.nullable().describe("Когда уходил последний дайджест (не чаще раза в сутки)"),
+});
+export type Subscription = z.infer<typeof Subscription>;
+
+export const SubscriptionList = z.object({ items: z.array(Subscription) });
+export type SubscriptionList = z.infer<typeof SubscriptionList>;
+
 /* ---------- Кабинет учреждения ---------- */
 export const CabinetEventCreate = z.object({
   organization_id: Uuid,
@@ -441,5 +474,8 @@ const NAMED: [z.ZodType, string][] = [
   [RankingRules, "RankingRules"],
   [FavoriteList, "FavoriteList"],
   [CabinetEventCreate, "CabinetEventCreate"],
+  [Subscription, "Subscription"],
+  [SubscriptionCreate, "SubscriptionCreate"],
+  [SubscriptionList, "SubscriptionList"],
 ];
 for (const [schema, id] of NAMED) if (!z.globalRegistry.has(schema)) z.globalRegistry.add(schema, { id });

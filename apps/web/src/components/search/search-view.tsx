@@ -28,6 +28,7 @@ import {
 } from "@/lib/search-params";
 import { FilterPanel, FORM_ID, formToParams } from "./filter-panel";
 import styles from "./search-view.module.css";
+import { SubscribeButton } from "./subscribe-button";
 
 const PAGE = 24;
 
@@ -221,6 +222,15 @@ export function SearchView({
   const icalHref = apiUrl("/feeds/ical", filtersToParams(filters));
   const rssHref = apiUrl("/feeds/rss", filtersToParams(filters));
 
+  // Подписка на фильтр — на сайте, когда в URL есть город и/или категории (ТЗ: разделы 3, 6.2)
+  const subMunicipality = filters.municipality.length === 1 ? (filters.municipality[0] ?? null) : null;
+  const canSubscribe =
+    surface === "site" &&
+    filters.municipality.length <= 1 &&
+    (subMunicipality !== null || filters.categories.length > 0);
+  const subPeriod =
+    filters.when === "today" || filters.when === "week" || filters.when === "weekend" ? filters.when : null;
+
   return (
     <div className={`${styles.layout} ${enhanced ? styles.enhanced : ""}`} data-hydrated={enhanced || undefined}>
       <search className={styles.form}>
@@ -395,6 +405,10 @@ export function SearchView({
               </li>
             </ul>
           </div>
+        ) : null}
+
+        {canSubscribe ? (
+          <SubscribeButton municipality={subMunicipality} categories={filters.categories} period={subPeriod} />
         ) : null}
 
         <div className={styles.feed} data-pending={pending || undefined}>

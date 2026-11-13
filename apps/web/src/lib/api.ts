@@ -11,6 +11,9 @@ import type {
   ReportRequest,
   SearchResult,
   Stats,
+  Subscription,
+  SubscriptionCreate,
+  SubscriptionList,
   VenueDetail,
 } from "@afisha/contract";
 import type { Lang } from "@afisha/i18n";
@@ -57,6 +60,7 @@ async function request<T>(url: string, init: RequestInit & { next?: { revalidate
     throw new ApiError(0, `Сеть недоступна: ${(err as Error).message}`);
   }
   if (!res.ok) throw new ApiError(res.status, `API ${res.status} ${url}`);
+  if (res.status === 204) return undefined as T; // отписка: пустой ответ
   return (await res.json()) as T;
 }
 
@@ -113,6 +117,40 @@ export function askAssistant(body: AssistantRequest, signal?: AbortSignal): Prom
     headers: { "content-type": "application/json", "x-afisha-channel": "web" },
     body: JSON.stringify(body),
     signal,
+  });
+}
+
+/* ---------- Подписки на фильтр поиска (ТЗ: разделы 3, 6.2, 12) ---------- */
+
+/** Заголовки анонимного профиля: только идентификатор устройства, без персональных данных. */
+function deviceHeaders(device: string, json = false): Record<string, string> {
+  return {
+    accept: "application/json",
+    "x-afisha-channel": "web",
+    "x-device-id": device,
+    ...(json ? { "content-type": "application/json" } : {}),
+  };
+}
+
+export function listSubscriptions(device: string): Promise<Subscription[]> {
+  return request<SubscriptionList>(apiUrl("/v1/subscriptions"), {
+    headers: deviceHeaders(device),
+    cache: "no-store", // персонифицированный список — не кэшировать
+  }).then((r) => r.items);
+}
+
+export function createSubscription(device: string, body: SubscriptionCreate): Promise<Subscription> {
+  return request<Subscription>(apiUrl("/v1/subscriptions"), {
+    method: "POST",
+    headers: deviceHeaders(device, true),
+    body: JSON.stringify(body),
+  });
+}
+
+export function deleteSubscription(device: string, id: string): Promise<void> {
+  return request<void>(apiUrl(`/v1/subscriptions/${encodeURIComponent(id)}`), {
+    method: "DELETE",
+    headers: deviceHeaders(device),
   });
 }
 

@@ -8,6 +8,7 @@ import type { Db } from "../../db/client.js";
 import { resolveProfile } from "../accounts/index.js";
 import { addDays, todayLocal } from "../geo/index.js";
 import { searchOccurrences } from "../search/index.js";
+import { registerSubscriptionsApi } from "./subscriptions.js";
 
 const unauthorized = {
   type: "about:blank",
@@ -18,6 +19,7 @@ const unauthorized = {
 export function registerEngagementApi(app: FastifyInstance, db: Db): void {
   const r = app.withTypeProvider<ZodTypeProvider>();
   const tags = ["Избранное"];
+  registerSubscriptionsApi(app, db);
 
   r.get(
     "/app/favorites",

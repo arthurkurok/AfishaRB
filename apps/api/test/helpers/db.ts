@@ -16,7 +16,7 @@ export async function resetDb() {
     migrated = true;
   }
   await db.execute(sql`TRUNCATE event, occurrence, venue, organization, municipality, source_record, source_run, change_log,
-    field_provenance, moderation_task, report, search_log, assistant_trace, profile, favorite, notification CASCADE`);
+    field_provenance, moderation_task, report, search_log, assistant_trace, profile, favorite, notification, saved_search CASCADE`);
   return db;
 }
 
