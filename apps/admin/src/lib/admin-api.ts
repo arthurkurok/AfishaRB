@@ -11,6 +11,7 @@ import {
   CreatedEvent,
   Dashboard,
   EventDraft,
+  ImportReport,
   type ModerationAction,
   ModerationTask,
   ReportRow,
@@ -89,5 +90,17 @@ export function changeOccurrenceStatus(occurrenceId: string, body: StatusChangeB
     method: "POST",
     body,
     next: "/cabinet",
+  });
+}
+
+/**
+ * Импорт событий из CSV/JSON-файла (POST /admin/import). Текст файла уходит JSON-телом {content} —
+ * multipart здесь не нужен, разбор и запись делает API. Только роль «Министерство».
+ */
+export function importFile(content: string, filename: string | null, dryRun: boolean, next = "/import") {
+  return admin("/admin/import", ImportReport, {
+    method: "POST",
+    body: { content, filename, dry_run: dryRun },
+    next,
   });
 }

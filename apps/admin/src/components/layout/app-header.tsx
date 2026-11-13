@@ -19,6 +19,7 @@ export function AppHeader({ role, org }: { role: Role; org: ChosenOrg | null }) 
       ? [
           { href: "/", label: "Пульс культуры", icon: "pulse" as const },
           { href: "/cabinet", label: "Кабинет учреждения", icon: "cabinet" as const },
+          { href: "/import", label: "Импорт", icon: "download" as const },
           { href: "/moderation", label: "Модерация", icon: "moderation" as const },
         ]
       : [{ href: "/cabinet", label: "Кабинет учреждения", icon: "cabinet" as const }];

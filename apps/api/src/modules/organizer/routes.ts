@@ -12,6 +12,7 @@ import { z } from "zod";
 import type { Db } from "../../db/client.js";
 import { dashboard } from "../analytics/index.js";
 import { mergeEvents, recordDistinct, unmergeEvent } from "../dedup/index.js";
+import { ImportBody, ImportFormatError, importFile, parseMultipart } from "../ingestion/index.js";
 import { actorOf, authenticate, isMinistry, type Principal } from "./auth.js";
 import { createCabinetEvent } from "./create-event.js";
 import { extractDraft } from "./extract.js";
@@ -114,6 +115,59 @@ export function registerAdminApi(app: FastifyInstance, db: Db): void {
         },
         async (req) => extractDraft(req.body.text),
       );
+
+      // ---------- Импорт файла (уровень 1+, ТЗ 6.1) ----------
+      // multipart разбираем сами (без зависимости @fastify/multipart): нужны только поле file и его имя
+      admin.register(async (scope) => {
+        scope.addContentTypeParser("multipart/form-data", { parseAs: "buffer" }, (_req, body, done) => {
+          done(null, body);
+        });
+        scope.post(
+          "/import",
+          {
+            preHandler: ministryOnly,
+            config: { rateLimit: { max: 10, timeWindow: "1 minute" } },
+            bodyLimit: 10 * 1024 * 1024,
+            schema: {
+              ...base,
+              operationId: "importFile",
+              summary: "Импорт событий из CSV/JSON (только министерство): multipart с полем file или JSON {content}",
+            },
+          },
+          async (req, reply) => {
+            const ctype = String(req.headers["content-type"] ?? "");
+            let content: string | unknown[];
+            let filename: string | null = null;
+            let dryRun = false;
+            if (ctype.startsWith("multipart/form-data")) {
+              if (!Buffer.isBuffer(req.body))
+                return reply.code(400).send(problem(400, "Не удалось прочитать multipart-тело"));
+              const parts = parseMultipart(req.body, ctype);
+              const file = parts.get("file");
+              if (!file) return reply.code(400).send(problem(400, "В форме нет поля file"));
+              content = file.data.toString("utf8");
+              filename = file.filename;
+              const flag = parts.get("dry_run")?.data.toString("utf8").trim().toLowerCase();
+              dryRun = flag === "true" || flag === "1" || flag === "да";
+            } else {
+              const parsed = ImportBody.safeParse(req.body);
+              if (!parsed.success)
+                return reply
+                  .code(400)
+                  .send(problem(400, "Ожидается multipart/form-data с полем file или JSON {content}"));
+              content = parsed.data.content;
+              filename = parsed.data.filename ?? null;
+              dryRun = parsed.data.dry_run === true;
+            }
+            try {
+              return await importFile(db, { content, filename, dryRun });
+            } catch (err) {
+              if (err instanceof ImportFormatError) return reply.code(400).send(problem(400, err.message));
+              throw err;
+            }
+          },
+        );
+      });
 
       // ---------- Только министерство ----------
       r.get(

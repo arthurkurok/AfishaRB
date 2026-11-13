@@ -1,11 +1,12 @@
 /** Служебные команды: `pnpm --filter @afisha/api cli <команда>`. */
-import { join, resolve } from "node:path";
+import { readFile } from "node:fs/promises";
+import { basename, join, resolve } from "node:path";
 import { migrate } from "drizzle-orm/node-postgres/migrator";
 import { closeDb, getDb } from "../db/client.js";
 import { config } from "../lib/config.js";
 import { log } from "../lib/log.js";
 import { revalidateMerges, runDedup } from "../modules/dedup/index.js";
-import { fetchRegion, loadCultureRu } from "../modules/ingestion/index.js";
+import { fetchRegion, importFile, loadCultureRu } from "../modules/ingestion/index.js";
 
 const rawDir = join(config.AFISHA_DATA_DIR, "raw", "culture_ru");
 
@@ -27,6 +28,13 @@ const commands: Record<string, (args: string[]) => Promise<unknown>> = {
     const fetched = await fetchRegion(rawDir, { concurrency: 6 });
     const stats = await loadCultureRu(getDb(), rawDir);
     return { fetched, stats: { ...stats, errors: stats.errors.slice(0, 5) }, dedup: await runDedup(getDb()) };
+  },
+  "import:file": async (args) => {
+    const dryRun = args.includes("--dry-run");
+    const path = args.find((a) => !a.startsWith("--"));
+    if (!path) throw new Error("использование: cli import:file <путь к CSV или JSON-файлу> [--dry-run]");
+    const content = await readFile(path, "utf8");
+    return importFile(getDb(), { content, filename: basename(path), dryRun });
   },
   dedup: async () => runDedup(getDb()),
   "dedup:revalidate": async () => revalidateMerges(getDb()),

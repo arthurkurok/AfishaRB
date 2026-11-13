@@ -145,3 +145,16 @@ export const CreatedEvent = z.object({ event_id: z.string() });
 
 export const ModerationAction = z.enum(["merge", "distinct", "dismiss"]);
 export type ModerationAction = z.infer<typeof ModerationAction>;
+
+/** Отчёт импорта файла (POST /admin/import): счётчики и отклонённые строки с причинами. */
+export const ImportReport = z.object({
+  filename: z.string().nullable(),
+  format: z.enum(["csv", "json"]),
+  dry_run: z.boolean(),
+  total: Count,
+  added: Count,
+  updated: Count,
+  unchanged: Count,
+  rejected: z.array(z.object({ row: Count, reason: z.string() })),
+});
+export type ImportReport = z.infer<typeof ImportReport>;
