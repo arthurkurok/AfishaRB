@@ -1,6 +1,6 @@
-# Тамаша · Android
+# Афиша РБ · Android
 
-Нативное приложение «Тамаша · Афиша культуры Башкортостана»: Kotlin, Jetpack Compose, MVVM + UDF, Hilt, Room, DataStore, WorkManager, Glance. Архитектура — `docs/08-mobile.md` §3.2, дизайн — `docs/07-design.md`.
+Нативное приложение «Афиша РБ · Культура Башкортостана»: Kotlin, Jetpack Compose, MVVM + UDF, Hilt, Room, DataStore, WorkManager, Glance. Архитектура — `docs/08-mobile.md` §3.2, дизайн — `docs/07-design.md`.
 
 ## Сборка
 

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="home_brand">Тамаша</string>
+    <string name="home_brand">Афиша РБ</string>
     <string name="home_brand_subtitle">Афиша культуры Башкортостана</string>
     <string name="home_today">Сегодня</string>
     <string name="home_tomorrow">Завтра</string>

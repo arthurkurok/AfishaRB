@@ -150,6 +150,6 @@ struct ComponentSnapshotTests {
     @Test("Картинка для сторис 9:16")
     func story() throws {
         let card = CardPresentation(card: try sampleCard(), language: .ru, now: now)
-        Snapshot.assert(StoryCardView(card: card, language: .ru, brand: "Тамаша", link: "afisharb.ru/e/…"), named: "story-ru", width: 720, height: 1280)
+        Snapshot.assert(StoryCardView(card: card, language: .ru, brand: "Афиша РБ", link: "afisharb.ru/e/…"), named: "story-ru", width: 720, height: 1280)
     }
 }

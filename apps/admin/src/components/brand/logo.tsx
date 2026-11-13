@@ -1,4 +1,4 @@
-/** Знак «Тамаша»: ромб со срезом-завитком ҡусҡар и медовым ромбом внутри (как на сайте, 07-design §1). */
+/** Знак «Афиша РБ»: ромб со срезом-завитком ҡусҡар и медовым ромбом внутри (как на сайте, 07-design §1). */
 export function LogoMark({ size = 32 }: { size?: number }) {
   return (
     <svg width={size} height={size} viewBox="0 0 32 32" aria-hidden="true" focusable="false">

@@ -29,7 +29,7 @@ export function AppHeader({ role, org }: { role: Role; org: ChosenOrg | null }) 
         <Link href={role === "ministry" ? "/" : "/cabinet"} className={styles.brand}>
           <LogoMark size={32} />
           <span className={styles.brandText}>
-            <span className={styles.brandName}>Тамаша</span>
+            <span className={styles.brandName}>Афиша РБ</span>
             <span className={styles.brandTag}>Рабочее место</span>
           </span>
         </Link>

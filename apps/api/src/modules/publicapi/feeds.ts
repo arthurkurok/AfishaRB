@@ -26,7 +26,7 @@ export function toIcal(items: OccurrenceCard[], title: string, baseUrl: string):
   const lines = [
     "BEGIN:VCALENDAR",
     "VERSION:2.0",
-    "PRODID:-//Afisha RB//Тамаша//RU",
+    "PRODID:-//Afisha RB//Афиша РБ//RU",
     "CALSCALE:GREGORIAN",
     `X-WR-CALNAME:${esc(title)}`,
     "X-WR-TIMEZONE:Asia/Yekaterinburg",

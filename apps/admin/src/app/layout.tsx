@@ -19,10 +19,10 @@ const commissioner = Commissioner({
 });
 
 export const metadata: Metadata = {
-  title: { default: "Тамаша · Рабочее место", template: "%s · Тамаша · Рабочее место" },
+  title: { default: "Афиша РБ · Рабочее место", template: "%s · Афиша РБ · Рабочее место" },
   description:
     "Кабинет учреждения, модерация и «Пульс культуры» — рабочее место сотрудников афиши культуры Башкортостана",
-  applicationName: "Тамаша · Рабочее место",
+  applicationName: "Афиша РБ · Рабочее место",
   robots: { index: false, follow: false },
   icons: { icon: "/icon.svg" },
   formatDetection: { telephone: false },

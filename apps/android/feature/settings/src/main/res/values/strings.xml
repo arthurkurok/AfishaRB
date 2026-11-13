@@ -42,7 +42,7 @@
     <string name="rules_hide_sold_out">Скрывать распроданные в поиске</string>
 
     <string name="about_title">О приложении</string>
-    <string name="about_text">«Тамаша» — единая достоверная афиша культурных событий Республики Башкортостан. Данные: PRO.Культура.РФ, сайты учреждений и кабинеты организаторов.</string>
+    <string name="about_text">«Афиша РБ» — единая достоверная афиша культурных событий Республики Башкортостан. Данные: PRO.Культура.РФ, сайты учреждений и кабинеты организаторов.</string>
     <string name="about_version">Версия %1$s</string>
     <string name="about_api">Сервер: %1$s</string>
     <string name="about_fonts">Шрифты Golos Text и Commissioner — SIL Open Font License 1.1.</string>

@@ -21,7 +21,7 @@ function makeBot() {
   bot.botInfo = {
     id: 1,
     is_bot: true,
-    first_name: "Тамаша",
+    first_name: "Афиша РБ",
     username: "tamasha_test_bot",
     can_join_groups: true,
     can_read_all_group_messages: false,

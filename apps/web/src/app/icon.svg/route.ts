@@ -1,4 +1,4 @@
-/** Фавикон: ромб «Тамаша» в цветах токенов (SVG, масштабируется для PWA). */
+/** Фавикон: ромб «Афиша РБ» в цветах токенов (SVG, масштабируется для PWA). */
 import { colors } from "@afisha/design-tokens";
 
 export const dynamic = "force-static";

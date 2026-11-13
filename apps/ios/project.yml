@@ -1,4 +1,4 @@
-# XcodeGen: воспроизводимый проект iOS-приложения «Тамаша · Афиша культуры Башкортостана».
+# XcodeGen: воспроизводимый проект iOS-приложения «Афиша РБ · Культура Башкортостана».
 # Сгенерировать: `xcodegen generate` (или `make project`). Afisha.xcodeproj в git не хранится.
 name: Afisha
 
@@ -60,7 +60,7 @@ targets:
     info:
       path: Afisha/Info.plist
       properties:
-        CFBundleDisplayName: Тамаша
+        CFBundleDisplayName: Афиша РБ
         CFBundleDevelopmentRegion: ru
         CFBundleLocalizations: [ru, ba]
         CFBundleShortVersionString: $(MARKETING_VERSION)
@@ -110,7 +110,7 @@ targets:
     info:
       path: AfishaWidgets/Info.plist
       properties:
-        CFBundleDisplayName: Тамаша
+        CFBundleDisplayName: Афиша РБ
         CFBundleDevelopmentRegion: ru
         CFBundleLocalizations: [ru, ba]
         CFBundleShortVersionString: $(MARKETING_VERSION)

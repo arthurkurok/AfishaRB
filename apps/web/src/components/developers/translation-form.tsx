@@ -16,7 +16,7 @@ export function TranslationForm({ email }: { email: string }) {
       onSubmit={(e) => {
         e.preventDefault();
         const data = new FormData(e.currentTarget);
-        const subject = encodeURIComponent(`Тамаша: правка башкирского перевода`);
+        const subject = encodeURIComponent(`Афиша РБ: правка башкирского перевода`);
         const body = encodeURIComponent(
           `${t("about.translationWhere")}:\n${String(data.get("where") ?? "")}\n\n${t("about.translationSuggestion")}:\n${String(data.get("fix") ?? "")}\n\n${window.location.href}`,
         );

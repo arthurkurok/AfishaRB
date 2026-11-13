@@ -24,7 +24,7 @@ export default async function LoginPage({
       <div className={styles.card}>
         <div className={styles.brand}>
           <LogoMark size={40} />
-          <p>Тамаша · Рабочее место</p>
+          <p>Афиша РБ · Рабочее место</p>
         </div>
         <div className="stack" style={{ gap: "var(--space-2)" }}>
           <h1>Вход для сотрудников</h1>
