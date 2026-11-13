@@ -1062,6 +1062,20 @@
               ]
             }
           },
+          "time_from": {
+            "description": "HH:MM — «после 19:00»",
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "time_until": {
+            "description": "HH:MM — «не позже 20:00»",
+            "type": [
+              "string",
+              "null"
+            ]
+          },
           "municipality_id": {
             "type": [
               "string",
@@ -1195,6 +1209,8 @@
           "date_label",
           "date_source",
           "time_of_day",
+          "time_from",
+          "time_until",
           "municipality_id",
           "municipality_label",
           "municipality_source",
@@ -1775,6 +1791,10 @@
             "description": "Предлагаемый вариант — для правки перевода",
             "type": "string",
             "maxLength": 1000
+          },
+          "website": {
+            "type": "string",
+            "maxLength": 200
           }
         },
         "required": [
@@ -1994,6 +2014,144 @@
           "categories",
           "age_rating",
           "starts_at"
+        ]
+      },
+      "SubscriptionInput": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+          },
+          "title": {
+            "type": "string"
+          },
+          "municipality": {
+            "description": "Город подписки; null — вся республика",
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "categories": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "theatre",
+                "music",
+                "museum",
+                "kids",
+                "folk",
+                "cinema",
+                "education"
+              ]
+            }
+          },
+          "period": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "today",
+                  "week",
+                  "weekend"
+                ],
+                "description": "Период дайджеста: сегодня, неделя, выходные; null — все предстоящие события"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "created_at": {
+            "type": "string",
+            "description": "RFC 3339 с офсетом региона, например 2026-11-07T11:00:00+05:00"
+          },
+          "last_notified_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "description": "RFC 3339 с офсетом региона, например 2026-11-07T11:00:00+05:00"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Когда уходил последний дайджест (не чаще раза в сутки)"
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "municipality",
+          "categories",
+          "period",
+          "created_at",
+          "last_notified_at"
+        ]
+      },
+      "SubscriptionCreateInput": {
+        "type": "object",
+        "properties": {
+          "municipality": {
+            "type": "string",
+            "description": "Город: slug из GET /v1/municipalities"
+          },
+          "categories": {
+            "maxItems": 7,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "theatre",
+                "music",
+                "museum",
+                "kids",
+                "folk",
+                "cinema",
+                "education"
+              ]
+            },
+            "description": "Категории; обязателен хотя бы один фильтр — город или категория"
+          },
+          "title": {
+            "description": "Название подписки; по умолчанию «город · категории»",
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 120
+          },
+          "period": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "today",
+                  "week",
+                  "weekend"
+                ],
+                "description": "Период дайджеста: сегодня, неделя, выходные; null — все предстоящие события"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        }
+      },
+      "SubscriptionListInput": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SubscriptionInput"
+            }
+          }
+        },
+        "required": [
+          "items"
         ]
       },
       "Category": {
@@ -3062,6 +3220,20 @@
               ]
             }
           },
+          "time_from": {
+            "description": "HH:MM — «после 19:00»",
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "time_until": {
+            "description": "HH:MM — «не позже 20:00»",
+            "type": [
+              "string",
+              "null"
+            ]
+          },
           "municipality_id": {
             "type": [
               "string",
@@ -3195,6 +3367,8 @@
           "date_label",
           "date_source",
           "time_of_day",
+          "time_from",
+          "time_until",
           "municipality_id",
           "municipality_label",
           "municipality_source",
@@ -3787,6 +3961,10 @@
             "description": "Предлагаемый вариант — для правки перевода",
             "type": "string",
             "maxLength": 1000
+          },
+          "website": {
+            "type": "string",
+            "maxLength": 200
           }
         },
         "required": [
@@ -4016,6 +4194,147 @@
           "pushkin_card"
         ],
         "additionalProperties": false
+      },
+      "Subscription": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+          },
+          "title": {
+            "type": "string"
+          },
+          "municipality": {
+            "description": "Город подписки; null — вся республика",
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "categories": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "theatre",
+                "music",
+                "museum",
+                "kids",
+                "folk",
+                "cinema",
+                "education"
+              ]
+            }
+          },
+          "period": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "today",
+                  "week",
+                  "weekend"
+                ],
+                "description": "Период дайджеста: сегодня, неделя, выходные; null — все предстоящие события"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "created_at": {
+            "type": "string",
+            "description": "RFC 3339 с офсетом региона, например 2026-11-07T11:00:00+05:00"
+          },
+          "last_notified_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "description": "RFC 3339 с офсетом региона, например 2026-11-07T11:00:00+05:00"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Когда уходил последний дайджест (не чаще раза в сутки)"
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "municipality",
+          "categories",
+          "period",
+          "created_at",
+          "last_notified_at"
+        ],
+        "additionalProperties": false
+      },
+      "SubscriptionCreate": {
+        "type": "object",
+        "properties": {
+          "municipality": {
+            "type": "string",
+            "description": "Город: slug из GET /v1/municipalities"
+          },
+          "categories": {
+            "maxItems": 7,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "theatre",
+                "music",
+                "museum",
+                "kids",
+                "folk",
+                "cinema",
+                "education"
+              ]
+            },
+            "description": "Категории; обязателен хотя бы один фильтр — город или категория"
+          },
+          "title": {
+            "description": "Название подписки; по умолчанию «город · категории»",
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 120
+          },
+          "period": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "today",
+                  "week",
+                  "weekend"
+                ],
+                "description": "Период дайджеста: сегодня, неделя, выходные; null — все предстоящие события"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "additionalProperties": false
+      },
+      "SubscriptionList": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Subscription"
+            }
+          }
+        },
+        "required": [
+          "items"
+        ],
+        "additionalProperties": false
       }
     }
   },
@@ -4086,6 +4405,26 @@
             "in": "query",
             "name": "time_of_day",
             "required": false
+          },
+          {
+            "schema": {
+              "type": "string",
+              "pattern": "^\\d{1,2}:\\d{2}$"
+            },
+            "in": "query",
+            "name": "time_from",
+            "required": false,
+            "description": "HH:MM — начало не раньше этого времени"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "pattern": "^\\d{1,2}:\\d{2}$"
+            },
+            "in": "query",
+            "name": "time_until",
+            "required": false,
+            "description": "HH:MM — начало не позже этого времени"
           },
           {
             "schema": {
@@ -4666,6 +5005,26 @@
           },
           {
             "schema": {
+              "type": "string",
+              "pattern": "^\\d{1,2}:\\d{2}$"
+            },
+            "in": "query",
+            "name": "time_from",
+            "required": false,
+            "description": "HH:MM — начало не раньше этого времени"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "pattern": "^\\d{1,2}:\\d{2}$"
+            },
+            "in": "query",
+            "name": "time_until",
+            "required": false,
+            "description": "HH:MM — начало не позже этого времени"
+          },
+          {
+            "schema": {
               "type": "array",
               "items": {
                 "type": "string"
@@ -4982,6 +5341,26 @@
             "in": "query",
             "name": "time_of_day",
             "required": false
+          },
+          {
+            "schema": {
+              "type": "string",
+              "pattern": "^\\d{1,2}:\\d{2}$"
+            },
+            "in": "query",
+            "name": "time_from",
+            "required": false,
+            "description": "HH:MM — начало не раньше этого времени"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "pattern": "^\\d{1,2}:\\d{2}$"
+            },
+            "in": "query",
+            "name": "time_until",
+            "required": false,
+            "description": "HH:MM — начало не позже этого времени"
           },
           {
             "schema": {
@@ -5479,6 +5858,132 @@
         }
       }
     },
+    "/v1/subscriptions": {
+      "get": {
+        "operationId": "listSubscriptions",
+        "summary": "Свои подписки на город и категорию (дайджест новых событий)",
+        "tags": [
+          "Подписки"
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubscriptionList"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "createSubscription",
+        "summary": "Подписаться на фильтр (нужен хотя бы один: город или категория)",
+        "tags": [
+          "Подписки"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SubscriptionCreateInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Subscription"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/subscriptions/{id}": {
+      "delete": {
+        "operationId": "deleteSubscription",
+        "summary": "Отписка: строка подписки удаляется целиком",
+        "tags": [
+          "Подписки"
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+            },
+            "in": "path",
+            "name": "id",
+            "required": true
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Default Response"
+          },
+          "401": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/app/favorites": {
       "get": {
         "operationId": "listFavorites",
@@ -5587,7 +6092,7 @@
         "tags": [
           "Гид"
         ],
-        "description": "Карточки строятся только из базы по ID; объяснения GigaChat проходят верификатор фактов. Без GigaChat работает режим правил (mode=rules).",
+        "description": "Карточки строятся только из базы по ID; объяснения GigaChat проходят верификатор фактов. Без GigaChat работает режим правил (mode=rules). В ответе — трасса вызовов инструментов (trace.steps) и, при необходимости, запрос подтверждения действия (confirm).",
         "requestBody": {
           "required": true,
           "content": {
@@ -5604,7 +6109,194 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/AssistantResponse"
+                  "type": "object",
+                  "properties": {
+                    "conversation_id": {
+                      "type": "string"
+                    },
+                    "kind": {
+                      "type": "string",
+                      "enum": [
+                        "results",
+                        "clarify",
+                        "empty",
+                        "answer",
+                        "offtopic",
+                        "help",
+                        "error"
+                      ]
+                    },
+                    "text": {
+                      "type": "string"
+                    },
+                    "chips": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/SlotChip"
+                      }
+                    },
+                    "clarify": {
+                      "anyOf": [
+                        {
+                          "type": "object",
+                          "properties": {
+                            "slot": {
+                              "type": "string"
+                            },
+                            "question": {
+                              "type": "string"
+                            },
+                            "options": {
+                              "type": "array",
+                              "items": {
+                                "$ref": "#/components/schemas/QuickReply"
+                              }
+                            }
+                          },
+                          "required": [
+                            "slot",
+                            "question",
+                            "options"
+                          ],
+                          "additionalProperties": false
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "picks": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/AssistantPick"
+                      }
+                    },
+                    "relaxed": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "Какие ограничения были ослаблены, если точных совпадений нет"
+                    },
+                    "followups": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/QuickReply"
+                      }
+                    },
+                    "slots": {
+                      "$ref": "#/components/schemas/Slots"
+                    },
+                    "mode": {
+                      "type": "string",
+                      "enum": [
+                        "llm",
+                        "rules"
+                      ],
+                      "description": "llm — с GigaChat, rules — режим без ИИ (деградация)"
+                    },
+                    "trace": {
+                      "type": "object",
+                      "properties": {
+                        "steps": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "tool": {
+                                "type": "string"
+                              },
+                              "args": {
+                                "type": "object",
+                                "propertyNames": {
+                                  "type": "string"
+                                },
+                                "additionalProperties": {}
+                              },
+                              "count": {
+                                "type": "integer",
+                                "minimum": -9007199254740991,
+                                "maximum": 9007199254740991
+                              }
+                            },
+                            "required": [
+                              "tool",
+                              "args",
+                              "count"
+                            ],
+                            "additionalProperties": false
+                          },
+                          "description": "Вызовы инструментов: имя, аргументы, число результатов"
+                        },
+                        "grounds": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          },
+                          "description": "ID карточек (occurrence), на которых основан ответ — только из БД"
+                        }
+                      },
+                      "required": [
+                        "steps",
+                        "grounds"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "confirm": {
+                      "anyOf": [
+                        {
+                          "type": "object",
+                          "properties": {
+                            "confirm_action": {
+                              "type": "string",
+                              "enum": [
+                                "subscribe",
+                                "move_subscription",
+                                "save_feedback"
+                              ]
+                            },
+                            "payload": {
+                              "type": "object",
+                              "propertyNames": {
+                                "type": "string"
+                              },
+                              "additionalProperties": {},
+                              "description": "Аргументы действия; выполняются только после подтверждения"
+                            },
+                            "question": {
+                              "type": "string",
+                              "description": "Вопрос-подтверждение, показанный пользователю"
+                            }
+                          },
+                          "required": [
+                            "confirm_action",
+                            "payload",
+                            "question"
+                          ],
+                          "additionalProperties": false
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "description": "Запрос подтверждения действия, меняющего данные"
+                    }
+                  },
+                  "required": [
+                    "conversation_id",
+                    "kind",
+                    "text",
+                    "chips",
+                    "clarify",
+                    "picks",
+                    "relaxed",
+                    "followups",
+                    "slots",
+                    "mode",
+                    "trace",
+                    "confirm"
+                  ],
+                  "additionalProperties": false
                 }
               }
             }

@@ -199,6 +199,16 @@ export const SearchQuery = z.object({
   date_to: z.string().optional().describe("YYYY-MM-DD включительно"),
   when: z.enum(["today", "tomorrow", "weekend", "week", "month"]).optional(),
   time_of_day: csv(z.enum(["morning", "day", "evening"])).optional(),
+  time_from: z
+    .string()
+    .regex(/^\d{1,2}:\d{2}$/)
+    .optional()
+    .describe("HH:MM — начало не раньше этого времени"),
+  time_until: z
+    .string()
+    .regex(/^\d{1,2}:\d{2}$/)
+    .optional()
+    .describe("HH:MM — начало не позже этого времени"),
   municipality: csv(z.string()).optional(),
   near: z.string().optional().describe("lat,lon"),
   radius_km: z.coerce.number().min(0.5).max(200).optional(),
@@ -254,6 +264,8 @@ export const Slots = z.object({
   date_label: z.string().nullable(),
   date_source: SlotSource.nullable(),
   time_of_day: z.array(z.enum(["morning", "day", "evening"])),
+  time_from: z.string().nullable().describe("HH:MM — «после 19:00»"),
+  time_until: z.string().nullable().describe("HH:MM — «не позже 20:00»"),
   municipality_id: z.string().nullable(),
   municipality_label: z.string().nullable(),
   municipality_source: SlotSource.nullable(),

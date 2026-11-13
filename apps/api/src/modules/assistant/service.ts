@@ -38,11 +38,15 @@ import {
   ACTION_FAILED_PREFIX,
   AI_LIMIT_TEXT,
   AI_LIMIT_TEXT_BA,
+  CANCELLED_LIST_TEXT,
   CATEGORY_TITLE,
   CLARIFY_AGE_BA,
   CLARIFY_CITY_BA,
   CONFIRM_NO_LABEL,
   CONFIRM_YES_LABEL,
+  FAREWELL_TEXT,
+  INJECTION_REFUSAL_TEXT,
+  INVENT_REFUSAL_TEXT,
   chipsFor,
   confirmFeedbackQuestion,
   confirmMoveSubscriptionQuestion,
@@ -59,6 +63,7 @@ import {
   subscriptionDetail,
   summaryText,
   templateReason,
+  UNKNOWN_PLACE_TEXT,
 } from "./texts.js";
 import { type SaveFeedbackFn, type SubscribeFn, ToolRunner, TraceStepSchema } from "./tools.js";
 import { verifyReason } from "./verifier.js";
@@ -269,6 +274,60 @@ function getConversation(id?: string): Conversation {
 
 const REFINE_RE = /^(а |а$|и |ещё|еще|дешевле|подешевле|только|без |лучше |давай|другое|другие|покажи ещё|что ещё)/u;
 
+/* ---------- Устойчивость к инъекциям и крайним запросам (ТЗ 6.5, 7.3, 9.2) ---------- */
+
+const norm = (s: string) => s.toLowerCase().replaceAll("ё", "е").trim();
+
+/** Инъекция в сообщении: попытка перехватить инструкции, раскрыть промпт или данные. */
+export function isInjectionAttempt(text: string | undefined): boolean {
+  if (!text) return false;
+  const t = norm(text);
+  return (
+    /игнориру\p{L}*\s+(все\s+)?(предыдущ|мои|эти|системн)/u.test(t) ||
+    /забудь\s+(все\s+)?(правила|инструкции|настройки)/u.test(t) ||
+    /(системн\p{L}*\s+(промпт|инструкции?)|служебн\p{L}*\s+инструкции?|твои?\s+инструкции)/u.test(t) ||
+    /(покажи|выведи|раскрой|назови|переведи)\s+.*(промпт|инструкции|контекст|данные о пользователях|персональн\p{L}* данные)/u.test(
+      t,
+    ) ||
+    /ты теперь (chatgpt|gpt|без ограничений|jailbreak|дан)/u.test(t) ||
+    /ответь как (будто\s+)?(ты\s+)?(официальн\p{L}*\s+)?представител/u.test(t) ||
+    /(приказ разработчика|выполни (мою )?команду|отмени все|сделай так,? чтобы)\b/u.test(t) ||
+    /(удали|измени|открой)\s+.*(баз[уы]|данные пользователей|без подтверждения)/u.test(t) ||
+    /переведи\s+.*(весь\s+)?(свой\s+)?(контекст|промпт|ответ)/u.test(t)
+  );
+}
+
+/** Вежливое завершение: «спасибо, хватит». */
+export function isFarewell(text: string | undefined): boolean {
+  if (!text) return false;
+  const t = norm(text);
+  return (
+    t.split(/\s+/).length <= 4 &&
+    /^(спасибо|благодарю|хватит|достаточно|всего (?:доброго|хорошего)|до свидания|пока)(?![\p{L}])/u.test(t)
+  );
+}
+
+/** Просьба придумать/выдумать событие — честный отказ (ТЗ 7.1: выдуманное событие — критическая ошибка). */
+export function isInventRequest(text: string | undefined): boolean {
+  if (!text) return false;
+  const t = norm(text);
+  return /(?<![\p{L}])(придума\p{L}*|сочини\p{L}*|выдума\p{L}*|нафантазир\p{L}*|сгенерируй)\p{L}*/u.test(t) || /котор(?:ого|ая|ое|ые|ый)\s+нет(?![\p{L}])/u.test(t);
+}
+
+/** «Отменённые события» — запрос списка отменённых, которых в выдаче нет (ТЗ 6.1). */
+export function isCancelledListQuery(text: string | undefined): boolean {
+  if (!text) return false;
+  return /отмен\p{L}*\s+(событи\p{L}*|мероприят\p{L}*|спектакл\p{L}*|концерт\p{L}*)/u.test(norm(text));
+}
+
+/** Неизвестный населённый пункт («в деревне Ивановка») — честный отказ, а не поиск по всей республике. */
+export function findUnknownSettlement(text: string | undefined): string | null {
+  if (!text) return null;
+  const t = norm(text);
+  const m = t.match(/(?:деревн\p{L}*|село|поселок|пгт|хутор\p{L}*|станиц\p{L}*|аул)\s+([а-яё]{3,})/u);
+  return m?.[1] ?? null;
+}
+
 function mergeSlots(prev: Slots, next: Slots, refine: boolean): Slots {
   if (!refine) {
     // Новый запрос: сохраняем контекст «кто идёт и где», остальное — заново
@@ -302,6 +361,8 @@ function toQuery(s: Slots, req: AssistantRequest): SearchQuery {
     date_to: s.date_to ?? undefined,
     when: s.date_from ? undefined : "week",
     time_of_day: s.time_of_day.length ? s.time_of_day : undefined,
+    time_from: s.time_from ?? undefined,
+    time_until: s.time_until ?? undefined,
     municipality: s.municipality_id ? [s.municipality_id] : undefined,
     near: s.near_me && req.near ? req.near : undefined,
     radius_km: s.near_me && req.near ? 10 : undefined,
@@ -309,7 +370,8 @@ function toQuery(s: Slots, req: AssistantRequest): SearchQuery {
     tags: s.tags.filter((t) => t !== "pushkin").length ? s.tags.filter((t) => t !== "pushkin") : undefined,
     free: s.free_only || undefined,
     price_max: s.free_only ? undefined : priceMax,
-    age: s.kids_ages.length ? Math.min(...s.kids_ages) : undefined,
+    // возраст не назван, но идут с ребёнком — рабочее допущение «младше 12», виден в чипах и меняется уточнением
+    age: s.kids_ages.length ? Math.min(...s.kids_ages) : s.with_kids ? 12 : undefined,
     pushkin: s.pushkin || undefined,
     accessible: s.accessible || undefined,
     q: s.text ?? undefined,
@@ -331,7 +393,22 @@ const jaccard = (a: string[], b: string[]) => {
 const differs = (a: { total: number; ids: string[] }, b: { total: number; ids: string[] }) =>
   a.total !== b.total || jaccard(a.ids, b.ids) < 0.6;
 
-/** Уточнение — только если ответ существенно меняет выдачу (docs/05-ai-agent.md §2.4). */
+/** Запрос-«скелет»: нет опор для поиска, кроме указанных слотов — тогда уместен ОДИН уточняющий вопрос (ТЗ 7.3). */
+function isBareQuery(s: Slots, opts: { kids?: boolean; budget?: boolean }): boolean {
+  const other =
+    (opts.kids ? false : s.with_kids || s.kids_ages.length > 0) ||
+    (opts.budget ? false : s.budget !== null || s.free_only) ||
+    s.date_from !== null ||
+    s.text !== null ||
+    s.tags.length > 0 ||
+    s.time_of_day.length > 0 ||
+    s.time_from !== null ||
+    s.time_until !== null ||
+    (s.categories.length > 0 && !(s.categories.length === 1 && s.categories[0] === "kids"));
+  return !other;
+}
+
+/** Уточнение — только если ответ существенно меняет выдачу (docs/05-ai-agent.md §2.4) и запрос пустой, как вопрос. */
 async function clarifyQuestion(
   runner: ToolRunner,
   s: Slots,
@@ -341,7 +418,11 @@ async function clarifyQuestion(
 ) {
   // Не больше одного уточнения подряд (docs/05-ai-agent.md §2.4): дальше — допущения, видимые в чипах
   if (conv.skipClarify || conv.lastClarify) return null;
-  if (s.with_kids && s.kids_ages.length === 0 && !conv.asked.has("kids")) {
+  // Вопрос о судьбе конкретного события («отменили ли X?»): название уже сужает поиск до одного
+  // события — уточнять город не нужно, город в вопросе и так учтён слотами
+  if (s.intent === "event_question") return null;
+  // ТЗ 7.3: если полезный ответ возможен без уточнения — сначала ответ. Спрашиваем только по «скелетному» запросу.
+  if (s.with_kids && s.kids_ages.length === 0 && !conv.asked.has("kids") && isBareQuery(s, { kids: true })) {
     const a = await countFor(runner, toQuery({ ...s, kids_ages: [4] }, req));
     const b = await countFor(runner, toQuery({ ...s, kids_ages: [8] }, req));
     // Возраст определяет допустимый возрастной знак (436-ФЗ) — спрашиваем при любом различии выдачи
@@ -360,7 +441,14 @@ async function clarifyQuestion(
       };
     }
   }
-  if (s.budget !== null && s.budget_per === "unknown" && s.with_kids && !conv.asked.has("budget")) {
+  // Бюджет «до N» на билет или на всех — вопрос, только если больше нечего уточнять
+  if (
+    s.budget !== null &&
+    s.budget_per === "unknown" &&
+    s.with_kids &&
+    !conv.asked.has("budget") &&
+    isBareQuery(s, { kids: true, budget: true })
+  ) {
     const a = await countFor(runner, toQuery({ ...s, budget_per: "ticket" }, req));
     const b = await countFor(runner, toQuery({ ...s, budget_per: "total" }, req));
     if (differs(a, b)) {
@@ -375,7 +463,14 @@ async function clarifyQuestion(
       };
     }
   }
-  if (!s.municipality_id && !s.near_me && !conv.asked.has("municipality")) {
+  // Город — только для совсем пустого запроса («куда сходить?»); иначе отвечаем по всей республике
+  if (
+    !s.municipality_id &&
+    !s.near_me &&
+    !conv.asked.has("municipality") &&
+    isBareQuery(s, {}) &&
+    s.intent === "search"
+  ) {
     conv.asked.add("municipality");
     const munis = await municipalityRefs(runner.db);
     const top = CITY_ORDER.slice(0, 6)
@@ -405,7 +500,7 @@ async function clarifyQuestion(
 async function relaxSearch(runner: ToolRunner, s: Slots, req: AssistantRequest, now: Date) {
   const month = resolveWindow({ when: "month" }, now);
   const steps: { label: string; patch: Partial<Slots> }[] = [
-    { label: "показываю любое время дня", patch: { time_of_day: [] } },
+    { label: "показываю любое время дня", patch: { time_of_day: [], time_from: null, time_until: null } },
     {
       label: "расширил даты до ближайшего месяца",
       patch: { date_from: month.from, date_to: month.to, date_label: "ближайший месяц" },
@@ -735,6 +830,35 @@ export async function handleAssistant(
       followups: examples(),
     });
 
+  // Инъекция в сообщении (ТЗ 6.5, 9.2): инструкции не выполняем, ничего не раскрываем, в диалог не углубляемся
+  if (!req.patch && isInjectionAttempt(text)) {
+    plan.push("injection_guard");
+    return finish({ ...base, kind: "answer", text: INJECTION_REFUSAL_TEXT, chips: [] });
+  }
+  // Вежливое завершение («спасибо, хватит») — короткий ответ без нового поиска
+  if (!req.patch && isFarewell(text)) {
+    plan.push("farewell");
+    return finish({ ...base, kind: "answer", text: FAREWELL_TEXT, chips: [] });
+  }
+  // Просьба придумать событие: честный отказ — выдуманных мероприятий не бывает (ТЗ 7.1)
+  if (!req.patch && isInventRequest(text)) {
+    plan.push("invent_refusal");
+    return finish({ ...base, kind: "answer", text: INVENT_REFUSAL_TEXT, chips: [] });
+  }
+  // Список отменённых событий: их нет в выдаче по правилам ТЗ 6.1 — объясняем и предлагаем вопрос о судьбе
+  if (!req.patch && isCancelledListQuery(text) && slots.intent !== "event_question") {
+    plan.push("cancelled_list");
+    return finish({ ...base, kind: "answer", text: CANCELLED_LIST_TEXT, chips: [] });
+  }
+  // Неизвестный населённый пункт: честный отказ вместо молчаливого поиска по всей республике
+  if (!req.patch && !slots.municipality_id && !slots.near_me) {
+    const place = findUnknownSettlement(text);
+    if (place && !slots.municipality_id) {
+      plan.push("unknown_place");
+      return finish({ ...base, kind: "empty", text: UNKNOWN_PLACE_TEXT(place), chips: [] });
+    }
+  }
+
   // Действия, меняющие данные (ТЗ 7.6): сначала подтверждение, выполнение — только после «да»
   const action = detectAction(text, slots, req, ctx.subscribeFn !== undefined, ctx.saveFeedbackFn !== undefined);
   if (action) {
@@ -792,6 +916,53 @@ export async function handleAssistant(
   }
 
   plan.push("search");
+  // Вопрос о судьбе события (ТЗ 6.4): ищем и среди отменённых/перенесённых/прошедших,
+  // статус называем из данных источника — без догадок. Своей правки статусов у нас нет.
+  // Категории/теги не фильтруем: слова запроса («сказки», «концерт») распознаются как
+  // категории и отсекают событие с другим жанром — название уже сужает поиск.
+  if (slots.intent === "event_question") {
+    plan.push("event_status");
+    const res = await runner.searchCards({
+      ...toQuery({ ...slots, categories: [], tags: [] }, req),
+      include_ended: true,
+      limit: 10,
+      sort: "date",
+    });
+    // до трёх ближайших сеансов с таким названием: честно называем статус каждого
+    const hits = res.items.slice(0, 3);
+    if (hits.length === 0) {
+      return finish({
+        ...base,
+        kind: "empty",
+        text: "По названию в афише ничего не нашёл — проверьте написание. Отменённых и перенесённых сеансов с таким названием тоже нет.",
+        relaxed: [],
+      });
+    }
+    const label: Record<string, string> = {
+      scheduled: "в силе, идём по плану",
+      cancelled: "отменён",
+      rescheduled: "перенесён",
+      postponed: "перенесён",
+      sold_out: "билеты распроданы",
+      ended: "уже завершился",
+    };
+    const parts = hits.map((hit) => {
+      const d = humanDate(hit.starts_at.slice(0, 10)).toLowerCase();
+      const st = label[hit.status] ?? hit.status;
+      const reason = hit.status_reason ? ` Причина по данным источника: ${hit.status_reason.toLowerCase()}.` : "";
+      return `«${hit.event.title}», ${d}, ${hit.venue?.name ?? "площадка"}: сеанс ${st}.${reason}`;
+    });
+    return finish({
+      ...base,
+      kind: "answer",
+      text: `${parts.join(" ")} Статус — только из данных, ничего не додумываю.`,
+      picks: hits.map((hit) => ({
+        occurrence: hit,
+        reason_codes: hit.reasons as ReasonCode[],
+        reason_text: templateReason(hit, hit.reasons as ReasonCode[], slots),
+      })),
+    });
+  }
   let result = await runner.searchCards({ ...toQuery(slots, req), limit: 30 });
   let relaxed: string[] = [];
   let effective = slots; // слоты, по которым реально найдено (после релаксации) — для честной сводки

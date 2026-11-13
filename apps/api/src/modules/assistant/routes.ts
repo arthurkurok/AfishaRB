@@ -3,17 +3,64 @@
  * Трассы отдают только авторизованному админу (Bearer, authenticate из organizer/auth) и скрыты из OpenAPI.
  */
 import { AssistantRequest, Problem } from "@afisha/contract";
-import { desc, eq } from "drizzle-orm";
+import { desc, eq, sql } from "drizzle-orm";
 import type { FastifyInstance } from "fastify";
 import type { ZodTypeProvider } from "fastify-type-provider-zod";
 import { z } from "zod";
 import type { Db } from "../../db/client.js";
+import { log } from "../../lib/log.js";
 import { assistantTrace } from "../../db/schema.js";
-import { authenticate } from "../organizer/auth.js";
+import { authenticate } from "../organizer/index.js";
+import { resolveProfile } from "../accounts/index.js";
 import { getGateway } from "./gateway.js";
 import { AssistantResponseV2, handleAssistant } from "./service.js";
+import type { SaveFeedbackFn, SubscribeFn } from "./tools.js";
 
 const problem = (status: number, title: string) => ({ type: "about:blank", title, status });
+
+/* ---------- DI для действий гида (ТЗ 7.2): подписка и заявка — через модули, а не SQL в ассистенте ---------- */
+
+/** Подписка/перенос подписки из диалога с гидом: та же таблица saved_search, что и у /v1/subscriptions. */
+const subscribeViaDialog =
+  (db: Db, profileId: string): SubscribeFn =>
+  async ({ city_id, category, period, replace }) => {
+    try {
+      const filters: Record<string, unknown> = {
+        municipality: city_id,
+        categories: category ? [category] : [],
+        period: period ?? null,
+      };
+      if (replace) {
+        await db.execute(
+          sql`DELETE FROM saved_search WHERE profile_id = ${profileId} AND (query->>'municipality') IS DISTINCT FROM ${city_id}`,
+        );
+      }
+      const title = `${city_id ? `город ${city_id}` : "все города"}${category ? `, ${category}` : ""}`;
+      await db.execute(
+        sql`INSERT INTO saved_search (profile_id, title, query) VALUES (${profileId}, ${title}, ${JSON.stringify(filters)}::jsonb)`,
+      );
+      return { ok: true, subscription_id: null };
+    } catch (err) {
+      log.warn({ err: String(err) }, "assistant.subscribe_failed");
+      return { ok: false, reason: "подписка не создалась" };
+    }
+  };
+
+/** Заявка организатору из диалога с гидом: та же таблица report, что и у /v1/feedback. */
+const saveFeedbackViaDialog =
+  (db: Db, channel: string): SaveFeedbackFn =>
+  async ({ event_id, text, kind }) => {
+    try {
+      const eventId = event_id && /^[0-9a-f-]{36}$/i.test(event_id) ? event_id : null;
+      await db.execute(
+        sql`INSERT INTO report (event_id, reason, comment, channel, context) VALUES (${eventId}::uuid, ${`feedback_${kind}`}, ${text.slice(0, 2000)}, 'assistant', '{}'::jsonb)`,
+      );
+      return { ok: true };
+    } catch (err) {
+      log.warn({ err: String(err) }, "assistant.feedback_failed");
+      return { ok: false, reason: "заявка не сохранилась" };
+    }
+  };
 
 /** Запись трассы для админки: строка assistant_trace, шаги инструментов — внутри verifier.agent. */
 const TraceRow = z.object({
@@ -72,7 +119,16 @@ export function registerAssistantApi(app: FastifyInstance, db: Db): void {
         response: { 200: AssistantResponseV2 },
       },
     },
-    async (req) => handleAssistant(db, req.body, { channel: String(req.headers["x-afisha-channel"] ?? "web") }),
+    async (req) => {
+      // Профиль (X-Device-Id / Telegram initData) нужен только для действий гида —
+      // поиск работает и без него; без профиля subscribe/save_feedback честно отклоняются
+      const profileId = await resolveProfile(db, req.headers).catch(() => null);
+      return handleAssistant(db, req.body, {
+        channel: String(req.headers["x-afisha-channel"] ?? "web"),
+        subscribeFn: profileId ? subscribeViaDialog(db, profileId) : undefined,
+        saveFeedbackFn: saveFeedbackViaDialog(db, String(req.headers["x-afisha-channel"] ?? "web")),
+      });
+    },
   );
   r.get(
     "/v1/assistant/status",

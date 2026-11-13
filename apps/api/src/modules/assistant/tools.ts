@@ -101,6 +101,10 @@ const SearchEventsArgs = z.object({
   free: z.boolean().optional(),
   pushkin: z.boolean().optional(),
   accessible: z.boolean().optional(),
+  /** Вопрос о судьбе события («отменили?»): ищем и среди отменённых/перенесённых/прошедших */
+  include_ended: z.boolean().optional(),
+  time_from: z.string().regex(/^\d{1,2}:\d{2}$/).optional().describe("HH:MM — начало не раньше"),
+  time_until: z.string().regex(/^\d{1,2}:\d{2}$/).optional().describe("HH:MM — начало не позже"),
   sort: z.enum(["relevance", "date", "price", "distance", "popular", "ending"]).optional(),
   offset: z.number().int().min(0).max(10_000).optional(),
 });
@@ -140,13 +144,13 @@ function resolveCity(city: string, munis: MunicipalityRef[]): { id: string | nul
   const norm = normName(city);
   const direct = munis.find((m) => m.id === norm);
   if (direct) return { id: direct.id, error: null };
-  const byName = munis.find(
-    (m) =>
-      normName(m.name) === norm ||
-      (m.nameBa !== null && m.nameBa !== undefined && normName(m.nameBa) === norm) ||
-      m.stems.some((s) => s === norm || (s.length > 3 && norm.startsWith(s))),
-  );
-  if (byName) return { id: byName.id, error: null };
+  // полное совпадение имени (ru/ba) точнее стемов; при конфликте стемов город важнее района
+  // (стем «салават» есть и у города Салават, и у Салаватского района — нужен город)
+  const exact = munis.filter((m) => normName(m.name) === norm || (m.nameBa != null && normName(m.nameBa) === norm));
+  const byStems = munis.filter((m) => m.stems.some((s) => s === norm || (s.length > 3 && norm.startsWith(s))));
+  const pool = exact.length ? exact : byStems;
+  const hit = pool.find((m) => m.kind === "city") ?? pool[0];
+  if (hit) return { id: hit.id, error: null };
   return { id: null, error: `Город или район «${city}» не найден — проверьте написание` };
 }
 
@@ -179,11 +183,13 @@ type SearchArgs = z.infer<typeof SearchEventsArgs>;
 function buildSearchQuery(args: SearchArgs, ctx: ToolContext): { query: SearchQuery; cityError: string | null } {
   const municipality = [...(args.municipality ?? [])];
   let cityError: string | null = null;
-  if (args.city) {
+  // municipality — единая точка правды: city резолвим только когда id не переданы
+  // (searchArgsFromQuery кладёт city как читаемую подпись для трассы — повторный резолв
+  // при конфликте стемов расширял бы фильтр, например «Салават» → ещё и Салаватский район)
+  if (args.city && municipality.length === 0) {
     const r = resolveCity(args.city, ctx.munis);
-    if (r.id) {
-      if (!municipality.includes(r.id)) municipality.push(r.id);
-    } else cityError = r.error;
+    if (r.id) municipality.push(r.id);
+    else cityError = r.error;
   }
   const categories = args.categories ?? (args.category ? [args.category] : undefined);
   const query: SearchQuery = {
@@ -192,6 +198,8 @@ function buildSearchQuery(args: SearchArgs, ctx: ToolContext): { query: SearchQu
     date_to: args.date_to,
     when: args.period,
     time_of_day: args.time_of_day,
+    time_from: args.time_from,
+    time_until: args.time_until,
     municipality: municipality.length ? municipality : undefined,
     near: args.near,
     radius_km: args.radius_km,
@@ -201,6 +209,7 @@ function buildSearchQuery(args: SearchArgs, ctx: ToolContext): { query: SearchQu
     age: args.age_max,
     pushkin: args.pushkin,
     accessible: args.accessible,
+    include_ended: args.include_ended,
     // теги приходят строками из формального контракта; в SearchQuery они типизированы TagCode
     tags: args.tags?.length ? (args.tags as SearchQuery["tags"]) : undefined,
     sort: args.sort,
@@ -226,6 +235,8 @@ function searchArgsFromQuery(q: SearchQuery, ctx: ToolContext): Record<string, u
   if (q.date_from) args.date_from = q.date_from;
   if (q.date_to) args.date_to = q.date_to;
   if (q.time_of_day?.length) args.time_of_day = q.time_of_day;
+  if (q.time_from) args.time_from = q.time_from;
+  if (q.time_until) args.time_until = q.time_until;
   if (q.near) args.near = q.near;
   if (q.radius_km) args.radius_km = q.radius_km;
   if (q.tags?.length) args.tags = q.tags;
@@ -234,6 +245,7 @@ function searchArgsFromQuery(q: SearchQuery, ctx: ToolContext): Record<string, u
   if (q.age !== undefined) args.age_max = q.age;
   if (q.pushkin) args.pushkin = true;
   if (q.accessible) args.accessible = true;
+  if (q.include_ended) args.include_ended = true;
   if (q.q) args.text = q.q;
   if (q.sort) args.sort = q.sort;
   args.limit = q.limit ?? 20;

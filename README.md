@@ -67,7 +67,7 @@ make bot                # Telegram-бот (нужен AFISHA_TELEGRAM_BOT_TOKEN)
 make check              # типы, линтер, границы модулей, тесты, дрейф OpenAPI
 ```
 
-Другие цели: `make compose` (полный стек одной командой, алиас `docker compose up --build`), `make load`/`make sync` (загрузка/синхронизация каталога с Культура.РФ), `pnpm --filter @afisha/eval eval` (оценка ИИ-гида → `eval/reports/latest.md`). Ключи и токены — в `.env` (шаблон: `.env.example`).
+Другие цели: `make compose` (полный стек одной командой, алиас `docker compose up --build`), `make load`/`make sync` (загрузка/синхронизация каталога с Культура.РФ), `pnpm --filter @afisha/eval eval` (оценка ИИ-гида → `eval/reports/latest.md`), `pnpm --filter @afisha/eval control` (контрольный набор запросов ТЗ — 98 кейсов → `eval/reports/control.md`). Ключи и токены — в `.env` (шаблон: `.env.example`).
 
 ## ИИ-гид: модель и стоимость диалога
 
@@ -75,7 +75,11 @@ make check              # типы, линтер, границы модулей,
 
 Расчёт стоимости: токены × цена из env (`AFISHA_AI_PRICE_FAST_RUB_PER_1M=200`, `AFISHA_AI_PRICE_SMART_RUB_PER_1M=1200`, ₽ за 1 млн токенов). Средний диалог — один-два вызова, ≈ 4–5 тыс. токенов, из них 80–90 % — умная модель: ≈ **5 ₽ за диалог** (с кэшированием системного промпта `X-Session-ID` — 3–4 ₽).
 
-Лимиты (env): стоимость одного диалога — `AFISHA_AI_DIALOG_COST_LIMIT_RUB=5` ₽; на пользователя в сутки — `AFISHA_AI_USER_DAILY_COST_RUB=50` ₽ (≈ 10 полноценных диалогов, дальше — режим правил до конца суток); шагов конвейера — `AFISHA_AGENT_MAX_STEPS=5`.
+Лимиты (env): стоимость одного диалога — `AFISHA_AI_DIALOG_COST_LIMIT_RUB=5` ₽; на пользователя в сутки — `AFISHA_AI_USER_DAILY_COST_RUB=50` ₽ (≈ 10 полноценных диалогов, дальше — режим правил до конца суток); шагов конвейера — `AFISHA_AGENT_MAX_STEPS=5`. HTTP rate limit: 60 запросов/мин с одного адреса без ключа (превышение — 429, RFC 9457 Problem), для Гида — отдельный более строгий лимит (20 запросов/мин на `/v1/assistant`).
+
+### Контрольный набор запросов (ТЗ, разделы 6.5 и 9.2)
+
+98 контрольных кейсов / 107 реплик — `eval/datasets/control.json`: простые и составные запросы, неоднозначные («до 1000 ₽ — на билет или на всех?»), честный отказ при отсутствии данных, опечатки, промпт-инъекции в сообщении пользователя и в данных источников, статусы событий, планирование «выходного дня», цены, многоходовые диалоги. Прогон — `pnpm --filter @afisha/eval control`: кейс гоняется через API гида на клоне демо-БД с фиксированным «сейчас» (воспроизводимо). Отчёт — [eval/reports/control.md](eval/reports/control.md): метрики раздела 9.2 ТЗ, сравнение с keyword-базлайном, модель, дата и стоимость прогона.
 
 ## Персональные данные
 
@@ -91,6 +95,7 @@ make check              # типы, линтер, границы модулей,
 - Покрытие — открытые данные Культура.РФ по РБ (снимок 02.11.2026); события, которых нет в источнике, не появятся.
 - Цены, телефоны и признак доступности есть в источнике не у всех событий — в карточке показывается только то, что подтверждено.
 - Без ключа GigaChat гид работает в режиме правил: разбор и подбор детерминированные, объяснения шаблонные (это же — резервный режим прода).
+- Контрольный набор ТЗ (98 кейсов) пока пройден частично: 38/98 полностью в режиме правил (прогон 13.11.2026, актуальные цифры — в отчёте). Гарантируются 0 выдуманных событий и 0 ложных отказов; слабые группы (planner «выходной день», отражение инъекций, честный отказ при отсутствии данных) разобраны в `eval/reports/control.md` и дорабатываются.
 - Мобильные iOS/Android-приложения — прототипы, вне рамок демонстрации ТЗ.
 - Виджет не использует внешние cookies и трекеры; встраивание — только на разрешённые домены.
 
@@ -104,10 +109,31 @@ make check              # типы, линтер, границы модулей,
 
 Виджет: страница конструктора http://localhost:3000/ru/developers, сам скрипт — http://localhost:3000/widget/v1/afisha.js (iframe-фоллбэк: http://localhost:3000/ru/embed).
 
+## Открытый REST API: curl-примеры
+
+Интерактивная документация (OpenAPI 3.1) — http://localhost:8000/docs, машина-читаемая схема — `GET /openapi.json`. Ответы кэшируются (`ETag`/`If-None-Match` → 304, `Cache-Control`). Примеры:
+
+```bash
+# поиск: сеансы на выходных в Уфе, категория «театр», 6+, 5 штук
+curl "http://localhost:8000/v1/occurrences?when=weekend&municipality=ufa&categories=theatre&age=6&lang=ru&limit=5"
+
+# карточка-«паспорт» события: источники, provenance полей, история изменений
+curl "http://localhost:8000/v1/events/<id>"   # <id> — поле event.id из выдачи поиска выше
+
+# живость и метрики стека
+curl "http://localhost:8000/health"
+
+# подписка без регистрации (iCal/RSS по сохранённому поиску — тоже без аккаунта)
+curl -X POST http://localhost:8000/v1/subscriptions -H 'X-Device-Id: demo' -H 'Content-Type: application/json' \
+  -d '{"municipality":"ufa","categories":["theatre"]}'
+```
+
+Справочники: `/v1/municipalities`, `/v1/categories`, `/v1/venues`. Генератор сниппетов виджета и curl — http://localhost:3000/ru/developers.
+
 ## Архитектура — кратко
 
 Монорепозиторий pnpm: `apps/api` (Fastify: публичный API, BFF, Admin API, гид, бот, воркер), `apps/web` и `apps/admin` (Next.js), `apps/widget` (Web Component), `packages/*` (контракт zod/OpenAPI, i18n, дизайн-токены), `eval` (оценка гида). PostgreSQL 18 с PostGIS/pgvector/pg_trgm, Valkey, pg-boss. ИИ-гид — конвейер с формальными инструментами и верификатором, а не «чат поверх базы». Подробности: [docs/04-architecture.md](docs/04-architecture.md), модель данных и качество данных — [docs/06-data.md](docs/06-data.md).
 
 ## Материалы жюри
 
-Документация: [ТЗ и трассировка требований](docs/00-brief.md) · [видение](docs/01-vision.md) · [функциональная спецификация](docs/03-functional-spec.md) · [архитектура](docs/04-architecture.md) · [ИИ-гид](docs/05-ai-agent.md) · [данные](docs/06-data.md) · [дизайн](docs/07-design.md) · [безопасность и 152-ФЗ](docs/09-compliance-security.md) · [финансы](docs/10-finance.md) · [записка о решении](docs/15-solution-note.md). Оценка гида — `eval/reports/latest.md`. Хакатон «Кибер 102», кейс 01, Уфа, 13–15.11.2026.
+Документация: [ТЗ и трассировка требований](docs/00-brief.md) · [видение](docs/01-vision.md) · [функциональная спецификация](docs/03-functional-spec.md) · [архитектура](docs/04-architecture.md) · [ИИ-гид](docs/05-ai-agent.md) · [данные](docs/06-data.md) · [дизайн](docs/07-design.md) · [безопасность и 152-ФЗ](docs/09-compliance-security.md) · [финансы](docs/10-finance.md) · [записка о решении](docs/15-solution-note.md). Оценка гида — `eval/reports/latest.md`; контрольные запросы ТЗ (98 кейсов, метрики 9.2, сравнение с keyword-базлайном) — `eval/reports/control.md`, скрипт прогона `pnpm --filter @afisha/eval control`. Хакатон «Кибер 102», кейс 01, Уфа, 13–15.11.2026.

@@ -3,20 +3,23 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "description": "Оценка качества ИИ-гида: разбор запросов, уточнения, заземлённость, провокации (docs/05-ai-agent.md §9)",
+  "description": "\u041e\u0446\u0435\u043d\u043a\u0430 \u043a\u0430\u0447\u0435\u0441\u0442\u0432\u0430 \u0418\u0418-\u0433\u0438\u0434\u0430: \u0440\u0430\u0437\u0431\u043e\u0440 \u0437\u0430\u043f\u0440\u043e\u0441\u043e\u0432, \u0443\u0442\u043e\u0447\u043d\u0435\u043d\u0438\u044f, \u0437\u0430\u0437\u0435\u043c\u043b\u0451\u043d\u043d\u043e\u0441\u0442\u044c, \u043f\u0440\u043e\u0432\u043e\u043a\u0430\u0446\u0438\u0438 (docs/05-ai-agent.md \u00a79)",
   "scripts": {
     "generate": "tsx generate.ts",
     "eval": "tsx run.ts",
+    "control": "tsx control.ts",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@afisha/api": "workspace:*",
     "@afisha/contract": "workspace:*",
-    "drizzle-orm": "^0.45.4"
+    "drizzle-orm": "^0.45.4",
+    "pg": "^8.13.1"
   },
   "devDependencies": {
     "tsx": "^4.23.15",
     "typescript": "~5.9.3",
-    "@types/node": "^24.19.2"
+    "@types/node": "^24.19.2",
+    "@types/pg": "^8.11.10"
   }
 }

@@ -126,6 +126,19 @@ export async function searchOccurrences(db: Db, query: SearchQuery, now: Date = 
     if (query.time_of_day.includes("evening")) parts.push(sql`${hour} >= 17`);
     where.push(sql`(o.is_range OR ${sql.join(parts, sql` OR `)})`);
   }
+  // «после 19:00», «не позже 20:00» — фильтр по времени начала сеанса в поясе региона
+  if (query.time_from && /^\d{1,2}:\d{2}$/.test(query.time_from)) {
+    const [h, m] = query.time_from.split(":").map(Number) as [number, number];
+    where.push(
+      sql`(o.is_range OR (extract(hour FROM o.starts_at AT TIME ZONE ${REGION_TZ}) * 60 + extract(minute FROM o.starts_at AT TIME ZONE ${REGION_TZ})) >= ${h * 60 + m})`,
+    );
+  }
+  if (query.time_until && /^\d{1,2}:\d{2}$/.test(query.time_until)) {
+    const [h, m] = query.time_until.split(":").map(Number) as [number, number];
+    where.push(
+      sql`(o.is_range OR (extract(hour FROM o.starts_at AT TIME ZONE ${REGION_TZ}) * 60 + extract(minute FROM o.starts_at AT TIME ZONE ${REGION_TZ})) <= ${h * 60 + m})`,
+    );
+  }
   if (q) {
     where.push(sql`(e.search_tsv @@ websearch_to_tsquery('russian', ${q})
       OR e.title_norm % ${q} OR e.title_norm ILIKE ${`%${q}%`})`);

@@ -4,7 +4,14 @@
  * modules/notify/digest.ts. Отписка — жёсткое удаление строки. Профиль тот же, что у избранного:
  * X-Device-Id или X-Telegram-Init-Data, без персональных данных (ТЗ 6.2).
  */
-import { type CategoryCode, Problem, type SubscriptionPeriod, Subscription, SubscriptionCreate, SubscriptionList } from "@afisha/contract";
+import {
+  type CategoryCode,
+  Problem,
+  Subscription,
+  SubscriptionCreate,
+  SubscriptionList,
+  type SubscriptionPeriod,
+} from "@afisha/contract";
 import { sql } from "drizzle-orm";
 import type { FastifyInstance } from "fastify";
 import type { ZodTypeProvider } from "fastify-type-provider-zod";
@@ -108,7 +115,9 @@ export function registerSubscriptionsApi(app: FastifyInstance, db: Db): void {
       let muniName: string | null = null;
       if (municipality) {
         const m = (
-          await db.execute<{ name: string }>(sql`SELECT name->>'ru' AS name FROM municipality WHERE id = ${municipality}`)
+          await db.execute<{ name: string }>(
+            sql`SELECT name->>'ru' AS name FROM municipality WHERE id = ${municipality}`,
+          )
         ).rows[0];
         if (!m) return reply.code(400).send(badRequest(`Неизвестный город: ${municipality}`));
         muniName = m.name;

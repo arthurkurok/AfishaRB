@@ -21,6 +21,8 @@ export const emptySlots = (): Slots => ({
   date_label: null,
   date_source: null,
   time_of_day: [],
+  time_from: null,
+  time_until: null,
   municipality_id: null,
   municipality_label: null,
   municipality_source: null,
@@ -300,6 +302,10 @@ export function parseBudget(t: string): { budget: number | null; per: Slots["bud
     const m2 = t.match(/(\d{3,5})\s*(?:руб\p{L}*|р(?![\p{L}])|₽|на двоих|на троих|на всех|на семью)/u);
     if (m2) budget = Number(m2[1]);
   }
+  // «подешевле»/«недорого» без числа — рабочее допущение «до 500 ₽», меняется кнопкой-чипом
+  if (budget === null && /(?<![\p{L}])(подешевле|дешевле|недорого|по бюджетному|бюджетн\p{L}*)(?![\p{L}])/u.test(t)) {
+    budget = 500;
+  }
   let per: Slots["budget_per"] = budget === null ? null : "unknown";
   if (budget !== null) {
     if (/на (двоих|троих|всех|семью|четверых)|на всю семью|в сумме|всего/.test(t)) per = "total";
@@ -326,6 +332,11 @@ export function parseKids(t: string): { withKids: boolean; ages: number[] } {
     const n = parseNumber(tok) ?? NUM_WORDS[tok.replace(/(ти|ми)$/, "")] ?? null;
     if (n !== null && n >= 0 && n <= 17) ages.push(n);
   }
+  // «для детей 6+», «подходит 12+» — возрастной знак как возраст ребёнка
+  for (const m of t.matchAll(/(?<!\d)(\d{1,2})\s*\+(?!\d)/gu)) {
+    const n = Number(m[1]);
+    if (n >= 0 && n <= 17) ages.push(n);
+  }
   // «с детьми 3 и 8 лет», «дочке 4 года»
   if (withKidsGuess(t)) {
     for (const m of t.matchAll(/(\d{1,2}(?:\s*(?:,|и)\s*\d{1,2})*)\s*(?:лет|года?|годик)/gu)) {
@@ -333,6 +344,14 @@ export function parseKids(t: string): { withKids: boolean; ages: number[] } {
         const v = Number(n);
         if (v >= 0 && v <= 17) ages.push(v);
       }
+    }
+  }
+  // ответ одним числом («8 лет») — возраст ребёнка в контексте диалога
+  if (ages.length === 0) {
+    const bare = t.match(/^(\d{1,2})\s*(?:лет|года?)(?![\p{L}])/u);
+    if (bare) {
+      const v = Number(bare[1]);
+      if (v >= 0 && v <= 17) ages.push(v);
     }
   }
   // «пятилетним», «трёхлетней»
@@ -353,9 +372,72 @@ export function parseTimeOfDay(t: string): Slots["time_of_day"] {
   return [...new Set(out)];
 }
 
+const toHHMM = (h: string, m?: string) => `${Number(h).toString().padStart(2, "0")}:${(m ?? "00").padStart(2, "0")}`;
+
+/**
+ * Время начала сеанса из запроса: «после 19:00» → from, «не позже 20:00»/«закончить до 20:00» → until.
+ * Перебираем все совпадения: «до 1000 рублей … не позже 20:00» — цена отбрасывается, время берётся.
+ */
+export function parseTimeRange(t: string): { from: string | null; until: string | null } {
+  const inRange = (h: number) => h >= 0 && h <= 23;
+  let from: string | null = null;
+  for (const m of t.matchAll(/(?:после|не раньше|позже)\s*(\d{1,2})(?::(\d{2}))?(?!\d)/gu)) {
+    if (inRange(Number(m[1]))) {
+      from = toHHMM(m[1]!, m[2]);
+      break;
+    }
+  }
+  let until: string | null = null;
+  for (const m of t.matchAll(/(?:не позже|не позднее|законч\p{L}*|до)\s*(\d{1,2})(?::(\d{2}))?(?!\d)/gu)) {
+    const h = Number(m[1]);
+    // «до 1500 рублей» и «до 20 минут» не время: час 10–23, либо двоеточие, либо слово «часов»
+    if (h >= 10 && h <= 23 && (m[2] !== undefined || /час/.test(m[0]!) || /(?:не позже|не позднее|законч)/.test(m[0]!))) {
+      until = toHHMM(m[1]!, m[2]);
+      break;
+    }
+  }
+  return { from, until };
+}
+
+/** Расстояние Левенштейна — для опечаток в названиях городов («стерлитакмае», «уффе»). */
+function levenshtein(a: string, b: string): number {
+  if (Math.abs(a.length - b.length) > 2) return 3;
+  const prevRow = Array.from({ length: b.length + 1 }, (_, i) => i);
+  for (let i = 1; i <= a.length; i++) {
+    const cur = [i];
+    for (let j = 1; j <= b.length; j++) {
+      cur[j] = Math.min(prevRow[j]! + 1, cur[j - 1]! + 1, prevRow[j - 1]! + (a[i - 1] === b[j - 1] ? 0 : 1));
+    }
+    if (Math.min(...cur) > 2) return 3;
+    for (let j = 0; j <= b.length; j++) prevRow[j] = cur[j]!;
+  }
+  return prevRow[b.length]!;
+}
+
+/**
+ * Нечёткий поиск муниципалитета по опечаткам: только если точных совпадений нет.
+ * Допускаем 1–2 опечатки; короткие слова (3–5 букв, «уффе») — только при совпадении первых двух букв.
+ */
+function fuzzyMunicipality(words: string[], munis: MunicipalityRef[]): MunicipalityRef | null {
+  let best: { m: MunicipalityRef; len: number } | null = null;
+  for (const w of words) {
+    if (w.length < 3 || /\d/.test(w)) continue;
+    for (const m of munis) {
+      for (const stem of m.stems) {
+        if (stem.length < 3) continue;
+        const short = w.length <= 5 || stem.length <= 5;
+        if (short && !w.startsWith(stem.slice(0, 2))) continue;
+        const maxDist = w.length >= 8 ? 2 : 1;
+        if (levenshtein(w, stem) <= maxDist && (!best || stem.length > best.len)) best = { m, len: stem.length };
+      }
+    }
+  }
+  return best?.m ?? null;
+}
+
 export function parseMunicipality(t: string, munis: MunicipalityRef[]): MunicipalityRef | null {
   const words = t.split(/\s+/);
-  let best: { m: MunicipalityRef; len: number } | null = null;
+  let best: { m: MunicipalityRef; rank: number } | null = null;
   for (const m of munis) {
     for (const stem of m.stems) {
       if (stem.length < 2) continue;
@@ -369,10 +451,14 @@ export function parseMunicipality(t: string, munis: MunicipalityRef[]): Municipa
         if (m.kind === "city" && /^(ск|цк)/.test(rest) && !stem.endsWith("ск")) return false;
         return rest.length <= maxSuffix;
       });
-      if (hit && (!best || stem.length > best.len)) best = { m, len: stem.length };
+      if (hit) {
+        // при равной длине стема город важнее района («Салават» vs «Салаватский район»)
+        const rank = stem.length * 10 + (m.kind === "city" ? 5 : 0);
+        if (!best || rank > best.rank) best = { m, rank };
+      }
     }
   }
-  return best?.m ?? null;
+  return best?.m ?? fuzzyMunicipality(words, munis);
 }
 
 export function parseRules(text: string, now: Date, munis: MunicipalityRef[]): Slots {
@@ -391,6 +477,17 @@ export function parseRules(text: string, now: Date, munis: MunicipalityRef[]): S
     return s;
   }
   if (/спланиру|маршрут|план на день|программу на день|день в уфе|на весь день/.test(t)) s.intent = "plan_day";
+  // Вопрос о судьбе конкретного события («отменили ли X?», «X перенесли?», «билетов нет?»):
+  // это не поиск афиши — статус смотрим в данных, включая отменённые и перенесённые сеансы.
+  // «Отменённые события в Уфе» — не вопрос (поиск фильтром), сюда не попадает.
+  // NB: \b в JS не работает с кириллицей (\w только латиница) — границы через lookaround \p{L}
+  if (
+    /(?:отмени|перенес|отменен|перенесен)\p{L}* ли(?![\p{L}])/u.test(t) ||
+    /(?:отменили|перенесли)\s*$/u.test(t) ||
+    /билетов? нет(?![\p{L}])/u.test(t) ||
+    /билеты? распродан/u.test(t)
+  )
+    s.intent = "event_question";
   const d = parseDates(t, now);
   if (d) {
     s.date_from = d.from;
@@ -399,6 +496,9 @@ export function parseRules(text: string, now: Date, munis: MunicipalityRef[]): S
     s.date_source = "user";
   }
   s.time_of_day = parseTimeOfDay(t);
+  const tr = parseTimeRange(t);
+  s.time_from = tr.from;
+  s.time_until = tr.until;
   const b = parseBudget(t);
   s.budget = b.budget;
   s.budget_per = b.per;
@@ -441,7 +541,9 @@ export function parseRules(text: string, now: Date, munis: MunicipalityRef[]): S
     .filter(
       (w) =>
         w.length >= 4 &&
-        !/^(тыс|пушкин|детям|своим|своей|моим|моей|какой|нибудь|часов|утра|дня|вечера|двоих|всех|семью)/.test(w),
+        !/^(тыс|пушкин|детям|своим|своей|моим|моей|какой|нибудь|часов|утра|дня|вечера|двоих|всех|семью|после|позже|раньше|позднее|минут|мин|часа|ч)$/.test(
+          w,
+        ),
     )
     .join(" ")
     .trim();
@@ -457,9 +559,26 @@ export function parseRules(text: string, now: Date, munis: MunicipalityRef[]): S
     s.categories.length ||
     s.tags.length ||
     s.near_me ||
-    s.time_of_day.length;
+    s.time_of_day.length ||
+    s.time_from ||
+    s.time_until;
   if (!recognized && !s.text && s.intent === "search")
     s.intent = /куда|сходить|пойти|афиш|событ|мероприят/.test(t) ? "search" : "smalltalk";
+  // Вопрос о судьбе события: глаголы вопроса — не часть названия, вырезаем из текста поиска
+  // (иначе fts требует «отменили & леса» и не находит «Сказки леса»); название в кавычках
+  // точнее остатка запроса — ищем именно его
+  if (s.intent === "event_question") {
+    const quoted = text.match(/[«"„]([^»"“]{2,80})[»"“]/);
+    if (quoted?.[1]) {
+      s.text = quoted[1].trim();
+    } else if (s.text) {
+      const stripped = s.text
+        .replace(/(?<![\p{L}])(отмени\p{L}*|перенес\p{L}*|билетов?|нет|распродан\p{L}*)(?![\p{L}])/gu, " ")
+        .replace(/\s+/g, " ")
+        .trim();
+      s.text = stripped.length >= 3 ? stripped : null;
+    }
+  }
   return s;
 }
 
