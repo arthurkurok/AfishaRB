@@ -58,7 +58,32 @@ const Env = z.object({
   AFISHA_AI_MAX_PARALLEL: z.coerce.number().default(8),
   AFISHA_AI_DAILY_TOKEN_BUDGET: z.coerce.number().default(3_000_000),
   AFISHA_AI_DISABLED: bool,
+  // Лимиты стоимости ИИ (ТЗ 6.5): рубли считаются по токенам, цены — за 1 млн токенов
+  AFISHA_AI_DIALOG_COST_LIMIT_RUB: z.coerce
+    .number()
+    .default(5)
+    .describe("Максимальная стоимость одного диалога с Гидом, ₽"),
+  AFISHA_AI_USER_DAILY_COST_RUB: z.coerce
+    .number()
+    .default(50)
+    .describe("Дневной лимит стоимости ИИ на пользователя, ₽"),
+  AFISHA_AGENT_MAX_STEPS: z.coerce
+    .number()
+    .int()
+    .min(1)
+    .max(20)
+    .default(5)
+    .describe("Максимум вызовов инструментов агента на один ответ"),
+  AFISHA_AI_PRICE_FAST_RUB_PER_1M: z.coerce
+    .number()
+    .default(200)
+    .describe("Цена быстрой модели (GigaChat-2), ₽ за 1 млн токенов"),
+  AFISHA_AI_PRICE_SMART_RUB_PER_1M: z.coerce
+    .number()
+    .default(1200)
+    .describe("Цена умной модели (GigaChat-2-Pro), ₽ за 1 млн токенов"),
   // Telegram
+
   AFISHA_TELEGRAM_BOT_TOKEN: z.string().optional(),
   AFISHA_TELEGRAM_PROXY: z.string().optional(),
   AFISHA_TELEGRAM_WEBAPP_URL: z.string().optional(),

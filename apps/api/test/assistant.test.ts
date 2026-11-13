@@ -7,7 +7,7 @@ import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { closeDb, type Db } from "../src/db/client.js";
 import type { AiGateway } from "../src/modules/assistant/gateway.js";
 import { setGatewayForTests } from "../src/modules/assistant/gateway.js";
-import { handleAssistant } from "../src/modules/assistant/service.js";
+import { AssistantResponseV2, handleAssistant } from "../src/modules/assistant/service.js";
 import { verifyReason } from "../src/modules/assistant/verifier.js";
 import { at, fixture, nextSaturday, resetDb, seed } from "./helpers/db.js";
 
@@ -232,5 +232,30 @@ describe("Гид: вопросы о событии и башкирский яз�
     const labels = r.chips.map((c) => c.label).join(" ");
     expect(labels).toMatch(/шәмбе|бала менән/);
     expect(labels).not.toMatch(/Суббота|с ребёнком/);
+  });
+});
+
+describe("Гид: интеграция реестра инструментов (ТЗ 7.2)", () => {
+  it("поиск идёт через инструмент search_events, grounds — показанные карточки из БД", async () => {
+    const r = await handleAssistant(db, { text: "спектакли в Уфе", municipality_id: "ufa" }, { channel: "test" });
+    expect(r.kind).toBe("results");
+    expect(r.picks.length).toBeGreaterThan(0);
+    expect(r.trace.steps.length).toBeGreaterThan(0);
+    expect(r.trace.steps.some((s) => s.tool === "search_events")).toBe(true);
+    // grounds — ровно показанные карточки, и только из БД
+    expect(r.trace.grounds).toEqual(r.picks.map((p) => p.occurrence.id));
+    await assertGrounded(r.picks);
+    expect(r.confirm).toBeNull();
+    // расширенный ответ по-прежнему проходит контракт ассистента (надмножество полей)
+    expect(() => AssistantResponseV2.parse(r)).not.toThrow();
+  });
+
+  it("подписка без DI-колбэка — честный отказ вместо тихого «успеха»", async () => {
+    const r = await handleAssistant(db, { text: "подпишись на спектакли в Уфе" }, { channel: "test" });
+    expect(r.kind).toBe("answer");
+    expect(r.text).toMatch(/подписки пока недоступны/iu);
+    expect(r.confirm).toBeNull();
+    // действие не выполнялось: шага subscribe в трассе нет
+    expect(r.trace.steps.every((s) => s.tool !== "subscribe")).toBe(true);
   });
 });

@@ -180,3 +180,48 @@ export const OFFTOPIC_TEXT_BA =
   "Мин Башҡортостандың мәҙәни сараларын һайлауҙа ярҙам итәм: спектаклдәр, концерттар, күргәҙмәләр, байрамдар. Ҡасан һәм ҡайҙа барырға теләйһегеҙ — әйтегеҙ, һайлап бирәм.";
 export const CLARIFY_AGE_BA = "Балағыҙға нисә йәш? Йәш сикләүе (0+, 6+, 12+) шуға бәйле.";
 export const CLARIFY_CITY_BA = "Ҡайһы ҡалала йәки районда эҙләйек?";
+
+/* ---------- Лимиты стоимости ИИ (ТЗ 6.5) ---------- */
+
+/** Деградация из-за лимита: тот же режим rules, но с честным объяснением. */
+export const AI_LIMIT_TEXT = "ИИ-подбор на сегодня исчерпан, показываю результаты обычным поиском.";
+export const AI_LIMIT_TEXT_BA = "ИИ-һайлауы бөгөнгә тамамланды, ғади эҙләү һөҙөмтәләрен күрһәтәм.";
+
+/* ---------- Подтверждение действий (ТЗ 7.6): сначала подтверждение, потом выполнение ---------- */
+
+export const CONFIRM_YES_LABEL = "Да, подтверждаю";
+export const CONFIRM_NO_LABEL = "Нет";
+export const ACTION_CANCEL_TEXT = "Хорошо, не выполняю.";
+export const SUBSCRIBE_DONE_TEXT = "Готово: подписка оформлена. Сообщу, как только появятся подходящие события.";
+export const SUBSCRIBE_MOVED_TEXT = "Готово: подписка перенесена на новый город.";
+export const FEEDBACK_DONE_TEXT = "Заявка отправлена организатору. Спасибо, что помогаете делать афишу точнее.";
+export const SUBSCRIBE_UNAVAILABLE_TEXT = "Подписки пока недоступны в этом канале — попробуйте позже.";
+export const FEEDBACK_UNAVAILABLE_TEXT = "Отправить заявку организатору сейчас не получится — попробуйте позже.";
+export const ACTION_FAILED_PREFIX = "Не получилось:";
+
+export const CATEGORY_TITLE: Record<string, string> = {
+  theatre: "театр",
+  music: "концерты",
+  museum: "выставки",
+  kids: "детские события",
+  folk: "праздники",
+  cinema: "кино",
+  education: "лекции и встречи",
+};
+
+/** Сводка фильтров подписки для вопроса-подтверждения: «театр, Уфа». */
+export function subscriptionDetail(city: string | null, category: string | null): string {
+  return [category, city].filter(Boolean).join(", ") || "все события по республике";
+}
+
+export function confirmSubscribeQuestion(detail: string): string {
+  return `Подписаться (${detail})? Подтвердите — и я буду сообщать о новых подходящих событиях.`;
+}
+
+export function confirmMoveSubscriptionQuestion(detail: string): string {
+  return `Перенести вашу подписку (${detail})? Старая подписка будет удалена, вместо неё оформлю новую.`;
+}
+
+export function confirmFeedbackQuestion(text: string): string {
+  return `Отправить заявку организатору? Текст: «${text.slice(0, 200)}»`;
+}
