@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { Mascot } from "@/brand/mascot";
 import { GuideChat } from "@/components/guide/guide-chat";
 import { getEvent, getMunicipalities, safe } from "@/lib/api";
 import { localePath } from "@/lib/hrefs";
@@ -34,7 +33,6 @@ export default async function GuidePage({ params, searchParams }: Props) {
   return (
     <div className={`container ${styles.page}`}>
       <header className={styles.head}>
-        <Mascot emotion="greeting" size={72} />
         <div>
           <h1>{t("guide.title")}</h1>
           <p className="muted">{t("guide.lead")}</p>

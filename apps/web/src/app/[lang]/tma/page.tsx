@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { EventCard } from "@/components/event/event-card";
+import { CategoryScroller } from "@/components/home/category-scroller";
 import { GuideBar } from "@/components/home/guide-bar";
-import { KuraiUmbrella } from "@/components/home/kurai-umbrella";
 import { WhenTabs } from "@/components/home/when-tabs";
 import { StateMessage } from "@/components/states/states";
 import { getCategories, safe, searchOccurrences } from "@/lib/api";
@@ -63,7 +63,7 @@ export default async function TmaHome({ params }: { params: Promise<{ lang: stri
         <WhenTabs panels={panels} label={t("home.whenLabel")} />
       </section>
       {categories && Array.isArray(categories) ? (
-        <KuraiUmbrella categories={categories} t={t} hrefs={ctx.hrefs} />
+        <CategoryScroller categories={categories} t={t} hrefs={ctx.hrefs} />
       ) : null}
     </>
   );

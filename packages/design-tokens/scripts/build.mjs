@@ -11,7 +11,6 @@
 import { readFileSync, writeFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { baseTokens, colorTokens, darkValue, ROOT, readTokens } from "./lib.mjs";
-import { renderAssets } from "./mascot.mjs";
 
 const HEADER = "Сгенерировано packages/design-tokens/scripts/build.mjs из tokens.json — не править вручную.";
 
@@ -79,7 +78,6 @@ const tokens = readTokens();
 const outputs = [
   [resolve(ROOT, "generated/tokens.css"), renderCss(tokens)],
   [resolve(ROOT, "generated/tokens.ts"), renderTs(tokens)],
-  ...renderAssets(tokens).map(([name, svg]) => [resolve(ROOT, "assets", name), svg]),
 ];
 
 if (process.argv.includes("--check")) {

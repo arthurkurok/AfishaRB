@@ -1,6 +1,5 @@
 import type { Translate } from "@afisha/i18n";
 import Link from "next/link";
-import { Mascot } from "@/brand/mascot";
 import type { Hrefs } from "@/lib/hrefs";
 import styles from "./guide-bar.module.css";
 
@@ -9,7 +8,6 @@ export function GuideBar({ t, hrefs, compact = false }: { t: Translate; hrefs: H
   const examples = [t("home.example1"), t("home.example2"), t("home.example3"), t("home.example4")];
   return (
     <section className={`${styles.wrap} ${compact ? styles.compact : ""}`} aria-labelledby="guide-bar-label">
-      {compact ? null : <Mascot emotion="greeting" size={88} className={styles.mascot} />}
       <div className={styles.main}>
         <search>
           <form action={hrefs.guide()} method="get" className={styles.form}>

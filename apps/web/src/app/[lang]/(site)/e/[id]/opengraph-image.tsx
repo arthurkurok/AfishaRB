@@ -22,10 +22,9 @@ export default async function OgImage({ params }: { params: Promise<{ lang: stri
   const lang = isLang(rawLang) ? rawLang : "ru";
   const t = createT(lang);
   const root = process.cwd();
-  const [bold, regular, mascot] = await Promise.all([
+  const [bold, regular] = await Promise.all([
     readFile(join(root, "src/assets/fonts/GolosText-Bold.ttf")),
     readFile(join(root, "src/assets/fonts/GolosText-Regular.ttf")),
-    readFile(join(root, "../../packages/design-tokens/assets/mascot-found.svg"), "utf8"),
   ]);
   const event = await getEvent(id, lang).catch(() => null);
   const title = event?.title ?? t("meta.title");
@@ -111,13 +110,10 @@ export default async function OgImage({ params }: { params: Promise<{ lang: stri
           </div>
         ) : null}
         <div style={{ display: "flex", alignItems: "center", gap: 16, marginTop: start ? 0 : "auto" }}>
-          {/* biome-ignore lint/performance/noImgElement: satori рисует только <img> */}
-          <img
-            src={`data:image/svg+xml;base64,${Buffer.from(mascot).toString("base64")}`}
-            width={72}
-            height={72}
-            alt=""
-          />
+          <svg width={56} height={56} viewBox="0 0 56 56" aria-hidden="true">
+            <rect x="10" y="10" width="36" height="36" transform="rotate(45 28 28)" rx="6" fill={c("color-accent")} />
+            <rect x="20" y="20" width="16" height="16" transform="rotate(45 28 28)" rx="3" fill={c("color-honey")} />
+          </svg>
           <span style={{ fontSize: 30, fontWeight: 700, color: c("color-accent") }}>{t("meta.brand")}</span>
           <span style={{ fontSize: 24, color: c("color-ink-2") }}>{t("footer.tagline")}</span>
         </div>

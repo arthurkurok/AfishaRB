@@ -56,29 +56,62 @@
   max-width: min(80%, 640px);
   padding: var(--space-3) var(--space-4);
   border-radius: var(--radius-l) var(--radius-l) var(--radius-s) var(--radius-l);
-  background: var(--color-ink);
-  color: var(--color-bg);
+  background: var(--color-accent);
+  color: var(--color-on-accent);
 }
 
 .bot {
   display: grid;
-  grid-template-columns: 56px minmax(0, 1fr);
+  grid-template-columns: 40px minmax(0, 1fr);
   gap: var(--space-3);
   align-items: start;
 }
-.avatar {
-  width: 56px;
-  height: 56px;
+.avatarIcon {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  margin-top: var(--space-1);
+  border-radius: var(--radius-pill);
+  background: color-mix(in srgb, var(--color-accent) 12%, var(--color-surface));
+  color: var(--color-accent);
 }
-.flying {
-  animation: fly 1.6s var(--motion-easing) infinite alternate;
+.avatarIcon[data-kind="error"],
+.bot[role="alert"] ~ * .avatarIcon {
+  background: color-mix(in srgb, var(--color-status-cancelled) 12%, var(--color-surface));
+  color: var(--color-status-cancelled);
 }
-@keyframes fly {
-  from {
-    transform: translateY(0) rotate(-4deg);
+
+/* Индикатор «печатает»: три точки со сдвигом фазы. */
+.dots {
+  display: inline-flex;
+  gap: 4px;
+  margin-inline-end: var(--space-2);
+  vertical-align: middle;
+}
+.dots span {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--color-ink-2);
+  animation: dotPulse 1.2s var(--motion-easing) infinite;
+}
+.dots span:nth-child(2) {
+  animation-delay: 0.15s;
+}
+.dots span:nth-child(3) {
+  animation-delay: 0.3s;
+}
+@keyframes dotPulse {
+  0%,
+  60%,
+  100% {
+    opacity: 0.3;
+    transform: translateY(0);
   }
-  to {
-    transform: translateY(-6px) rotate(4deg);
+  30% {
+    opacity: 1;
+    transform: translateY(-3px);
   }
 }
 
@@ -218,7 +251,7 @@ button.slot:hover {
 }
 .pickList {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 232px), 1fr));
   gap: var(--space-4);
   list-style: none;
   margin: 0;
@@ -296,9 +329,8 @@ button.slot:hover {
   .bot {
     grid-template-columns: minmax(0, 1fr);
   }
-  .avatar {
-    width: 44px;
-    height: 44px;
+  .avatarIcon {
+    display: none;
   }
   .user {
     max-width: 92%;

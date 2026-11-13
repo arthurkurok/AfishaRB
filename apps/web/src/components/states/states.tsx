@@ -1,29 +1,28 @@
 /**
- * Пустое состояние и ошибка (07-design §8, §10): маскот + одна фраза + одно действие.
+ * Пустое состояние и ошибка (07-design §8, §10): одна фраза + одно действие.
+ * Маскот убран (ADR-017): поле emotion сохранено в интерфейсе для совместимости вызовов.
  */
 import type { ReactNode } from "react";
-import { Mascot, type MascotEmotion } from "@/brand/mascot";
 import styles from "./states.module.css";
 
 export function StateMessage({
   title,
   text,
   action,
-  emotion = "not-found",
+  emotion: _emotion = "not-found",
   role,
   headingLevel = 2,
 }: {
   title: string;
   text?: string;
   action?: ReactNode;
-  emotion?: MascotEmotion;
+  emotion?: string;
   role?: "alert" | "status";
   headingLevel?: 1 | 2 | 3;
 }) {
   const Heading = `h${headingLevel}` as const;
   return (
     <div className={styles.state} role={role}>
-      <Mascot emotion={emotion} size={120} className={styles.mascot} />
       <div className={styles.text}>
         <Heading className={styles.title}>{title}</Heading>
         {text ? <p className="muted">{text}</p> : null}

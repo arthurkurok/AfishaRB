@@ -9,7 +9,6 @@ import type { AssistantResponse, Municipality, QuickReply, SlotChip } from "@afi
 import { addDays, formatDate, nextSaturday, todayIn } from "@afisha/i18n";
 import Link from "next/link";
 import { type FormEvent, useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { Mascot, type MascotEmotion } from "@/brand/mascot";
 import { type CardContext, EventCard } from "@/components/event/event-card";
 import { askAssistant } from "@/lib/api";
 import { REGION_TZ } from "@/lib/config";
@@ -25,15 +24,43 @@ type Turn =
 
 const STORE_KEY = "afisha.guide.v1";
 
-const EMOTION: Record<AssistantResponse["kind"], MascotEmotion> = {
-  results: "found",
-  clarify: "clarify",
-  empty: "not-found",
-  answer: "thinking",
-  offtopic: "greeting",
-  help: "greeting",
-  error: "network-error",
-};
+/** Аватар Гида: круг с иконкой-искрой (маскот убран, ADR-017). */
+function GuideAvatar({ kind = "assistant" }: { kind?: "assistant" | "error" }) {
+  const icon =
+    kind === "error" ? (
+      <path d="M12 8v5m0 3v.5M12 2 1 21h22L12 2Z" />
+    ) : (
+      <path d="M12 3l1.9 4.6L18.5 9.5l-4.6 1.9L12 16l-1.9-4.6L5.5 9.5l4.6-1.9L12 3Zm7 9.5.9 2.1 2.1.9-2.1.9-.9 2.1-.9-2.1-2.1-.9 2.1-.9.9-2.1Z" />
+    );
+  return (
+    <span className={styles.avatarIcon} aria-hidden="true">
+      <svg
+        width="22"
+        height="22"
+        viewBox="0 0 24 24"
+        aria-hidden="true"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth={1.8}
+        strokeLinejoin="round"
+        strokeLinecap="round"
+      >
+        {icon}
+      </svg>
+    </span>
+  );
+}
+
+/** Индикатор «Гид печатает» — три пульсирующие точки. */
+function TypingDots() {
+  return (
+    <span className={styles.dots} aria-hidden="true">
+      <span />
+      <span />
+      <span />
+    </span>
+  );
+}
 
 interface ChipOption {
   label: string;
@@ -271,7 +298,6 @@ export function GuideChat({
       <div className={styles.log} role="log" aria-live="polite" aria-relevant="additions" aria-label={t("guide.title")}>
         {turns.length === 0 && !busy ? (
           <div className={styles.empty}>
-            <Mascot emotion="greeting" size={96} />
             <div>
               <p>{t("guide.emptyChat")}</p>
               <p className="caption">{t("guide.examples")}</p>
@@ -304,7 +330,7 @@ export function GuideChat({
           if (turn.role === "error") {
             return (
               <div key={turn.id} className={styles.bot} role="alert">
-                <Mascot emotion="network-error" size={56} className={styles.avatar} />
+                <GuideAvatar kind="error" />
                 <div className={styles.bubble}>
                   <p>{t("guide.error")}</p>
                   <button type="button" className="btn btn--primary btn--small" onClick={() => void send(turn.retry)}>
@@ -318,7 +344,7 @@ export function GuideChat({
           const isLast = turn === lastAssistant;
           return (
             <div key={turn.id} className={styles.bot} data-kind={r.kind}>
-              <Mascot emotion={EMOTION[r.kind]} size={56} className={styles.avatar} />
+              <GuideAvatar />
               <div className={styles.bubble}>
                 <span className="sr-only">{t("guide.bee")}: </span>
                 <p className={styles.text}>{r.text}</p>
@@ -491,9 +517,12 @@ export function GuideChat({
 
         {busy ? (
           <div className={styles.bot} role="status">
-            <Mascot emotion="loading" size={56} className={`${styles.avatar} ${styles.flying}`} />
+            <GuideAvatar />
             <div className={styles.bubble}>
-              <p className={styles.thinking}>{t("guide.thinking")}</p>
+              <p className={styles.thinking}>
+                <TypingDots />
+                {t("guide.thinking")}
+              </p>
             </div>
           </div>
         ) : null}

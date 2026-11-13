@@ -3,22 +3,17 @@ import "../globals.css";
 import { colors } from "@afisha/design-tokens";
 import { HTML_LANG, LANGS } from "@afisha/i18n";
 import type { Metadata, Viewport } from "next";
-import { Commissioner, Golos_Text } from "next/font/google";
+import { Golos_Text } from "next/font/google";
 import type { ReactNode } from "react";
 import { SITE_URL } from "@/lib/config";
 import { createT, getMessages, resolveLang } from "@/lib/i18n";
 import { I18nProvider } from "@/lib/i18n-client";
 
-// Оба шрифта содержат полную башкирскую кириллицу (Ә Ғ Ҙ Ҡ Ң Ө Ҫ Ү Һ — диапазон cyrillic-ext), 07-design §5.
+// Golos Text — единый гротеск интерфейса (ADR-017): полная башкирская кириллица
+// (Ә Ғ Ҙ Ҡ Ң Ө Ҫ Ү Һ — диапазон cyrillic-ext), 07-design §5.
 const golos = Golos_Text({
   subsets: ["cyrillic", "cyrillic-ext", "latin"],
   variable: "--font-golos",
-  display: "swap",
-});
-const commissioner = Commissioner({
-  subsets: ["cyrillic", "cyrillic-ext", "latin"],
-  axes: ["FLAR"],
-  variable: "--font-commissioner",
   display: "swap",
 });
 
@@ -69,7 +64,7 @@ export default async function RootLayout({
 }) {
   const lang = await resolveLang(params);
   return (
-    <html lang={HTML_LANG[lang]} className={`${golos.variable} ${commissioner.variable}`} suppressHydrationWarning>
+    <html lang={HTML_LANG[lang]} className={golos.variable} suppressHydrationWarning>
       <head>
         {/* biome-ignore lint/security/noDangerouslySetInnerHtml: статический скрипт без пользовательских данных */}
         <script dangerouslySetInnerHTML={{ __html: BOOT_SCRIPT }} />

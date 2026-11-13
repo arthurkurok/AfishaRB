@@ -58,6 +58,9 @@ services:
   worker:
     image: afisha-api
     command: ["node", "dist/worker.js"]
+    # Воркер не слушает HTTP — healthcheck из образа (GET /health) ему не подходит; процессы видны в логах
+    healthcheck:
+      disable: true
     env_file: .env
     environment:
       {

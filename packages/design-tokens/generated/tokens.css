@@ -1,16 +1,16 @@
 /* Сгенерировано packages/design-tokens/scripts/build.mjs из tokens.json — не править вручную. */
 
 :root {
-  --color-bg: #f6f0e4;
+  --color-bg: #f7f6f3;
   --color-surface: #ffffff;
-  --color-surface-2: #efe6d6;
-  --color-ink: #16120f;
-  --color-ink-2: #5c5047;
-  --color-line: #ddd2c0;
-  --color-accent: #b8322a;
+  --color-surface-2: #efeeea;
+  --color-ink: #171512;
+  --color-ink-2: #6b6660;
+  --color-line: #e5e3de;
+  --color-accent: #c33124;
   --color-on-accent: #ffffff;
-  --color-honey: #e8a92e;
-  --color-meadow: #2f7a4b;
+  --color-honey: #f0b32e;
+  --color-meadow: #237a48;
   --color-focus: #2e64a8;
   --color-category-theatre: #b8322a;
   --color-category-music: #2e64a8;
@@ -21,25 +21,25 @@
   --color-category-education: #1f6b70;
   --color-status-rescheduled: #2e64a8;
   --color-status-cancelled: #b8322a;
-  --color-status-ended: #5c5047;
-  --color-status-few-left: #e8a92e;
+  --color-status-ended: #6b6660;
+  --color-status-few-left: #f0b32e;
   --color-status-unverified: #8f6209;
   --color-on-category: #ffffff;
-  --font-display: Commissioner, "Golos Text", system-ui, sans-serif;
+  --font-display: "Golos Text", system-ui, sans-serif;
   --font-text: "Golos Text", system-ui, sans-serif;
-  --type-display-size: 2.5rem;
-  --type-display-line: 2.75rem;
-  --type-display-weight: 700;
+  --type-display-size: 3.5rem;
+  --type-display-line: 3.75rem;
+  --type-display-weight: 800;
   --type-display-family: var(--font-display);
-  --type-h1-size: 1.75rem;
-  --type-h1-line: 2rem;
-  --type-h1-weight: 700;
+  --type-h1-size: 2.125rem;
+  --type-h1-line: 2.5rem;
+  --type-h1-weight: 800;
   --type-h1-family: var(--font-display);
-  --type-h2-size: 1.375rem;
-  --type-h2-line: 1.75rem;
-  --type-h2-weight: 600;
+  --type-h2-size: 1.5rem;
+  --type-h2-line: 1.875rem;
+  --type-h2-weight: 700;
   --type-h2-family: var(--font-display);
-  --type-title-size: 1.125rem;
+  --type-title-size: 1.0625rem;
   --type-title-line: 1.5rem;
   --type-title-weight: 600;
   --type-title-family: var(--font-text);
@@ -55,9 +55,9 @@
   --type-date-big-line: 2rem;
   --type-date-big-weight: 800;
   --type-date-big-family: var(--font-display);
-  --radius-s: 8px;
+  --radius-s: 10px;
   --radius-m: 14px;
-  --radius-l: 22px;
+  --radius-l: 18px;
   --radius-pill: 999px;
   --space-1: 4px;
   --space-2: 8px;
@@ -76,38 +76,38 @@
 }
 
 :root[data-theme="dark"] {
-  --color-bg: #16120f;
-  --color-surface: #231d18;
-  --color-surface-2: #2e2620;
-  --color-ink: #f6f0e4;
-  --color-ink-2: #bfb3a5;
-  --color-line: #3a3029;
-  --color-accent: #f07a68;
-  --color-on-accent: #16120f;
-  --color-meadow: #6cc08a;
+  --color-bg: #131110;
+  --color-surface: #1c1a18;
+  --color-surface-2: #272422;
+  --color-ink: #f5f3f0;
+  --color-ink-2: #a9a29a;
+  --color-line: #34302c;
+  --color-accent: #f4796a;
+  --color-on-accent: #1a0f0d;
+  --color-meadow: #7bcb96;
   --color-focus: #7fa9e8;
   --color-status-rescheduled: #7fa9e8;
   --color-status-cancelled: #f07a68;
-  --color-status-ended: #bfb3a5;
+  --color-status-ended: #a9a29a;
   --color-status-unverified: #e8a92e;
   color-scheme: dark;
 }
 
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --color-bg: #16120f;
-    --color-surface: #231d18;
-    --color-surface-2: #2e2620;
-    --color-ink: #f6f0e4;
-    --color-ink-2: #bfb3a5;
-    --color-line: #3a3029;
-    --color-accent: #f07a68;
-    --color-on-accent: #16120f;
-    --color-meadow: #6cc08a;
+    --color-bg: #131110;
+    --color-surface: #1c1a18;
+    --color-surface-2: #272422;
+    --color-ink: #f5f3f0;
+    --color-ink-2: #a9a29a;
+    --color-line: #34302c;
+    --color-accent: #f4796a;
+    --color-on-accent: #1a0f0d;
+    --color-meadow: #7bcb96;
     --color-focus: #7fa9e8;
     --color-status-rescheduled: #7fa9e8;
     --color-status-cancelled: #f07a68;
-    --color-status-ended: #bfb3a5;
+    --color-status-ended: #a9a29a;
     --color-status-unverified: #e8a92e;
     color-scheme: dark;
   }

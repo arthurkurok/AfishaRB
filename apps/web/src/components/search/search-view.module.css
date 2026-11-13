@@ -126,14 +126,16 @@
 .resultsHead {
   display: flex;
   flex-wrap: wrap;
-  align-items: flex-end;
+  align-items: baseline;
   justify-content: space-between;
   gap: var(--space-3);
   margin-bottom: var(--space-3);
 }
 .count {
-  font-size: var(--type-h2-size);
-  line-height: var(--type-h2-line);
+  font-size: var(--type-body-size);
+  line-height: var(--type-body-line);
+  font-weight: 500;
+  color: var(--color-ink-2);
 }
 .sort {
   display: flex;

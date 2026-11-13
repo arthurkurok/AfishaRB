@@ -1,25 +1,22 @@
 .page {
-  padding-bottom: var(--space-6);
+  padding-bottom: var(--space-7);
 }
 
+/* Герой (ADR-017): крупный заголовок + тёмная карточка Гида с поиском. */
 .hero {
-  display: grid;
-  gap: var(--space-5);
-  padding-block: var(--space-6) var(--space-4);
-  position: relative;
-}
-
-.heroText {
   display: flex;
   flex-direction: column;
-  gap: var(--space-3);
-  max-width: 46rem;
+  gap: var(--space-5);
+  padding-block: var(--space-6) var(--space-4);
+  max-width: 56rem;
 }
 
 .lead {
-  font-size: var(--type-title-size);
-  line-height: var(--type-title-line);
+  font-size: 1.25rem;
+  line-height: 1.45;
   color: var(--color-ink-2);
+  max-width: 42rem;
+  text-wrap: balance;
 }
 
 .sectionTitle {
@@ -28,13 +25,6 @@
 
 .more {
   margin-top: var(--space-5);
-}
-
-.umbrella {
-  padding: var(--space-5) var(--gutter);
-  background: var(--color-surface);
-  border-radius: var(--radius-l);
-  border: 1px solid var(--color-line);
 }
 
 .city {
@@ -58,19 +48,16 @@
   font-size: var(--type-body-size);
 }
 
-.mapLink {
-  display: block;
+.mapWrap {
   border-radius: var(--radius-l);
-  background: var(--color-surface);
+  overflow: hidden;
   border: 1px solid var(--color-line);
-  padding: var(--space-4);
+  background: var(--color-surface);
 }
 
 @media (min-width: 960px) {
   .hero {
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
-    align-items: center;
-    padding-block: var(--space-7);
+    padding-block: var(--space-7) var(--space-5);
   }
   .city {
     grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);

@@ -5,7 +5,6 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { CategoryIcon } from "@/brand/category-icon";
 import { AskAboutEvent } from "@/components/event/ask-about-event";
-import { DateRhombus } from "@/components/event/date-rhombus";
 import { Collapsible, ReportButton, ShareButton } from "@/components/event/event-actions";
 import { CONTENT_LANG, EventCard } from "@/components/event/event-card";
 import { Passport } from "@/components/event/passport";
@@ -157,15 +156,8 @@ export default async function EventPage({ params }: Props) {
             </h1>
             {next && badge ? (
               <div className={styles.when}>
-                <DateRhombus
-                  top={badge.top}
-                  day={badge.day}
-                  bottom={badge.bottom}
-                  size="l"
-                  crossed={next.status === "cancelled"}
-                />
+                <p className={styles.whenText}>{badge.label}</p>
                 <div>
-                  <p className={styles.whenText}>{badge.label}</p>
                   {next.venue ? (
                     <p className="muted">
                       <Link

@@ -1,102 +1,91 @@
+"use client";
 /**
- * Схематичная карта республики: ромбы в центрах муниципалитетов, размер — число предстоящих событий.
- * Подложка — выпуклая оболочка центров (без политической раскраски, 07-design §7). Декоративна:
- * доступная альтернатива — список муниципалитетов рядом.
+ * Карта республики (ADR-017): Leaflet + OpenStreetMap — настоящая география вместо схематичной.
+ * Маркеры — круги в центрах муниципалитетов, размер ~ числу предстоящих событий; клик — страница города.
+ * Leaflet грузится динамически в эффекте (на сервере window нет), CSS — статический импорт.
  */
 import type { Municipality } from "@afisha/contract";
-import { rhombusPath } from "@/brand/ornament";
+import "leaflet/dist/leaflet.css";
+import { useEffect, useMemo, useRef } from "react";
 import styles from "./muni-map.module.css";
-
-type Pt = [number, number];
-
-function hull(points: Pt[]): Pt[] {
-  const pts = [...points].sort((a, b) => a[0] - b[0] || a[1] - b[1]);
-  if (pts.length < 3) return pts;
-  const cross = (o: Pt, a: Pt, b: Pt) => (a[0] - o[0]) * (b[1] - o[1]) - (a[1] - o[1]) * (b[0] - o[0]);
-  const lower: Pt[] = [];
-  for (const p of pts) {
-    while (lower.length >= 2 && cross(lower.at(-2)!, lower.at(-1)!, p) <= 0) lower.pop();
-    lower.push(p);
-  }
-  const upper: Pt[] = [];
-  for (const p of pts.reverse()) {
-    while (upper.length >= 2 && cross(upper.at(-2)!, upper.at(-1)!, p) <= 0) upper.pop();
-    upper.push(p);
-  }
-  return [...lower.slice(0, -1), ...upper.slice(0, -1)];
-}
 
 export function MuniMap({
   municipalities,
-  hrefFor,
+  hrefBase,
   highlight,
   labelTop = 8,
   interactive = true,
 }: {
   municipalities: Municipality[];
-  hrefFor: (id: string) => string;
+  /** Префикс ссылки города: `${hrefBase}${id}` (функцию с сервера в клиентский компонент передать нельзя). */
+  hrefBase: string;
   highlight?: string;
   labelTop?: number;
-  /** false — карта внутри ссылки: маркеры без собственных ссылок. */
+  /** false — декоративная карта (клик по маркеру не ведёт на страницу города). */
   interactive?: boolean;
 }) {
-  const withGeo = municipalities.filter((m): m is Municipality & { center: [number, number] } => !!m.center);
-  if (!withGeo.length) return null;
-  const k = Math.cos((54 * Math.PI) / 180);
-  const xs = withGeo.map((m) => m.center[1] * k);
-  const ys = withGeo.map((m) => -m.center[0]);
-  const minX = Math.min(...xs);
-  const minY = Math.min(...ys);
-  const spanX = Math.max(...xs) - minX || 1;
-  const spanY = Math.max(...ys) - minY || 1;
-  const W = 600;
-  const pad = 40;
-  const scale = (W - pad * 2) / spanX;
-  const H = Math.round(spanY * scale + pad * 2);
-  const project = (m: { center: [number, number] }): Pt => [
-    pad + (m.center[1] * k - minX) * scale,
-    pad + (-m.center[0] - minY) * scale,
-  ];
-  const outline = hull(withGeo.map(project));
-  const maxUp = Math.max(1, ...withGeo.map((m) => m.upcoming ?? 0));
-  const labelled = new Set(
-    [...withGeo]
-      .sort((a, b) => (b.upcoming ?? 0) - (a.upcoming ?? 0))
-      .slice(0, labelTop)
-      .map((m) => m.id),
+  const hostRef = useRef<HTMLDivElement | null>(null);
+  const withGeo = useMemo(
+    () => municipalities.filter((m): m is Municipality & { center: [number, number] } => !!m.center),
+    [municipalities],
   );
-  return (
-    <svg className={styles.map} viewBox={`0 0 ${W} ${H}`} aria-hidden="true" focusable="false">
-      <path className={styles.land} d={`M${outline.map((p) => p.map((v) => v.toFixed(1)).join(" ")).join("L")}Z`} />
-      {withGeo.map((m) => {
-        const [x, y] = project(m);
-        const r = 4 + Math.sqrt((m.upcoming ?? 0) / maxUp) * 16;
-        const body = (
-          <>
-            <path d={rhombusPath(+x.toFixed(1), +y.toFixed(1), +r.toFixed(1))} />
-            {labelled.has(m.id) || m.id === highlight ? (
-              <text x={x} y={y + r + 14} textAnchor="middle">
-                {m.name}
-              </text>
-            ) : null}
-          </>
-        );
-        return interactive ? (
-          <a
-            key={m.id}
-            href={hrefFor(m.id)}
-            tabIndex={-1}
-            className={styles.marker}
-            data-active={m.id === highlight || undefined}
-          >
-            {body}
-          </a>
-        ) : (
-          <g key={m.id} className={styles.marker} data-active={m.id === highlight || undefined}>
-            {body}
-          </g>
-        );
-      })}
-    </svg>
-  );
+
+  useEffect(() => {
+    if (!hostRef.current || withGeo.length === 0) return;
+    const controller = new AbortController();
+    const maxUp = Math.max(1, ...withGeo.map((m) => m.upcoming ?? 0));
+    const labelled = new Set(
+      [...withGeo]
+        .sort((a, b) => (b.upcoming ?? 0) - (a.upcoming ?? 0))
+        .slice(0, labelTop)
+        .map((m) => m.id),
+    );
+
+    void (async () => {
+      const L = (await import("leaflet")).default;
+      if (controller.signal.aborted || !hostRef.current) return;
+      const base = hrefBase;
+      const map = L.map(hostRef.current, {
+        scrollWheelZoom: false,
+        attributionControl: true,
+        zoomControl: true,
+      });
+      L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        maxZoom: 12,
+        attribution: '&copy; участники <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+      }).addTo(map);
+
+      const points: [number, number][] = [];
+      for (const m of withGeo) {
+        const [lat, lon] = m.center;
+        points.push([lat, lon]);
+        const r = 5 + Math.sqrt((m.upcoming ?? 0) / maxUp) * 14;
+        const marker = L.circleMarker([lat, lon], {
+          radius: r,
+          className: `${styles.marker}${m.id === highlight ? ` ${styles.markerActive}` : ""}`,
+          weight: 2,
+          fillOpacity: 0.85,
+        }).addTo(map);
+        if (labelled.has(m.id) || m.id === highlight) {
+          marker.bindTooltip(m.name, { permanent: true, direction: "top", className: styles.label });
+        }
+        if (interactive) {
+          marker.on("click", () => {
+            window.location.assign(`${base}${m.id}`);
+          });
+        } else {
+          marker.bindTooltip(`${m.name} · ${m.upcoming ?? 0}`);
+        }
+      }
+      map.fitBounds(points, { padding: [24, 24] });
+      // перерисовка после появления контейнера в DOM (layout effect окно)
+      setTimeout(() => map.invalidateSize(), 50);
+      controller.signal.addEventListener("abort", () => map.remove());
+    })();
+
+    return () => controller.abort();
+  }, [withGeo, hrefBase, highlight, labelTop, interactive]);
+
+  if (withGeo.length === 0) return null;
+  return <div ref={hostRef} className={styles.map} role="img" aria-label="Карта городов и районов" />;
 }

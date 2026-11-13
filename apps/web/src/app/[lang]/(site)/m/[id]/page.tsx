@@ -123,7 +123,7 @@ export default async function MunicipalityPage({ params }: Props) {
           </p>
         </div>
         <div className={styles.map}>
-          <MuniMap municipalities={list} hrefFor={(x) => localePath(lang, `/m/${x}`)} highlight={m.id} labelTop={4} />
+          <MuniMap municipalities={list} hrefBase={localePath(lang, "/m/")} highlight={m.id} labelTop={4} />
         </div>
       </div>
 

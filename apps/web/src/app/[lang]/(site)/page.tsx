@@ -3,10 +3,10 @@ import { addDays, relativeTime } from "@afisha/i18n";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { type CardContext, EventCard } from "@/components/event/event-card";
+import { CategoryScroller } from "@/components/home/category-scroller";
 import { CityPicker } from "@/components/home/city-picker";
 import { Collection } from "@/components/home/collection";
 import { GuideBar } from "@/components/home/guide-bar";
-import { KuraiUmbrella } from "@/components/home/kurai-umbrella";
 import { WhenTabs } from "@/components/home/when-tabs";
 import { MuniMap } from "@/components/municipality/muni-map";
 import { RetryButton } from "@/components/states/retry-button";
@@ -149,9 +149,9 @@ export default async function HomePage({ params }: Params) {
           </section>
 
           {categories?.length ? (
-            <div className={`container section ${styles.umbrella}`}>
-              <KuraiUmbrella categories={categories} t={t} hrefs={ctx.hrefs} />
-            </div>
+            <section className="container section" aria-label={t("home.collectionsTitle")}>
+              <CategoryScroller categories={categories} t={t} hrefs={ctx.hrefs} />
+            </section>
           ) : null}
 
           <div className="container">
@@ -213,14 +213,9 @@ export default async function HomePage({ params }: Params) {
                   {t("home.allPlaces")} →
                 </Link>
               </div>
-              <Link href={localePath(lang, "/m")} className={styles.mapLink} aria-hidden="true" tabIndex={-1}>
-                <MuniMap
-                  municipalities={municipalities}
-                  hrefFor={ctx.hrefs.municipality}
-                  labelTop={6}
-                  interactive={false}
-                />
-              </Link>
+              <div className={styles.mapWrap}>
+                <MuniMap municipalities={municipalities} hrefBase={localePath(lang, "/m/")} labelTop={6} interactive />
+              </div>
             </section>
           ) : null}
         </>

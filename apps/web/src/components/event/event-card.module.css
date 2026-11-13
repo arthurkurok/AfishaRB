@@ -1,13 +1,12 @@
+/* Карточка события (ADR-017, постерный редизайн): вертикальный постер 2:3, чистая типографика,
+   цвет категории — в строке даты. Ховер: лёгкий подъём и зум постера. */
 .card {
   --cat: var(--color-category-education);
-  --rh: 84px;
   position: relative;
   display: flex;
   flex-direction: column;
   height: 100%;
   background: var(--color-surface);
-  border: 1px solid var(--color-line);
-  border-bottom: 4px solid var(--cat);
   border-radius: var(--radius-l);
   overflow: hidden;
   transition:
@@ -16,7 +15,7 @@
 }
 .card:has(.link:hover) {
   box-shadow: var(--shadow-2);
-  transform: translateY(-2px);
+  transform: translateY(-3px);
 }
 .card:has(.link:focus-visible) {
   outline: var(--focus-ring);
@@ -25,9 +24,15 @@
 
 .media {
   position: relative;
-  aspect-ratio: 16 / 9;
+  aspect-ratio: 2 / 3;
   background: var(--color-surface-2);
   overflow: hidden;
+}
+.media :global(img) {
+  transition: transform var(--motion-slow) var(--motion-easing);
+}
+.card:has(.link:hover) .media :global(img) {
+  transform: scale(1.04);
 }
 
 .status {
@@ -38,35 +43,30 @@
   z-index: 1;
 }
 
-/* Дата в ромбе: наполовину заходит на постер, справа от неё — название. */
 .body {
-  display: grid;
-  grid-template-columns: var(--rh) minmax(0, 1fr);
-  grid-template-areas:
-    "date title"
-    "meta meta"
-    "extra extra";
-  column-gap: var(--space-3);
-  row-gap: var(--space-2);
-  padding: var(--space-3) var(--space-4) var(--space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  padding: var(--space-3) var(--space-3) var(--space-4);
   flex: 1;
   align-content: start;
 }
 
-.date {
-  grid-area: date;
-  margin-top: calc(var(--rh) / -2 - var(--space-3));
-  position: relative;
-  z-index: 2;
+/* Дата-строка цветом категории — фирменный «тэг» карточки. */
+.when {
+  margin: 0;
+  font-size: var(--type-caption-size);
+  line-height: var(--type-caption-line);
+  font-weight: 700;
+  color: var(--cat);
 }
 
 .title {
-  grid-area: title;
-  align-self: start;
   font-family: var(--font-text-app);
   font-size: var(--type-title-size);
-  line-height: var(--type-title-line);
+  line-height: 1.25;
   font-weight: var(--type-title-weight);
+  letter-spacing: -0.01em;
   display: -webkit-box;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
@@ -88,18 +88,6 @@
   z-index: 3;
 }
 
-.meta {
-  grid-area: meta;
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-2);
-}
-.body > :not(.date, .title, .meta) {
-  grid-column: 1 / -1;
-  position: relative;
-  z-index: 4;
-}
-
 .place {
   font-size: var(--type-caption-size);
   line-height: var(--type-caption-line);
@@ -110,47 +98,42 @@
   overflow: hidden;
 }
 
+.chips {
+  margin-top: var(--space-1);
+}
+
 .pushkin {
   border-color: var(--color-status-rescheduled);
   color: var(--color-status-rescheduled);
 }
 
-/* Компактная карточка (Mini App, боковые колонки): строка с миниатюрой, дата — текстом в ромбе поменьше. */
+/* Компактная карточка (Mini App, боковые колонки): строка с миниатюрой. */
 .compact {
-  --rh: 64px;
   display: grid;
-  grid-template-columns: 104px minmax(0, 1fr);
-  border-bottom-width: 1px;
-  border-left: 4px solid var(--cat);
+  grid-template-columns: 96px minmax(0, 1fr);
+  border: 1px solid var(--color-line);
   border-radius: var(--radius-m);
 }
 .compact .media {
   aspect-ratio: auto;
   height: 100%;
-  min-height: 104px;
+  min-height: 96px;
 }
 .compact .body {
   padding: var(--space-3);
+  gap: 2px;
 }
-.compact .body {
-  grid-template-columns: minmax(0, 1fr);
-  grid-template-areas:
-    "title"
-    "meta"
-    "extra";
-}
-.compact .date {
-  display: none;
-}
-.when {
-  font-size: var(--type-caption-size);
-  line-height: var(--type-caption-line);
+.compact .when {
   font-weight: 600;
   color: var(--color-ink);
 }
 .compact .title {
   font-size: var(--type-body-size);
   line-height: var(--type-body-line);
+  -webkit-line-clamp: 2;
+}
+.compact .place {
+  -webkit-line-clamp: 1;
 }
 
 .card[data-status="cancelled"] .title,
@@ -159,7 +142,7 @@
 }
 
 .skeletonCard {
-  border-bottom-color: var(--color-line);
+  border: 1px solid var(--color-line);
 }
 .skeletonCard .body {
   display: block;
@@ -170,7 +153,7 @@
     grid-template-columns: 1fr;
   }
   .compact .media {
-    aspect-ratio: 16 / 9;
+    aspect-ratio: 2 / 3;
     min-height: 0;
   }
 }

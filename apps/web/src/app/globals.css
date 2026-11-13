@@ -10,14 +10,14 @@
   --header-h: 64px;
   --focus-ring: 2px solid var(--color-focus);
   --shadow-1:
-    0 1px 2px color-mix(in srgb, var(--color-ink) 8%, transparent),
-    0 4px 16px color-mix(in srgb, var(--color-ink) 6%, transparent);
+    0 1px 2px color-mix(in srgb, var(--color-ink) 5%, transparent),
+    0 2px 8px color-mix(in srgb, var(--color-ink) 4%, transparent);
   --shadow-2:
-    0 2px 6px color-mix(in srgb, var(--color-ink) 12%, transparent),
-    0 12px 32px color-mix(in srgb, var(--color-ink) 10%, transparent);
+    0 2px 6px color-mix(in srgb, var(--color-ink) 8%, transparent),
+    0 16px 40px color-mix(in srgb, var(--color-ink) 10%, transparent);
   --tap: var(--touch-min-android);
   --font-text-app: var(--font-golos, "Golos Text"), var(--font-text);
-  --font-display-app: var(--font-commissioner, Commissioner), var(--font-display);
+  --font-display-app: var(--font-golos, "Golos Text"), var(--font-display);
 }
 
 @media (min-width: 600px) {
@@ -133,10 +133,10 @@ textarea {
 .display {
   font-family: var(--font-display-app);
   font-size: clamp(var(--type-h1-size), 6vw, var(--type-display-size));
-  line-height: 1.1;
+  line-height: 1.04;
   font-weight: var(--type-display-weight);
-  font-variation-settings: "FLAR" 60;
-  letter-spacing: -0.01em;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
 }
 
 .caption {
@@ -421,21 +421,21 @@ fieldset {
   transform: rotate(45deg);
 }
 
-/* Сетка карточек: 1 / 2 / 3 / 4 колонки. */
+/* Сетка карточек: 1 / 2 / 3 / 4 колонки (постерные, 2:3). */
 .card-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 232px), 1fr));
   gap: var(--space-5) var(--space-4);
   list-style: none;
   margin: 0;
   padding: 0;
 }
 
-/* Горизонтальная лента (подборки). */
+/* Горизонтальная лента (подборки) — постерные карточки 2:3. */
 .rail {
   display: grid;
   grid-auto-flow: column;
-  grid-auto-columns: minmax(260px, 300px);
+  grid-auto-columns: minmax(208px, 232px);
   gap: var(--space-4);
   overflow-x: auto;
   overscroll-behavior-x: contain;

@@ -1,6 +1,5 @@
 "use client";
 import { useEffect, useState } from "react";
-import { Mascot } from "@/brand/mascot";
 import { useI18n } from "@/lib/i18n-client";
 import styles from "./offline.module.css";
 
@@ -30,7 +29,6 @@ export function OfflineBanner() {
     <div role="status" aria-live="polite" className={styles.wrap}>
       {state === "offline" ? (
         <div className={styles.banner} data-testid="offline-banner">
-          <Mascot emotion="network-error" size={40} />
           <span>{t("state.offline")}</span>
         </div>
       ) : state === "restored" ? (

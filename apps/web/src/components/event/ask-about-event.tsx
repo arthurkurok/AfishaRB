@@ -4,7 +4,6 @@
  * из полей карточки и площадки (POST /v1/assistant с event_id → kind "answer").
  */
 import { type FormEvent, Fragment, useId, useRef, useState } from "react";
-import { Mascot } from "@/brand/mascot";
 import { askAssistant } from "@/lib/api";
 import { useI18n } from "@/lib/i18n-client";
 import styles from "./ask-about-event.module.css";
@@ -75,7 +74,6 @@ export function AskAboutEvent({ eventId }: { eventId: string }) {
   return (
     <section className={styles.box} aria-labelledby={`${id}-title`}>
       <div className={styles.head}>
-        <Mascot emotion="thinking" size={48} />
         <div>
           <h2 id={`${id}-title`} className={styles.title}>
             {t("event.askTitle")}

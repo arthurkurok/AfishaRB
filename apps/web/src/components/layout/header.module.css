@@ -34,8 +34,7 @@
   font-family: var(--font-display-app);
   font-weight: 800;
   font-size: var(--type-title-size);
-  font-variation-settings: "FLAR" 80;
-  letter-spacing: 0.01em;
+  letter-spacing: -0.01em;
 }
 
 @media (max-width: 400px) {

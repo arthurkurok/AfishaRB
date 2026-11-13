@@ -24,13 +24,11 @@ export function Collection({
   if (!items.length) return null;
   return (
     <section className={styles.section} aria-labelledby={`col-${id}`} style={{ ["--col-accent" as string]: accent }}>
-      <div className="section-head">
-        <div>
-          <h2 id={`col-${id}`} className={styles.title}>
-            {title}
-          </h2>
-          <p className="muted">{lead}</p>
-        </div>
+      <div className={styles.head}>
+        <h2 id={`col-${id}`} className={styles.title}>
+          {title}
+        </h2>
+        <p className={`muted ${styles.lead}`}>{lead}</p>
         <Link href={href} className={styles.all}>
           {ctx.t("common.showAll")}
           <span className="sr-only">: {title}</span>

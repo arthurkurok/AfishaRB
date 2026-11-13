@@ -1,0 +1,84 @@
+/* Лента категорий (ADR-017): карточки с цветом категории, иконкой и числом событий. */
+.nav {
+  min-width: 0;
+}
+
+.list {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(148px, 1fr);
+  gap: var(--space-3);
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x proximity;
+  padding: 2px 2px var(--space-3);
+  margin: 0;
+  list-style: none;
+}
+.list > * {
+  scroll-snap-align: start;
+}
+
+.item {
+  --cat: var(--color-category-education);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: 56px;
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-m);
+  background: var(--color-surface);
+  border: 1px solid var(--color-line);
+  color: var(--color-ink);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: var(--type-body-size);
+  line-height: 1.2;
+  transition:
+    border-color var(--motion-fast) var(--motion-easing),
+    box-shadow var(--motion-fast) var(--motion-easing);
+}
+.item:hover {
+  border-color: var(--cat);
+  box-shadow: var(--shadow-1);
+  text-decoration: none;
+}
+.item:focus-visible {
+  outline: var(--focus-ring);
+  outline-offset: 2px;
+}
+
+.icon {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  flex: none;
+  border-radius: var(--radius-s);
+  background: color-mix(in srgb, var(--cat) 12%, var(--color-surface));
+  color: var(--cat);
+}
+
+.name {
+  flex: 1;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.count {
+  flex: none;
+  font-size: var(--type-caption-size);
+  font-weight: 500;
+  color: var(--color-ink-2);
+}
+
+@media (max-width: 599px) {
+  .list {
+    grid-auto-columns: minmax(168px, auto);
+  }
+  .item {
+    min-height: var(--tap);
+  }
+}

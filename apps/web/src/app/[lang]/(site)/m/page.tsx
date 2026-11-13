@@ -40,7 +40,7 @@ export default async function MunicipalitiesPage({ params, searchParams }: Props
           <section aria-labelledby="map-title" className={styles.map}>
             <h2 id="map-title">{t("municipality.mapTitle")}</h2>
             <p className="caption">{t("municipality.mapNote")}</p>
-            <MuniMap municipalities={municipalities} hrefFor={(id) => localePath(lang, `/m/${id}`)} labelTop={10} />
+            <MuniMap municipalities={municipalities} hrefBase={localePath(lang, "/m/")} labelTop={10} />
           </section>
           <MuniList municipalities={municipalities} />
         </div>

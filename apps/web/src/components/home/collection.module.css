@@ -1,25 +1,39 @@
+/* Подборка (ADR-017): заголовок-ссылка «все →», лента постерных карточек. */
 .section {
   margin-block: var(--space-7);
 }
 
-.title {
+.head {
   display: flex;
-  align-items: center;
-  gap: var(--space-2);
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-2) var(--space-4);
+  margin-bottom: var(--space-4);
 }
-.title::before {
-  content: "";
-  width: 14px;
-  height: 14px;
-  background: var(--col-accent);
-  transform: rotate(45deg);
-  border-radius: 2px;
-  flex: none;
+
+.title {
+  margin: 0;
+}
+
+.lead {
+  margin: 0;
+  flex: 1 1 16rem;
+  min-width: 0;
 }
 
 .all {
   display: inline-flex;
   align-items: center;
+  gap: var(--space-1);
   min-height: var(--tap);
   font-weight: 600;
+  color: var(--color-accent);
+  text-decoration: none;
+}
+.all::after {
+  content: "→";
+}
+.all:hover {
+  text-decoration: underline;
 }
