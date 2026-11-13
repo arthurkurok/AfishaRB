@@ -6,9 +6,10 @@ import { closeDb, getDb } from "../db/client.js";
 import { config } from "../lib/config.js";
 import { log } from "../lib/log.js";
 import { revalidateMerges, runDedup } from "../modules/dedup/index.js";
-import { fetchRegion, importFile, loadCultureRu } from "../modules/ingestion/index.js";
+import { fetchBashopera, fetchRegion, importFile, loadBashopera, loadCultureRu } from "../modules/ingestion/index.js";
 
 const rawDir = join(config.AFISHA_DATA_DIR, "raw", "culture_ru");
+const rawBashopera = join(config.AFISHA_DATA_DIR, "raw", "bashopera");
 
 const commands: Record<string, (args: string[]) => Promise<unknown>> = {
   "db:migrate": async () => {
@@ -27,6 +28,12 @@ const commands: Record<string, (args: string[]) => Promise<unknown>> = {
   "ingest:sync": async () => {
     const fetched = await fetchRegion(rawDir, { concurrency: 6 });
     const stats = await loadCultureRu(getDb(), rawDir);
+    return { fetched, stats: { ...stats, errors: stats.errors.slice(0, 5) }, dedup: await runDedup(getDb()) };
+  },
+  // Афиша Башоперы (второй источник, ТЗ уровень 4): снимок → каталог → дедупликация
+  "ingest:bashopera": async () => {
+    const fetched = await fetchBashopera(rawBashopera);
+    const stats = await loadBashopera(getDb(), rawBashopera);
     return { fetched, stats: { ...stats, errors: stats.errors.slice(0, 5) }, dedup: await runDedup(getDb()) };
   },
   "import:file": async (args) => {

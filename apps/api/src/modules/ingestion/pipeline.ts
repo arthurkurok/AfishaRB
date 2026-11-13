@@ -31,6 +31,12 @@ export const SOURCES: Record<string, { title: string; kind: string; trust: strin
     trust: "official",
     url: "https://www.culture.ru/afisha/respublika-bashkortostan",
   },
+  bashopera: {
+    title: "Башкирский государственный академический театр оперы и балета",
+    kind: "site",
+    trust: "official",
+    url: "https://bashopera.ru/affiche/",
+  },
   organizer_cabinet: { title: "Кабинет учреждения", kind: "cabinet", trust: "official_plus", url: null },
   moderator: { title: "Модератор министерства", kind: "cabinet", trust: "official_plus", url: null },
 };
@@ -144,12 +150,14 @@ export class CatalogWriter {
 
   async warm(): Promise<void> {
     for (const m of await this.db.select({ id: municipality.id }).from(municipality)) this.muni.add(m.id);
+    // Внешние ключи площадок: eipsk/культура у Культура.РФ, залы Башоперы — с префиксом (не пересекаются);
+    // скобки обязательны: без них || и ->> левоассоциативны и склеивают префикс с самим jsonb
     const vs = await this.db.execute<{ id: string; ext: string }>(
-      sql`SELECT id, coalesce(external_ids->>'eipsk_place_id', external_ids->>'culture_place_id') AS ext FROM venue`,
+      sql`SELECT id, coalesce(external_ids->>'eipsk_place_id', external_ids->>'culture_place_id', 'basho:' || (external_ids->>'bashopera_hall_id')) AS ext FROM venue`,
     );
     for (const r of vs.rows) this.venueByExt.set(r.ext, r.id);
     const os = await this.db.execute<{ id: string; ext: string }>(
-      sql`SELECT id, external_ids->>'culture_org_id' AS ext FROM organization WHERE external_ids ? 'culture_org_id'`,
+      sql`SELECT id, coalesce(external_ids->>'culture_org_id', 'basho:' || (external_ids->>'bashopera_org_id')) AS ext FROM organization WHERE external_ids ? 'culture_org_id' OR external_ids ? 'bashopera_org_id'`,
     );
     for (const r of os.rows) this.orgByExt.set(r.ext, r.id);
   }

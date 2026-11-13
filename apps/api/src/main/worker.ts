@@ -9,12 +9,13 @@ import { config } from "../lib/config.js";
 import { log } from "../lib/log.js";
 import { createBot } from "../modules/channels/telegram/bot.js";
 import { runDedup } from "../modules/dedup/index.js";
-import { fetchRegion, loadCultureRu } from "../modules/ingestion/index.js";
+import { fetchBashopera, fetchRegion, loadBashopera, loadCultureRu } from "../modules/ingestion/index.js";
 import { markEnded, refreshDerived } from "../modules/lifecycle/index.js";
 import { sendSubscriptionDigests } from "../modules/notify/index.js";
 
 const db = getDb();
 const raw = join(config.AFISHA_DATA_DIR, "raw", "culture_ru");
+const rawBashopera = join(config.AFISHA_DATA_DIR, "raw", "bashopera");
 const TZ = config.AFISHA_REGION_TZ;
 
 // Транспорт Telegram для дайджестов подписок: бот без long polling (опросом владеет отдельный
@@ -29,6 +30,17 @@ const JOBS: Record<string, { cron: string; run: () => Promise<unknown> }> = {
     run: async () => {
       const fetched = await fetchRegion(raw, { concurrency: 6, maxAgeHours: 6 });
       const stats = await loadCultureRu(db, raw);
+      const dedup = await runDedup(db);
+      return { fetched, stats: { ...stats, errors: stats.errors.length }, dedup };
+    },
+  },
+  // Афиша Башоперы (второй источник, ТЗ уровень 4): не чаще раза в час, ночью проверяем так же —
+  // театр обновляет афишу после вечерних спектаклей. Снимок короткий, дедуп после загрузки
+  "sync-bashopera": {
+    cron: "50 * * * *",
+    run: async () => {
+      const fetched = await fetchBashopera(rawBashopera);
+      const stats = await loadBashopera(db, rawBashopera);
       const dedup = await runDedup(db);
       return { fetched, stats: { ...stats, errors: stats.errors.length }, dedup };
     },
