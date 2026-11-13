@@ -113,7 +113,8 @@ services:
       {
         AFISHA_DATABASE_URL: "postgres://afisha:${PG_PASSWORD}@db:5432/afisha",
         AFISHA_VALKEY_URL: "redis://valkey:6379/0",
-        AFISHA_TELEGRAM_BOT_TOKEN: "${AFISHA_TELEGRAM_BOT_TOKEN:?задайте AFISHA_TELEGRAM_BOT_TOKEN}",
+        # Пусто → бот упадёт при старте; профиль bot подключают только с заданным в .env токеном
+        AFISHA_TELEGRAM_BOT_TOKEN: "${AFISHA_TELEGRAM_BOT_TOKEN:-}",
       }
     profiles: ["bot"]
     depends_on:

@@ -12,7 +12,7 @@ ENV CI=1 PNPM_HOME=/pnpm COREPACK_ENABLE_DOWNLOAD_PROMPT=0
 RUN corepack enable
 WORKDIR /repo
 # Сначала только манифесты: слой с зависимостями пересобирается лишь при изменении lock-файла
-COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml tsconfig.base.json ./
 COPY packages/contract/package.json packages/contract/
 COPY packages/design-tokens/package.json packages/design-tokens/
 COPY packages/i18n/package.json packages/i18n/

@@ -1,0 +1,45 @@
+# Overlay поверх docker-compose.prod.yml для сервера antihype.best (~/stacks/afisha).
+# Отличия от базового prod-файла:
+#   1) api/web/admin публикуются только на 127.0.0.1 (порты 8100/3200/3201) — наружу их отдаёт Caddy
+#      (vhosts: antihype.best → web, api.antihype.best → api, admin.antihype.best → admin);
+#   2) добавлен one-shot сервис `seed` — демо-данные каталога Культура.РФ (data/seed/demo.dump.gz);
+#   3) api/worker стартуют только после миграций и сида.
+# Запуск: docker compose -f docker-compose.prod.yml -f docker-compose.server.yml up -d
+services:
+  seed:
+    image: afisha-postgres:18
+    entrypoint: ["/bin/sh", "/seed.sh"]
+    volumes:
+      - ./infra/docker/seed.sh:/seed.sh:ro
+      - ./data/seed/demo.dump.gz:/seed/demo.dump.gz:ro
+    environment:
+      PGHOST: db
+      PGPORT: "5432"
+      PGUSER: afisha
+      PGPASSWORD: ${PG_PASSWORD:?задайте PG_PASSWORD}
+      PGDATABASE: afisha
+    depends_on:
+      db: { condition: service_healthy }
+      migrate: { condition: service_completed_successfully }
+    restart: "no"
+
+  api:
+    ports: !override ["127.0.0.1:8100:8000"]
+    depends_on:
+      db: { condition: service_healthy }
+      valkey: { condition: service_healthy }
+      migrate: { condition: service_completed_successfully }
+      seed: { condition: service_completed_successfully }
+
+  worker:
+    depends_on:
+      db: { condition: service_healthy }
+      valkey: { condition: service_healthy }
+      migrate: { condition: service_completed_successfully }
+      seed: { condition: service_completed_successfully }
+
+  web:
+    ports: !override ["127.0.0.1:3200:3000"]
+
+  admin:
+    ports: !override ["127.0.0.1:3201:3001"]
