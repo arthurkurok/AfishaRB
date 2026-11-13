@@ -1,4 +1,8 @@
 # Промышленный набор на одной машине/ВМ (пилот). В облаке — те же образы в Kubernetes (docs/04-architecture.md §11).
+# Отличия от docker-compose.yml: PG_PASSWORD и ADMIN_SESSION_SECRET обязательны, AFISHA_ENV=prod
+# (базовый образ проверяет конфиг и не стартует с небезопасными значениями), рестарты unless-stopped.
+# Требуемые переменные окружения (.env, см. .env.example): PG_PASSWORD, AFISHA_ADMIN_TOKEN (≥32 симв.),
+# AFISHA_SECRET (≥32 симв.), ADMIN_SESSION_SECRET (≥32 симв.), NEXT_PUBLIC_API_BASE/NEXT_PUBLIC_SITE_URL.
 services:
   db:
     build: ./infra/postgres
@@ -6,37 +10,117 @@ services:
     environment:
       { POSTGRES_USER: afisha, POSTGRES_PASSWORD: "${PG_PASSWORD:?задайте PG_PASSWORD}", POSTGRES_DB: afisha }
     volumes: [pgdata:/var/lib/postgresql]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U afisha"]
+      interval: 5s
+      retries: 20
     restart: unless-stopped
+
   valkey:
     image: valkey/valkey:8-alpine
+    healthcheck:
+      test: ["CMD", "valkey-cli", "ping"]
+      interval: 5s
+      retries: 20
     restart: unless-stopped
-  api:
+
+  # One-shot: миграции drizzle при развёртывании новой версии
+  migrate:
     build: { context: ., dockerfile: infra/docker/api.Dockerfile }
     image: afisha-api
+    command: ["node", "dist/cli.js", "db:migrate"]
     env_file: .env
     environment:
       {
         AFISHA_DATABASE_URL: "postgres://afisha:${PG_PASSWORD}@db:5432/afisha",
         AFISHA_VALKEY_URL: "redis://valkey:6379/0",
       }
-    depends_on: [db, valkey]
+    depends_on:
+      db: { condition: service_healthy }
+    restart: "no"
+
+  api:
+    image: afisha-api
+    build: { context: ., dockerfile: infra/docker/api.Dockerfile }
+    env_file: .env
+    environment:
+      {
+        AFISHA_DATABASE_URL: "postgres://afisha:${PG_PASSWORD}@db:5432/afisha",
+        AFISHA_VALKEY_URL: "redis://valkey:6379/0",
+      }
+    depends_on:
+      db: { condition: service_healthy }
+      valkey: { condition: service_healthy }
+      migrate: { condition: service_completed_successfully }
     ports: ["8000:8000"]
     restart: unless-stopped
-  bot:
-    image: afisha-api
-    command: ["pnpm", "bot"]
-    env_file: .env
-    environment: { AFISHA_DATABASE_URL: "postgres://afisha:${PG_PASSWORD}@db:5432/afisha" }
-    depends_on: [api]
-    restart: unless-stopped
+
   worker:
     image: afisha-api
-    command: ["pnpm", "worker"]
+    command: ["node", "dist/worker.js"]
     env_file: .env
-    environment: { AFISHA_DATABASE_URL: "postgres://afisha:${PG_PASSWORD}@db:5432/afisha", AFISHA_DATA_DIR: /data }
+    environment:
+      {
+        AFISHA_DATABASE_URL: "postgres://afisha:${PG_PASSWORD}@db:5432/afisha",
+        AFISHA_VALKEY_URL: "redis://valkey:6379/0",
+        AFISHA_DATA_DIR: /data,
+      }
     volumes: [rawdata:/data]
-    depends_on: [api]
+    depends_on:
+      db: { condition: service_healthy }
+      valkey: { condition: service_healthy }
+      migrate: { condition: service_completed_successfully }
     restart: unless-stopped
+
+  web:
+    build:
+      context: .
+      dockerfile: infra/docker/web.Dockerfile
+      args:
+        NEXT_PUBLIC_API_BASE: ${NEXT_PUBLIC_API_BASE:?задайте NEXT_PUBLIC_API_BASE — публичный адрес API}
+        NEXT_PUBLIC_SITE_URL: ${NEXT_PUBLIC_SITE_URL:?задайте NEXT_PUBLIC_SITE_URL}
+    image: afisha-web
+    env_file: .env
+    environment:
+      API_BASE_INTERNAL: http://api:8000
+      NEXT_PUBLIC_SITE_URL: ${NEXT_PUBLIC_SITE_URL}
+    depends_on:
+      api: { condition: service_healthy }
+    ports: ["3000:3000"]
+    restart: unless-stopped
+
+  admin:
+    build:
+      context: .
+      dockerfile: infra/docker/admin.Dockerfile
+      args:
+        NEXT_PUBLIC_SITE_URL: ${NEXT_PUBLIC_SITE_URL}
+    image: afisha-admin
+    env_file: .env
+    environment:
+      ADMIN_API_BASE: http://api:8000
+      ADMIN_SESSION_SECRET: ${ADMIN_SESSION_SECRET:?задайте ADMIN_SESSION_SECRET (≥32 символов)}
+    depends_on:
+      api: { condition: service_healthy }
+    ports: ["3001:3001"]
+    restart: unless-stopped
+
+  bot:
+    image: afisha-api
+    command: ["node", "dist/bot.js"]
+    env_file: .env
+    environment:
+      {
+        AFISHA_DATABASE_URL: "postgres://afisha:${PG_PASSWORD}@db:5432/afisha",
+        AFISHA_VALKEY_URL: "redis://valkey:6379/0",
+        AFISHA_TELEGRAM_BOT_TOKEN: "${AFISHA_TELEGRAM_BOT_TOKEN:?задайте AFISHA_TELEGRAM_BOT_TOKEN}",
+      }
+    profiles: ["bot"]
+    depends_on:
+      db: { condition: service_healthy }
+      migrate: { condition: service_completed_successfully }
+    restart: unless-stopped
+
 volumes:
   pgdata:
   rawdata:

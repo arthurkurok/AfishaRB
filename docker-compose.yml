@@ -1,11 +1,15 @@
-# Локальное окружение разработки: `make up`
+# Демонстрационный стек «Афиша РБ»: docker compose up — одной командой на чистой машине (README, раздел «Быстрый старт»).
+# Поднимает: PostgreSQL 18 (PostGIS+pgvector) :55432, Valkey :56379, API :8000, сайт :3000,
+# админку :3001, воркер; миграции и демо-данные (data/seed/demo.dump.gz) — one-shot сервисами migrate и seed.
+# Telegram-бот — опционально: docker compose --profile bot up (нужен AFISHA_TELEGRAM_BOT_TOKEN в .env).
+# Ключи GigaChat не нужны: без них ИИ-гид работает в детерминированном режиме правил (демо резервного режима).
 services:
   db:
     build: ./infra/postgres
     image: afisha-postgres:18
     environment:
       POSTGRES_USER: afisha
-      POSTGRES_PASSWORD: afisha
+      POSTGRES_PASSWORD: ${PG_PASSWORD:-afisha}
       POSTGRES_DB: afisha
     ports: ["55432:5432"]
     volumes:
@@ -17,9 +21,146 @@ services:
       interval: 3s
       retries: 20
     mem_limit: 768m
+
   valkey:
     image: valkey/valkey:8-alpine
     ports: ["56379:6379"]
+    healthcheck:
+      test: ["CMD", "valkey-cli", "ping"]
+      interval: 3s
+      retries: 20
     mem_limit: 128m
+
+  # One-shot: применяет миграции drizzle (схема). Повторный запуск — no-op.
+  migrate:
+    build: { context: ., dockerfile: infra/docker/api.Dockerfile }
+    image: afisha-api
+    command: ["node", "dist/cli.js", "db:migrate"]
+    environment:
+      AFISHA_ENV: dev
+      AFISHA_DATABASE_URL: postgres://afisha:${PG_PASSWORD:-afisha}@db:5432/afisha
+      AFISHA_VALKEY_URL: redis://valkey:6379/0
+    depends_on:
+      db: { condition: service_healthy }
+    restart: "no"
+    mem_limit: 256m
+
+  # One-shot: демо-данные каталога Культура.РФ (8541 событие). Идемпотентно: при непустом event — выход.
+  seed:
+    build: ./infra/postgres
+    image: afisha-postgres:18
+    entrypoint: ["/bin/sh", "/seed.sh"]
+    volumes:
+      - ./infra/docker/seed.sh:/seed.sh:ro
+      - ./data/seed/demo.dump.gz:/seed/demo.dump.gz:ro
+    environment:
+      PGHOST: db
+      PGPORT: 5432
+      PGUSER: afisha
+      PGPASSWORD: ${PG_PASSWORD:-afisha}
+      PGDATABASE: afisha
+    depends_on:
+      db: { condition: service_healthy }
+      migrate: { condition: service_completed_successfully }
+    restart: "no"
+    mem_limit: 256m
+
+  api:
+    image: afisha-api
+    build: { context: ., dockerfile: infra/docker/api.Dockerfile }
+    environment:
+      AFISHA_ENV: dev # в dev работает токен админа dev-admin-token; для прода — docker-compose.prod.yml
+      AFISHA_DATABASE_URL: postgres://afisha:${PG_PASSWORD:-afisha}@db:5432/afisha
+      AFISHA_VALKEY_URL: redis://valkey:6379/0
+      AFISHA_PUBLIC_BASE_URL: ${NEXT_PUBLIC_SITE_URL:-http://localhost:3000}
+      AFISHA_API_BASE_URL: http://localhost:8000
+      # Ключи опциональны: без них Гид в режиме правил (резервный режим — часть демо)
+      AFISHA_GIGACHAT_CREDENTIALS: ${AFISHA_GIGACHAT_CREDENTIALS:-}
+      AFISHA_CLOUDRU_API_KEY: ${AFISHA_CLOUDRU_API_KEY:-}
+      AFISHA_TELEGRAM_WEBAPP_URL: ${AFISHA_TELEGRAM_WEBAPP_URL:-}
+    ports: ["8000:8000"]
+    depends_on:
+      db: { condition: service_healthy }
+      valkey: { condition: service_healthy }
+      seed: { condition: service_completed_successfully }
+    restart: unless-stopped
+    mem_limit: 512m
+
+  worker:
+    image: afisha-api
+    command: ["node", "dist/worker.js"]
+    environment:
+      AFISHA_ENV: dev
+      AFISHA_DATABASE_URL: postgres://afisha:${PG_PASSWORD:-afisha}@db:5432/afisha
+      AFISHA_VALKEY_URL: redis://valkey:6379/0
+      AFISHA_DATA_DIR: /data
+      AFISHA_GIGACHAT_CREDENTIALS: ${AFISHA_GIGACHAT_CREDENTIALS:-}
+      AFISHA_CLOUDRU_API_KEY: ${AFISHA_CLOUDRU_API_KEY:-}
+    depends_on:
+      db: { condition: service_healthy }
+      valkey: { condition: service_healthy }
+      seed: { condition: service_completed_successfully }
+    restart: unless-stopped
+    mem_limit: 256m
+
+  web:
+    build:
+      context: .
+      dockerfile: infra/docker/web.Dockerfile
+      args:
+        # Вшивается в клиентский бандл при сборке; адрес, по которому браузер ходит в API
+        NEXT_PUBLIC_API_BASE: ${NEXT_PUBLIC_API_BASE:-http://localhost:8000}
+        NEXT_PUBLIC_SITE_URL: ${NEXT_PUBLIC_SITE_URL:-http://localhost:3000}
+    image: afisha-web
+    environment:
+      # Серверные запросы (SSR/RSC) идут внутрь compose-сети, минуя хост
+      API_BASE_INTERNAL: http://api:8000
+      NEXT_PUBLIC_SITE_URL: ${NEXT_PUBLIC_SITE_URL:-http://localhost:3000}
+    ports: ["3000:3000"]
+    depends_on:
+      api: { condition: service_healthy }
+    restart: unless-stopped
+    mem_limit: 768m
+
+  admin:
+    build:
+      context: .
+      dockerfile: infra/docker/admin.Dockerfile
+      args:
+        NEXT_PUBLIC_SITE_URL: ${NEXT_PUBLIC_SITE_URL:-http://localhost:3000}
+    image: afisha-admin
+    environment:
+      ADMIN_API_BASE: http://api:8000
+      # Фиксированный dev-секрет сессии (для http-демо). В production обязательно замените (.env / docker-compose.prod.yml)
+      ADMIN_SESSION_SECRET: ${ADMIN_SESSION_SECRET:-afisha-admin-dev-session-secret-change-me-in-production}
+      # Демо работает по http://localhost:3001 — без Secure-флага у cookie
+      ADMIN_COOKIE_SECURE: "false"
+    ports: ["3001:3001"]
+    depends_on:
+      api: { condition: service_healthy }
+    restart: unless-stopped
+    mem_limit: 512m
+
+  # Telegram-бот: запускается только с профилем (docker compose --profile bot up),
+  # когда в .env задан AFISHA_TELEGRAM_BOT_TOKEN. Без токена весь остальной стек работает.
+  bot:
+    image: afisha-api
+    command: ["node", "dist/bot.js"]
+    profiles: ["bot"]
+    environment:
+      AFISHA_ENV: dev
+      AFISHA_DATABASE_URL: postgres://afisha:${PG_PASSWORD:-afisha}@db:5432/afisha
+      AFISHA_VALKEY_URL: redis://valkey:6379/0
+      AFISHA_PUBLIC_BASE_URL: ${NEXT_PUBLIC_SITE_URL:-http://localhost:3000}
+      AFISHA_TELEGRAM_BOT_TOKEN: ${AFISHA_TELEGRAM_BOT_TOKEN:-} # пусто → бот упадёт при старте; профиль подключают только с токеном
+      AFISHA_TELEGRAM_PROXY: ${AFISHA_TELEGRAM_PROXY:-}
+      AFISHA_TELEGRAM_WEBAPP_URL: ${AFISHA_TELEGRAM_WEBAPP_URL:-}
+    depends_on:
+      db: { condition: service_healthy }
+      valkey: { condition: service_healthy }
+      seed: { condition: service_completed_successfully }
+    restart: unless-stopped
+    mem_limit: 256m
+
 volumes:
   pgdata:
