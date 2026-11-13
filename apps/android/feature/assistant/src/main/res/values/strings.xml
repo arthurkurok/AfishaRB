@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="assistant_title">Гид</string>
+    <string name="assistant_subtitle">Подбирает только реальные события из афиши</string>
+    <string name="assistant_back">Назад</string>
+    <string name="assistant_hint">Например: куда сходить с ребёнком в субботу</string>
+    <string name="assistant_send">Отправить</string>
+    <string name="assistant_voice">Сказать голосом</string>
+    <string name="assistant_greeting">Здравствуйте! Я Бал, гид афиши. Расскажите, когда и где хотите сходить, — подберу события. Ничего не придумываю: только то, что есть в афише.</string>
+    <string name="assistant_greeting_event">Спросите что-нибудь об этом событии — отвечу по данным паспорта.</string>
+    <string name="assistant_example_1">Куда сходить сегодня вечером?</string>
+    <string name="assistant_example_2">Спектакль для ребёнка 5 лет в субботу</string>
+    <string name="assistant_example_3">Бесплатные концерты на выходных</string>
+    <string name="assistant_rules_banner">Гид работает в упрощённом режиме: понимает основные запросы без ИИ. Подборки — всё равно только из афиши.</string>
+    <string name="assistant_understood">Я понял так:</string>
+    <string name="assistant_chip_explicit">вы сказали</string>
+    <string name="assistant_chip_inferred">достроено, нажмите, чтобы изменить</string>
+    <string name="assistant_relaxed">Чтобы найти варианты, я %1$s.</string>
+    <string name="assistant_error">Не получается связаться с Гидом. Проверьте интернет и попробуйте ещё раз.</string>
+    <string name="assistant_retry">Повторить</string>
+    <string name="assistant_thinking">Бал думает…</string>
+    <string name="assistant_you">Вы</string>
+    <string name="assistant_guide">Гид</string>
+    <string name="assistant_change">Изменить условие</string>
+    <string name="assistant_remove">Убрать это условие</string>
+    <string name="assistant_today">На сегодня</string>
+    <string name="assistant_tomorrow">На завтра</string>
+    <string name="assistant_weekend">На выходные</string>
+    <string name="assistant_whole_republic">вся республика</string>
+    <string name="assistant_open">Подробнее</string>
+    <string name="assistant_clear">Новый разговор</string>
+</resources>

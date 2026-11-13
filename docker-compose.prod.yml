@@ -1,0 +1,42 @@
+# Промышленный набор на одной машине/ВМ (пилот). В облаке — те же образы в Kubernetes (docs/04-architecture.md §11).
+services:
+  db:
+    build: ./infra/postgres
+    image: afisha-postgres:18
+    environment:
+      { POSTGRES_USER: afisha, POSTGRES_PASSWORD: "${PG_PASSWORD:?задайте PG_PASSWORD}", POSTGRES_DB: afisha }
+    volumes: [pgdata:/var/lib/postgresql]
+    restart: unless-stopped
+  valkey:
+    image: valkey/valkey:8-alpine
+    restart: unless-stopped
+  api:
+    build: { context: ., dockerfile: infra/docker/api.Dockerfile }
+    image: afisha-api
+    env_file: .env
+    environment:
+      {
+        AFISHA_DATABASE_URL: "postgres://afisha:${PG_PASSWORD}@db:5432/afisha",
+        AFISHA_VALKEY_URL: "redis://valkey:6379/0",
+      }
+    depends_on: [db, valkey]
+    ports: ["8000:8000"]
+    restart: unless-stopped
+  bot:
+    image: afisha-api
+    command: ["pnpm", "bot"]
+    env_file: .env
+    environment: { AFISHA_DATABASE_URL: "postgres://afisha:${PG_PASSWORD}@db:5432/afisha" }
+    depends_on: [api]
+    restart: unless-stopped
+  worker:
+    image: afisha-api
+    command: ["pnpm", "worker"]
+    env_file: .env
+    environment: { AFISHA_DATABASE_URL: "postgres://afisha:${PG_PASSWORD}@db:5432/afisha", AFISHA_DATA_DIR: /data }
+    volumes: [rawdata:/data]
+    depends_on: [api]
+    restart: unless-stopped
+volumes:
+  pgdata:
+  rawdata:

@@ -1,0 +1,91 @@
+.query {
+  font-style: normal;
+  overflow-wrap: anywhere;
+}
+
+.zero {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  font-weight: 700;
+  color: var(--color-status-cancelled);
+}
+
+.deserts {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+.deserts li {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: var(--tap);
+  border-bottom: 1px solid var(--color-line);
+  color: var(--color-status-cancelled);
+}
+.deserts li:last-child {
+  border-bottom: 0;
+}
+.deserts a {
+  flex: 1;
+  font-weight: 600;
+}
+.deserts .num {
+  color: var(--color-ink);
+}
+
+.sources {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+.sources li {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding-bottom: var(--space-3);
+  border-bottom: 1px solid var(--color-line);
+}
+.sources li:last-child {
+  border-bottom: 0;
+  padding-bottom: 0;
+}
+.sourceHead {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-1) var(--space-3);
+}
+
+/* Статус источника: иконка + текст; цвет — только вспомогательный канал. */
+.health {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  font-size: var(--type-caption-size);
+  line-height: var(--type-caption-line);
+  font-weight: 700;
+  color: var(--color-ink-2);
+}
+.health[data-kind="ok"] {
+  color: var(--color-meadow);
+}
+.health[data-kind="stale"] {
+  color: var(--color-status-unverified);
+}
+.health[data-kind="failing"] {
+  color: var(--color-status-cancelled);
+}
+
+.queues {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+  gap: var(--space-3);
+}

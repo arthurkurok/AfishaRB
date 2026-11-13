@@ -1,0 +1,6 @@
+.next/
+playwright-report/
+test-results/
+e2e/.fixtures.json
+*.tsbuildinfo
+e2e/.created.json

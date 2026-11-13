@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="search_title">Эҙләү</string>
+    <string name="search_hint">Спектакль, концерт, майҙансыҡ…</string>
+    <string name="search_clear">Таҙартыу</string>
+    <string name="search_back">Кире</string>
+    <string name="search_filters">Һөҙгөстәр</string>
+    <string name="search_filters_count">Һөҙгөстәр: %1$d</string>
+    <string name="search_found">Табылды: %1$d</string>
+    <string name="search_empty">Бер нәмә лә табылманы. Һөҙгөстәрҙең бер өлөшөн алып ҡарағыҙ — йәки Гидтан үҙ һүҙҙәрегеҙ менән һорағыҙ.</string>
+    <string name="search_reset">Һөҙгөстәрҙе алыу</string>
+    <string name="search_ask_guide">Гидтан һорау</string>
+    <string name="search_load_more_error">Тағы йөкләп булманы. Ҡабатлау</string>
+    <string name="search_long_running">Оҙайлы: күргәҙмәләр һәм экспозициялар</string>
+    <string name="search_near_me">Миңә яҡын</string>
+    <string name="search_locating">Ҡайҙа икәнегеҙҙе билдәләйбеҙ…</string>
+    <string name="search_location_denied">Геопозицияға рөхсәт булмаһа, «яҡында» эҙләү мөмкин түгел — ҡаланы һайлағыҙ.</string>
+
+    <string name="when_today">Бөгөн</string>
+    <string name="when_tomorrow">Иртәгә</string>
+    <string name="when_weekend">Ял көндәре</string>
+    <string name="when_week">Аҙна</string>
+    <string name="when_month">Ай</string>
+    <string name="when_dates">Көндәр…</string>
+
+    <string name="filter_title">Һөҙгөстәр</string>
+    <string name="filter_when">Ҡасан</string>
+    <string name="filter_time_of_day">Тәүлек ваҡыты</string>
+    <string name="tod_morning">Иртә</string>
+    <string name="tod_day">Көндөҙ</string>
+    <string name="tod_evening">Кис</string>
+    <string name="filter_place">Ҡайҙа</string>
+    <string name="filter_categories">Категориялар</string>
+    <string name="filter_price">Хаҡ</string>
+    <string name="price_any">Теләһә ниндәй</string>
+    <string name="price_free">Бушлай</string>
+    <string name="price_up_to">%1$s ₽-ға тиклем</string>
+    <string name="filter_age">Йәш</string>
+    <string name="age_with_child">Бала менән</string>
+    <string name="age_child_years">Балаға %1$d йәш</string>
+    <string name="age_child_hint">Йәш билдәһенә тура килгәндәрен генә күрһәтәбеҙ, 18+ булмаҫ.</string>
+    <string name="age_rating_max">Билдә юғарыраҡ түгел</string>
+    <string name="age_any">Теләһә ниндәй</string>
+    <string name="filter_more">Тағы</string>
+    <string name="filter_pushkin">Пушкин картаһы</string>
+    <string name="filter_accessible">Уңайлы мөхит</string>
+    <string name="filter_on_bashkir">Башҡорт телендә</string>
+    <string name="filter_hide_sold_out">Һатылып бөткәндәрҙе йәшереү</string>
+    <string name="filter_sort">Тәртипкә килтереү</string>
+    <string name="sort_relevance">Тура килгәндәр</string>
+    <string name="sort_date">Көнө буйынса</string>
+    <string name="sort_price">Башта арзандары</string>
+    <string name="sort_distance">Миңә яҡынырағы</string>
+    <string name="sort_popular">Популярҙары</string>
+    <string name="filter_reset">Алыу</string>
+    <string name="filter_apply">Күрһәтеү</string>
+    <string name="date_picker_title">Көндәрҙе һайлағыҙ</string>
+    <string name="date_picker_ok">Әҙер</string>
+    <string name="date_picker_cancel">Кире ҡағыу</string>
+    <string name="decrease">Кәметеү</string>
+    <string name="increase">Арттырыу</string>
+</resources>

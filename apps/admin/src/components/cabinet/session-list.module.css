@@ -1,0 +1,118 @@
+.groups {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.day {
+  position: sticky;
+  top: calc(var(--header-h) + var(--space-2));
+  z-index: 2;
+  align-self: flex-start;
+  padding: 2px var(--space-3);
+  border-radius: var(--radius-pill);
+  background: var(--color-bg);
+  border: 1px solid var(--color-line);
+  font-size: var(--type-body-size);
+}
+
+.list {
+  container-type: inline-size;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-m);
+  background: var(--color-surface);
+}
+
+.item {
+  display: grid;
+  grid-template-columns: 4rem minmax(0, 1fr) auto;
+  grid-template-areas:
+    "time main meta"
+    "time actions actions";
+  gap: var(--space-2) var(--space-4);
+  padding: var(--space-3) var(--space-4);
+  border-bottom: 1px solid var(--color-line);
+}
+.item:last-child {
+  border-bottom: 0;
+}
+@container (min-width: 1040px) {
+  .item {
+    grid-template-columns: 4rem minmax(0, 1fr) auto minmax(0, 22rem);
+    grid-template-areas: "time main meta actions";
+    align-items: center;
+  }
+}
+@container (max-width: 520px) {
+  .item {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas: "time" "main" "meta" "actions";
+    padding: var(--space-3);
+  }
+}
+
+.time {
+  grid-area: time;
+  font-weight: 700;
+  font-size: var(--type-title-size);
+  line-height: var(--type-title-line);
+}
+
+.main {
+  grid-area: main;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.title {
+  display: inline-flex;
+  align-items: baseline;
+  gap: var(--space-1);
+  font-weight: 600;
+  color: var(--color-ink);
+}
+
+.meta {
+  grid-area: meta;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.actions {
+  grid-area: actions;
+  display: flex;
+  justify-content: flex-start;
+}
+@container (min-width: 1040px) {
+  .actions {
+    justify-content: flex-end;
+  }
+}
+
+.item[data-inactive="true"] .title {
+  text-decoration-line: line-through;
+  text-decoration-thickness: 1px;
+}
+.item[data-inactive="true"] .time {
+  color: var(--color-ink-2);
+}
+
+/* На телефоне шапка не закреплена — заголовок дня прилипает к верху экрана. */
+@media (max-width: 599px) {
+  .day {
+    top: var(--space-2);
+  }
+}

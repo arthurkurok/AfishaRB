@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_title">Көйләүҙәр</string>
+    <string name="settings_back">Кире</string>
+    <string name="settings_language">Интерфейс теле</string>
+    <string name="settings_language_ru">Русский</string>
+    <string name="settings_language_ba">Башҡортса</string>
+    <string name="settings_language_note">Башҡортса тәржемәне проект командаһы эшләне — тел белгестәренең төҙәтмәләре хуплана.</string>
+    <string name="settings_city">Минең ҡалам</string>
+    <string name="settings_city_hint">Баш биттәге афиша һәм Гид кәңәштәре</string>
+    <string name="settings_appearance">Биҙәлеш</string>
+    <string name="settings_theme">Тема</string>
+    <string name="settings_theme_system">Системалағыса</string>
+    <string name="settings_theme_light">Яҡты</string>
+    <string name="settings_theme_dark">Ҡараңғы</string>
+    <string name="settings_large_text">Эре текст</string>
+    <string name="settings_large_text_hint">Системалағы шрифт ҙурлығына өҫтәп</string>
+    <string name="settings_simple">«Ябай» режим</string>
+    <string name="settings_simple_hint">Баш биттә «Бөгөн нимә бар», «Миңә яҡын», «Гидтан һорау» эре төймәләре</string>
+    <string name="settings_recommendations">Тәҡдимдәр</string>
+    <string name="settings_rules">Тәҡдимдәр нисек эшләй</string>
+    <string name="settings_notifications">Белдереүҙәр</string>
+    <string name="settings_alerts">Һайланғандарҙағы үҙгәрештәр һәм иҫкә төшөрөүҙәр</string>
+    <string name="settings_alerts_hint">Юҡҡа сығарыу, күсереү, «билеттар аҙ» — push булмаһа ла</string>
+    <string name="settings_about">Ҡушымта тураһында</string>
+    <string name="settings_suggest_translation">Тәржемәгә төҙәтмә тәҡдим итеү</string>
+
+    <string name="rules_title">Тәҡдимдәр нисек эшләй</string>
+    <string name="rules_intro">Беҙ рәсми сығанаҡтарҙан һәм учреждениеларҙың кабинеттарынан алынған сараларҙы ғына күрһәтәбеҙ. «Тура килгәндәр» тәртибе аңлайышлы: һәр карточка аҫтында ни өсөн ул исемлектә икәне күренә.</string>
+    <string name="rules_factors">Нимә иҫәпкә алына</string>
+    <string name="rules_factor_1">Һорауға һәм һайланған һөҙгөстәргә тура килеү (көн, ҡала, хаҡ, йәш, категория).</string>
+    <string name="rules_factor_2">Уңайлы ваҡыт һәм яҡынлыҡ, әгәр геопозицияға рөхсәт бирһәгеҙ.</string>
+    <string name="rules_factor_3">Йәш билдәһе буйынса тура килеүе — «бала менән» режимы өсөн.</string>
+    <string name="rules_factor_4">Бушлай, Пушкин картаһы, уңайлы мөхит, башҡорт телендә.</string>
+    <string name="rules_factor_5">Яңылыҡ һәм «һуңғы мөмкинлек» — тиҙҙән ябыласаҡ күргәҙмәләр өсөн.</string>
+    <string name="rules_not_used">Беҙ нимә эшләмәйбеҙ</string>
+    <string name="rules_not_used_text">Исемлектә урын һатмайбыҙ, һеҙҙең тарих буйынса профиль төҙөмәйбеҙ һәм мәғлүмәтте реклама селтәрҙәренә бирмәйбеҙ. Юҡҡа сығарылған саралар исемлеккә инмәй, һатылып бөткәндәре — аҙаҡта.</string>
+    <string name="rules_guide">Гид</string>
+    <string name="rules_guide_text">Гид һорауҙы аңлай (ҡайһы саҡта GigaChat ИИ ярҙамында), әммә сараларҙы сайттағы шул уҡ эҙләү һайлай. Аңлатмалар тексы автоматик тикшерелә: ундағы көндәр, хаҡтар һәм майҙансыҡтар карточка менән сағыштырыла.</string>
+    <string name="rules_my_settings">Минең көйләүҙәр</string>
+    <string name="rules_use_city">Ҡаламды әйтмәһәм, Гид уны иҫәпкә алһын</string>
+    <string name="rules_hide_sold_out">Эҙләүҙә һатылып бөткәндәрҙе йәшерергә</string>
+
+    <string name="about_title">Ҡушымта тураһында</string>
+    <string name="about_text">«Тамаша» — Башҡортостан Республикаһының мәҙәни саралары тураһында берҙәм дөрөҫ афиша. Мәғлүмәт: PRO.Культура.РФ, учреждениелар сайттары һәм ойоштороусылар кабинеттары.</string>
+    <string name="about_version">Версия %1$s</string>
+    <string name="about_api">Сервер: %1$s</string>
+    <string name="about_fonts">Golos Text һәм Commissioner шрифттары — SIL Open Font License 1.1.</string>
+    <string name="about_licenses">Шрифт лицензиялары</string>
+    <string name="about_privacy">Инеү кәрәкмәй. Һайланғандар ошо ҡоролмала һаҡлана. Геопозиция «яҡында» эҙләү өсөн генә ҡулланыла һәм һаҡланмай.</string>
+</resources>

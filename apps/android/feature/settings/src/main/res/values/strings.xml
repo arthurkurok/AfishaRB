@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_title">Настройки</string>
+    <string name="settings_back">Назад</string>
+    <string name="settings_language">Язык интерфейса</string>
+    <string name="settings_language_ru">Русский</string>
+    <string name="settings_language_ba">Башҡортса</string>
+    <string name="settings_language_note">Башкирский перевод сделан командой проекта — правки носителей языка приветствуются.</string>
+    <string name="settings_city">Мой город</string>
+    <string name="settings_city_hint">Афиша на главной и подсказки Гида</string>
+    <string name="settings_appearance">Оформление</string>
+    <string name="settings_theme">Тема</string>
+    <string name="settings_theme_system">Как в системе</string>
+    <string name="settings_theme_light">Светлая</string>
+    <string name="settings_theme_dark">Тёмная</string>
+    <string name="settings_large_text">Крупный текст</string>
+    <string name="settings_large_text_hint">Дополнительно к системному размеру шрифта</string>
+    <string name="settings_simple">Режим «Просто»</string>
+    <string name="settings_simple_hint">Крупные кнопки «Что сегодня», «Рядом», «Спросить Гида» на главной</string>
+    <string name="settings_recommendations">Рекомендации</string>
+    <string name="settings_rules">Как работают рекомендации</string>
+    <string name="settings_notifications">Уведомления</string>
+    <string name="settings_alerts">Изменения в избранном и напоминания</string>
+    <string name="settings_alerts_hint">Отмена, перенос, «мало билетов» — даже если push недоступен</string>
+    <string name="settings_about">О приложении</string>
+    <string name="settings_suggest_translation">Предложить правку перевода</string>
+
+    <string name="rules_title">Как работают рекомендации</string>
+    <string name="rules_intro">Мы показываем только события из официальных источников и кабинетов учреждений. Порядок «Подходящие» объясним: под каждой карточкой видно, почему она в выдаче.</string>
+    <string name="rules_factors">Что учитывается</string>
+    <string name="rules_factor_1">Совпадение с запросом и выбранными фильтрами (дата, город, цена, возраст, категория).</string>
+    <string name="rules_factor_2">Удобное время и близость, если вы разрешили геопозицию.</string>
+    <string name="rules_factor_3">Подходит ли по возрастному знаку — для режима «с ребёнком».</string>
+    <string name="rules_factor_4">Бесплатно, Пушкинская карта, доступная среда, на башкирском языке.</string>
+    <string name="rules_factor_5">Новизна и «последний шанс» — для выставок, которые скоро закроются.</string>
+    <string name="rules_not_used">Чего мы не делаем</string>
+    <string name="rules_not_used_text">Не продаём места в выдаче, не строим профиль по вашей истории и не передаём данные рекламным сетям. Отменённые события в выдачу не попадают, распроданные — в конце.</string>
+    <string name="rules_guide">Гид</string>
+    <string name="rules_guide_text">Гид понимает запрос (иногда с помощью ИИ GigaChat), но события подбирает тот же поиск, что и на сайте. Текст объяснений проверяется автоматически: даты, цены и площадки в нём сверяются с карточкой.</string>
+    <string name="rules_my_settings">Мои настройки</string>
+    <string name="rules_use_city">Гид учитывает мой город, если я его не назвал</string>
+    <string name="rules_hide_sold_out">Скрывать распроданные в поиске</string>
+
+    <string name="about_title">О приложении</string>
+    <string name="about_text">«Тамаша» — единая достоверная афиша культурных событий Республики Башкортостан. Данные: PRO.Культура.РФ, сайты учреждений и кабинеты организаторов.</string>
+    <string name="about_version">Версия %1$s</string>
+    <string name="about_api">Сервер: %1$s</string>
+    <string name="about_fonts">Шрифты Golos Text и Commissioner — SIL Open Font License 1.1.</string>
+    <string name="about_licenses">Лицензии шрифтов</string>
+    <string name="about_privacy">Вход не нужен. Избранное хранится на этом устройстве. Геопозиция используется только для поиска «рядом» и не сохраняется.</string>
+</resources>

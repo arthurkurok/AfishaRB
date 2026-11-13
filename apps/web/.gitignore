@@ -1,0 +1,5 @@
+.next/
+public/widget/
+playwright-report/
+test-results/
+*.tsbuildinfo

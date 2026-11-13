@@ -1,0 +1,62 @@
+{
+  "conversation_id": "a6315cbb-5c9c-4c81-8491-68e1dab0ca73",
+  "kind": "help",
+  "text": "Я Гид афиши культуры Башкортостана. Подбираю только реальные события из официальных источников — ничего не придумываю. Напишите своими словами, например: «куда пойти в субботу с ребёнком до 1000 рублей» или «бесплатные концерты в Стерлитамаке на выходных».",
+  "chips": [
+    {
+      "slot": "date",
+      "label": "ближайшая неделя",
+      "source": "default"
+    }
+  ],
+  "clarify": null,
+  "picks": [],
+  "relaxed": [],
+  "followups": [
+    {
+      "id": "ex1",
+      "label": "Куда сходить на выходных с ребёнком",
+      "patch": {
+        "__text": "куда сходить на выходных с ребёнком"
+      }
+    },
+    {
+      "id": "ex2",
+      "label": "Бесплатное сегодня",
+      "patch": {
+        "__text": "что бесплатного сегодня"
+      }
+    },
+    {
+      "id": "ex3",
+      "label": "Театр по Пушкинской карте",
+      "patch": {
+        "__text": "спектакль по пушкинской карте"
+      }
+    }
+  ],
+  "slots": {
+    "intent": "help",
+    "date_from": null,
+    "date_to": null,
+    "date_label": "ближайшая неделя",
+    "date_source": "default",
+    "time_of_day": [],
+    "municipality_id": null,
+    "municipality_label": null,
+    "municipality_source": null,
+    "near_me": false,
+    "budget": null,
+    "budget_per": null,
+    "free_only": false,
+    "kids_ages": [],
+    "with_kids": false,
+    "adults": null,
+    "categories": [],
+    "tags": [],
+    "pushkin": false,
+    "accessible": false,
+    "text": null
+  },
+  "mode": "rules"
+}

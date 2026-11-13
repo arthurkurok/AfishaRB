@@ -1,0 +1,26 @@
+{
+  "name": "@afisha/widget",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Встраиваемый виджет афиши: Web Component <afisha-rb> (Shadow DOM, без cookies и трекеров, ≤ 35 КБ gzip)",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build && node scripts/size-check.mjs",
+    "demo": "node scripts/serve-demo.mjs",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
+  },
+  "devDependencies": {
+    "@afisha/contract": "workspace:*",
+    "@afisha/design-tokens": "workspace:*",
+    "@afisha/i18n": "workspace:*",
+    "happy-dom": "^21.0.4",
+    "typescript": "~5.9.3",
+    "vite": "^8.3.5",
+    "vitest": "^5.0.5"
+  }
+}

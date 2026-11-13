@@ -1,0 +1,126 @@
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  background: color-mix(in srgb, var(--color-bg) 94%, transparent);
+  backdrop-filter: saturate(1.4) blur(10px);
+  border-bottom: 1px solid var(--color-line);
+}
+
+.inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2) var(--space-4);
+  min-height: var(--header-h);
+  padding-block: var(--space-2);
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--color-ink);
+  text-decoration: none;
+  min-height: var(--tap);
+  flex: none;
+}
+.brandText {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.1;
+}
+.brandName {
+  font-family: var(--font-display-app);
+  font-weight: 800;
+  font-size: var(--type-title-size);
+  font-variation-settings: "FLAR" 80;
+}
+.brandTag {
+  font-size: var(--type-caption-size);
+  color: var(--color-ink-2);
+}
+
+.nav {
+  order: 3;
+  flex-basis: 100%;
+}
+.nav ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.navLink {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: var(--tap);
+  padding-inline: var(--space-3);
+  border-radius: var(--radius-pill);
+  color: var(--color-ink);
+  text-decoration: none;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.navLink:hover {
+  background: var(--color-surface-2);
+}
+.navLink[aria-current="page"] {
+  background: var(--color-ink);
+  color: var(--color-bg);
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  margin-left: auto;
+}
+
+.role {
+  display: flex;
+}
+
+.orgBar {
+  border-top: 1px solid var(--color-line);
+  background: var(--color-surface);
+}
+.orgBar p {
+  padding-block: var(--space-2);
+}
+
+@media (min-width: 1100px) {
+  .nav {
+    order: 0;
+    flex-basis: auto;
+    margin-left: var(--space-4);
+  }
+}
+
+/* На телефоне шапка в несколько строк — не закрепляем её, чтобы она не съедала экран. */
+@media (max-width: 599px) {
+  .header {
+    position: static;
+  }
+  .navLink {
+    padding-inline: var(--space-2);
+    font-size: var(--type-caption-size);
+  }
+  .navLink svg {
+    display: none;
+  }
+}
+
+@media (max-width: 520px) {
+  .brandText {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+}

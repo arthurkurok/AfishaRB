@@ -1,0 +1,62 @@
+.score {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2) var(--space-4);
+}
+
+.value {
+  font-size: var(--type-display-size);
+  line-height: var(--type-display-line);
+  font-weight: 700;
+}
+.value strong {
+  font-weight: 700;
+}
+.value span {
+  font-size: var(--type-body-size);
+  font-weight: 500;
+}
+
+.meterWrap {
+  flex: 1 1 200px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.meter {
+  display: block;
+  block-size: 8px;
+  border-radius: var(--radius-pill);
+  background: var(--viz-track);
+  overflow: hidden;
+}
+.meter > span {
+  display: block;
+  block-size: 100%;
+  border-radius: var(--radius-pill);
+}
+.meter[data-level="low"] > span {
+  background: var(--color-status-cancelled);
+}
+.meter[data-level="mid"] > span {
+  background: var(--color-status-few-left);
+}
+.meter[data-level="high"] > span {
+  background: var(--color-meadow);
+}
+
+.weak {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+.weak li {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}

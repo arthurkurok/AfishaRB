@@ -1,0 +1,459 @@
+{
+  "conversation_id": "19770586-6884-4b0e-982b-db2b878ba162",
+  "kind": "results",
+  "text": "Нашёл 55 вариантов: ближайший месяц — Уфа. Точных совпадений не было, поэтому расширил даты до ближайшего месяца, поднял бюджет на 20 %, убрал уточнение по названию.",
+  "chips": [
+    {
+      "slot": "date",
+      "label": "эта неделя",
+      "source": "user"
+    },
+    {
+      "slot": "municipality",
+      "label": "Уфа",
+      "source": "user"
+    },
+    {
+      "slot": "kids",
+      "label": "ребёнок 5 лет",
+      "source": "user"
+    },
+    {
+      "slot": "budget",
+      "label": "до 1000 ₽ за билет",
+      "source": "user"
+    },
+    {
+      "slot": "text",
+      "label": "«неделе билет»",
+      "source": "user"
+    }
+  ],
+  "clarify": null,
+  "picks": [
+    {
+      "occurrence": {
+        "id": "01a19c9d-556a-7d7e-a80c-8ad38ea9b957",
+        "event": {
+          "id": "01a19c9d-5565-754a-a891-0bdc58d650b7",
+          "title": "Экскурсия «С.Т. Аксаков: жизнь и творчество»",
+          "summary": "Мемориальный музей С.Т. Аксакова построен в середине XVIII века и располагается в живописном месте старого города на берегу реки Белой. Здесь писатель провел свои детские годы, выросла и вышла замуж маменька Мария Николаевна, а дедушка Н.С. Зубов руководил наместничеством.",
+          "categories": [
+            "museum",
+            "kids"
+          ],
+          "tags": [
+            "excursion",
+            "family",
+            "pushkin"
+          ],
+          "age_rating": 0,
+          "pushkin_card": true,
+          "price": {
+            "min": "50.00",
+            "max": "700.00",
+            "is_free": false,
+            "currency": "RUB"
+          },
+          "image": {
+            "url": "https://cdn.culture.ru/images/ba61eda9-ae76-5ec4-84d6-2e2a690f6d79",
+            "author": "Иванова Г.О.",
+            "source": "Из фондов музея",
+            "license": null,
+            "width": 2048,
+            "height": 1365,
+            "color": "6a725b"
+          },
+          "organization": "ГБУКИ РБ «Национальный музей Республики Башкортостан»"
+        },
+        "venue": {
+          "id": "01a19c9d-5564-77c2-a9ac-6c667d789232",
+          "name": "Мемориальный дом-музей С. Т. Аксакова",
+          "address": "Респ. Башкортостан, г. Уфа, ул. Зайнуллы Расулева, д. 4",
+          "geo": [
+            54.713455,
+            55.951603
+          ],
+          "municipality_id": "ufa",
+          "municipality": "Уфа"
+        },
+        "starts_at": "2026-11-03T11:00:00+05:00",
+        "ends_at": "2026-11-03T18:00:00+05:00",
+        "is_range": false,
+        "status": "scheduled",
+        "status_reason": null,
+        "previous_starts_at": null,
+        "availability": "unknown",
+        "ticket_url": "https://vmuzey.com/event/ekskursiya-s-t-aksakov-zhizn-i-tvorchestvo",
+        "more_dates": 21,
+        "distance_km": null,
+        "reasons": [
+          "age_fit",
+          "budget_fit",
+          "time_fit",
+          "new"
+        ],
+        "freshness": "fresh"
+      },
+      "reason_codes": [
+        "age_fit",
+        "budget_fit",
+        "time_fit",
+        "new"
+      ],
+      "reason_text": "0+ — подходит по возрасту, вторник, 3 ноября в 11:00, от 50 ₽ — в бюджете."
+    },
+    {
+      "occurrence": {
+        "id": "01a19c9d-6ca5-7beb-a3a2-f8f975ebff67",
+        "event": {
+          "id": "01a19c9d-6ca3-77ad-87d8-552d25010a77",
+          "title": "Концерт «Вместе мы — Россия!»",
+          "summary": "Праздничный концерт, посвященный Году единства народов России, Году большой и дружной семьи в Республике Башкортостан, Дню народного единства, а также поддержке участников Специальной военной операции и членов их семей.",
+          "categories": [
+            "music",
+            "kids"
+          ],
+          "tags": [
+            "family",
+            "free"
+          ],
+          "age_rating": 0,
+          "pushkin_card": false,
+          "price": {
+            "min": "0.00",
+            "max": "0.00",
+            "is_free": true,
+            "currency": "RUB"
+          },
+          "image": {
+            "url": "https://cdn.culture.ru/images/cc82a497-70ac-58e5-99fd-51c41ce4d652",
+            "author": "Уфимская детская филармония",
+            "source": "Уфимская детская филармония",
+            "license": null,
+            "width": 1946,
+            "height": 1297,
+            "color": "6a6576"
+          },
+          "organization": "Уфимская детская филармония"
+        },
+        "venue": {
+          "id": "01a19c9d-4fb9-73ce-9052-1f625c02b6d6",
+          "name": "Уфимская детская филармония",
+          "address": "Респ. Башкортостан, г. Уфа, пр-кт. Октября, д. 33",
+          "geo": [
+            54.75177073520982,
+            55.996423959732056
+          ],
+          "municipality_id": "ufa",
+          "municipality": "Уфа"
+        },
+        "starts_at": "2026-11-03T17:00:00+05:00",
+        "ends_at": "2026-11-03T18:00:00+05:00",
+        "is_range": false,
+        "status": "scheduled",
+        "status_reason": null,
+        "previous_starts_at": null,
+        "availability": "unknown",
+        "ticket_url": null,
+        "more_dates": 0,
+        "distance_km": null,
+        "reasons": [
+          "age_fit",
+          "free",
+          "time_fit",
+          "new"
+        ],
+        "freshness": "fresh"
+      },
+      "reason_codes": [
+        "age_fit",
+        "free",
+        "time_fit",
+        "new"
+      ],
+      "reason_text": "0+ — подходит по возрасту, вторник, 3 ноября в 17:00, вход свободный."
+    },
+    {
+      "occurrence": {
+        "id": "01a19c9d-7439-7715-ab37-7383e99b22d8",
+        "event": {
+          "id": "01a19c9d-7434-7809-8445-4cf060fcb3aa",
+          "title": "«Ночь искусств-2026» в Мемориальном доме-музее С.Т. Аксакова",
+          "summary": "ПРОГРАММА: 18.00 Экскурсия по мемориальным комнатам дома Аксаковых. 18.30 Авторская экскурсия по выставке «С.Т. Аксаков и русские писатели» 19.00 Экскурсия по мемориальным комнатам дома Аксаковых. 19.30 Концерт вокально-инструментальной музыки.",
+          "categories": [
+            "music",
+            "kids"
+          ],
+          "tags": [],
+          "age_rating": 0,
+          "pushkin_card": false,
+          "price": {
+            "min": "100.00",
+            "max": "200.00",
+            "is_free": false,
+            "currency": "RUB"
+          },
+          "image": {
+            "url": "https://cdn.culture.ru/images/260887dc-3390-5899-923c-94844f8ae8d5",
+            "author": "Григорьева Татьяна Анатольевна",
+            "source": "Архив автора",
+            "license": null,
+            "width": 2048,
+            "height": 1118,
+            "color": "7c7872"
+          },
+          "organization": "ГБУКИ РБ «Национальный музей Республики Башкортостан»"
+        },
+        "venue": {
+          "id": "01a19c9d-5564-77c2-a9ac-6c667d789232",
+          "name": "Мемориальный дом-музей С. Т. Аксакова",
+          "address": "Респ. Башкортостан, г. Уфа, ул. Зайнуллы Расулева, д. 4",
+          "geo": [
+            54.713455,
+            55.951603
+          ],
+          "municipality_id": "ufa",
+          "municipality": "Уфа"
+        },
+        "starts_at": "2026-11-03T18:00:00+05:00",
+        "ends_at": "2026-11-03T22:00:00+05:00",
+        "is_range": false,
+        "status": "scheduled",
+        "status_reason": null,
+        "previous_starts_at": null,
+        "availability": "unknown",
+        "ticket_url": "https://vmuzey.com/event/noch-iskusstv-2026-v-dome-muzee-s-t-aksakova-3",
+        "more_dates": 0,
+        "distance_km": null,
+        "reasons": [
+          "age_fit",
+          "budget_fit",
+          "time_fit",
+          "new"
+        ],
+        "freshness": "fresh"
+      },
+      "reason_codes": [
+        "age_fit",
+        "budget_fit",
+        "time_fit",
+        "new"
+      ],
+      "reason_text": "0+ — подходит по возрасту, вторник, 3 ноября в 18:00, от 100 ₽ — в бюджете."
+    },
+    {
+      "occurrence": {
+        "id": "01a19c9d-8777-7f68-9891-242a93c44cca",
+        "event": {
+          "id": "01a19c9d-8775-70db-86f7-7dbba0ab29a1",
+          "title": "Ночь искусств в Национальном музее Республики Башкортостан",
+          "summary": "Национальный музей Республики Башкортостан приглашает на «Ночь искусств». Программа раскрывает историко‑культурное многообразие Башкортостана и традиции народов республики.",
+          "categories": [
+            "education",
+            "kids"
+          ],
+          "tags": [],
+          "age_rating": 0,
+          "pushkin_card": false,
+          "price": {
+            "min": "50.00",
+            "max": "100.00",
+            "is_free": false,
+            "currency": "RUB"
+          },
+          "image": {
+            "url": "https://cdn.culture.ru/images/75268cc0-a9ea-5737-a00c-84b368df53cf",
+            "author": "Сулейманова А.М.",
+            "source": "https://museumrb.ru/afisha/noch-iskusstv-2026/",
+            "license": null,
+            "width": 1024,
+            "height": 692,
+            "color": "72787e"
+          },
+          "organization": "ГБУКИ РБ «Национальный музей Республики Башкортостан»"
+        },
+        "venue": {
+          "id": "01a19c9d-534e-762e-8257-95aa08f4ac6b",
+          "name": "Национальный музей Республики Башкортостан",
+          "address": "Респ. Башкортостан, г. Уфа, ул. Советская, д. 14",
+          "geo": [
+            54.720116,
+            55.946779
+          ],
+          "municipality_id": "ufa",
+          "municipality": "Уфа"
+        },
+        "starts_at": "2026-11-03T18:00:00+05:00",
+        "ends_at": "2026-11-03T22:00:00+05:00",
+        "is_range": false,
+        "status": "scheduled",
+        "status_reason": null,
+        "previous_starts_at": null,
+        "availability": "unknown",
+        "ticket_url": "https://museumrb.ru/afisha/noch-iskusstv-2026/",
+        "more_dates": 0,
+        "distance_km": null,
+        "reasons": [
+          "age_fit",
+          "budget_fit",
+          "time_fit",
+          "new"
+        ],
+        "freshness": "fresh"
+      },
+      "reason_codes": [
+        "age_fit",
+        "budget_fit",
+        "time_fit",
+        "new"
+      ],
+      "reason_text": "0+ — подходит по возрасту, вторник, 3 ноября в 18:00, от 50 ₽ — в бюджете."
+    },
+    {
+      "occurrence": {
+        "id": "01a19c9d-7fab-718b-ba37-4f162e684f72",
+        "event": {
+          "id": "01a19c9d-7fa8-72c6-bd4b-7feb0763b489",
+          "title": "«Ночь искусств» в выставочном зале «Ижад»",
+          "summary": "В рамках Всероссийской культурной акции, проходящей под девизом «В единстве культур – сила народа», для посетителей в течение вечера будут проходить следующие культурно-образовательные и культурно-развлекательные мероприятия: 11.00–22.00 Выставка лауреатов и дипломантов…",
+          "categories": [
+            "education",
+            "kids"
+          ],
+          "tags": [
+            "youth"
+          ],
+          "age_rating": 0,
+          "pushkin_card": false,
+          "price": {
+            "min": "100.00",
+            "max": "100.00",
+            "is_free": false,
+            "currency": "RUB"
+          },
+          "image": {
+            "url": "https://cdn.culture.ru/images/1db6e480-4251-5993-8d10-8f157f4b4307",
+            "author": "Ольга Поленок",
+            "source": "https://pro.culture.ru/blog/551",
+            "license": null,
+            "width": 1024,
+            "height": 768,
+            "color": "a39490"
+          },
+          "organization": "«Башкирский государственный художественный музей им. М. В. Нестерова»"
+        },
+        "venue": {
+          "id": "01a19c9d-4ce5-7cd0-bc4b-456f65f55fda",
+          "name": "Выставочный зал «Ижад» БГХМ им. М. В. Нестерова",
+          "address": "Респ. Башкортостан, г. Уфа, ул. Космонавтов, д. 22",
+          "geo": [
+            54.818746276381084,
+            56.06871903439327
+          ],
+          "municipality_id": "ufa",
+          "municipality": "Уфа"
+        },
+        "starts_at": "2026-11-03T18:00:00+05:00",
+        "ends_at": "2026-11-03T22:00:00+05:00",
+        "is_range": false,
+        "status": "scheduled",
+        "status_reason": null,
+        "previous_starts_at": null,
+        "availability": "unknown",
+        "ticket_url": "https://ufa.kassir.ru/muzey/ekskursii-v-vyistavochnom-zale-ijad#1919402",
+        "more_dates": 0,
+        "distance_km": null,
+        "reasons": [
+          "age_fit",
+          "budget_fit",
+          "time_fit",
+          "new"
+        ],
+        "freshness": "fresh"
+      },
+      "reason_codes": [
+        "age_fit",
+        "budget_fit",
+        "time_fit",
+        "new"
+      ],
+      "reason_text": "0+ — подходит по возрасту, вторник, 3 ноября в 18:00, от 100 ₽ — в бюджете."
+    }
+  ],
+  "relaxed": [
+    "расширил даты до ближайшего месяца",
+    "поднял бюджет на 20 %",
+    "убрал уточнение по названию"
+  ],
+  "followups": [
+    {
+      "id": "per_total",
+      "label": "1000 ₽ — на всех",
+      "patch": {
+        "budget_per": "total"
+      }
+    },
+    {
+      "id": "free",
+      "label": "Только бесплатное",
+      "patch": {
+        "free_only": true,
+        "budget": null
+      }
+    },
+    {
+      "id": "other_day",
+      "label": "Другие даты",
+      "patch": {
+        "date_from": null,
+        "date_to": null,
+        "date_label": "ближайшая неделя"
+      }
+    },
+    {
+      "id": "theatre",
+      "label": "Только театр",
+      "patch": {
+        "categories": [
+          "theatre"
+        ]
+      }
+    },
+    {
+      "id": "music",
+      "label": "Только концерты",
+      "patch": {
+        "categories": [
+          "music"
+        ]
+      }
+    }
+  ],
+  "slots": {
+    "intent": "search",
+    "date_from": "2026-11-02",
+    "date_to": "2026-11-08",
+    "date_label": "эта неделя",
+    "date_source": "user",
+    "time_of_day": [],
+    "municipality_id": "ufa",
+    "municipality_label": "Уфа",
+    "municipality_source": "user",
+    "near_me": false,
+    "budget": 1000,
+    "budget_per": "ticket",
+    "free_only": false,
+    "kids_ages": [
+      5
+    ],
+    "with_kids": true,
+    "adults": null,
+    "categories": [],
+    "tags": [],
+    "pushkin": false,
+    "accessible": false,
+    "text": "неделе билет"
+  },
+  "mode": "rules"
+}

@@ -1,0 +1,76 @@
+.live:empty {
+  display: none;
+}
+.live:focus-visible {
+  outline: var(--focus-ring);
+  outline-offset: 2px;
+}
+
+.dialog {
+  width: min(560px, calc(100vw - 2 * var(--space-4)));
+  max-height: calc(100dvh - 2 * var(--space-4));
+  padding: 0;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-l);
+  background: var(--color-surface);
+  color: var(--color-ink);
+  box-shadow: var(--shadow-2);
+  overflow: auto;
+}
+/* Подложка затемняет страницу в обеих темах: в светлой — цветом текста, в тёмной — цветом фона. */
+.dialog::backdrop {
+  background: color-mix(in srgb, var(--color-ink) 45%, transparent);
+}
+:global([data-theme="dark"]) .dialog::backdrop {
+  background: color-mix(in srgb, var(--color-bg) 80%, transparent);
+}
+@media (prefers-color-scheme: dark) {
+  :global(:root:not([data-theme="light"])) .dialog::backdrop {
+    background: color-mix(in srgb, var(--color-bg) 80%, transparent);
+  }
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  padding: var(--space-5);
+}
+@media (max-width: 599px) {
+  .form {
+    padding: var(--space-4);
+  }
+}
+
+.context {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: var(--space-3);
+  border-radius: var(--radius-m);
+  background: var(--color-surface-2);
+}
+.context span {
+  color: var(--color-ink-2);
+  font-size: var(--type-caption-size);
+  line-height: var(--type-caption-line);
+}
+
+.row2 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 180px), 1fr));
+  gap: var(--space-3);
+}
+
+.buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: var(--space-2);
+}
+
+.buttonsRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}

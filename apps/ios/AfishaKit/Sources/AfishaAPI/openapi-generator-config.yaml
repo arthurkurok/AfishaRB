@@ -1,0 +1,11 @@
+# Конфигурация swift-openapi-generator (https://github.com/apple/swift-openapi-generator).
+# Генерация «заранее» скриптом Scripts/generate-api.sh: вход — нормализованная копия
+# packages/contract/openapi.json (см. Scripts/normalize-openapi.mjs), выход — Generated/.
+generate:
+  - types
+  - client
+accessModifier: public
+namingStrategy: idiomatic
+additionalFileComments:
+  - "swift-format-ignore-file"
+  - "swiftlint:disable all"

@@ -1,0 +1,53 @@
+/** Служебные команды: `pnpm --filter @afisha/api cli <команда>`. */
+import { join, resolve } from "node:path";
+import { migrate } from "drizzle-orm/node-postgres/migrator";
+import { closeDb, getDb } from "../db/client.js";
+import { config } from "../lib/config.js";
+import { log } from "../lib/log.js";
+import { revalidateMerges, runDedup } from "../modules/dedup/index.js";
+import { fetchRegion, loadCultureRu } from "../modules/ingestion/index.js";
+
+const rawDir = join(config.AFISHA_DATA_DIR, "raw", "culture_ru");
+
+const commands: Record<string, (args: string[]) => Promise<unknown>> = {
+  "db:migrate": async () => {
+    await migrate(getDb(), { migrationsFolder: resolve(import.meta.dirname, "../../drizzle") });
+    return "миграции применены";
+  },
+  "ingest:fetch": async (args) =>
+    fetchRegion(rawDir, { maxPages: args[0] ? Number(args[0]) : undefined, concurrency: 6 }),
+  "ingest:load": async (args) => {
+    const force = args.includes("--force");
+    const n = args.find((a) => /^\d+$/.test(a));
+    const stats = await loadCultureRu(getDb(), rawDir, n ? Number(n) : undefined, force);
+    const dedup = await runDedup(getDb());
+    return { stats: { ...stats, errors: stats.errors.slice(0, 5) }, dedup };
+  },
+  "ingest:sync": async () => {
+    const fetched = await fetchRegion(rawDir, { concurrency: 6 });
+    const stats = await loadCultureRu(getDb(), rawDir);
+    return { fetched, stats: { ...stats, errors: stats.errors.slice(0, 5) }, dedup: await runDedup(getDb()) };
+  },
+  dedup: async () => runDedup(getDb()),
+  "dedup:revalidate": async () => revalidateMerges(getDb()),
+  "openapi:export": async () => {
+    const { exportOpenApi } = await import("./openapi.js");
+    return exportOpenApi();
+  },
+};
+
+const [cmd, ...args] = process.argv.slice(2);
+const fn = cmd ? commands[cmd] : undefined;
+if (!fn) {
+  console.log(`Команды: ${Object.keys(commands).join(", ")}`);
+  process.exit(cmd ? 1 : 0);
+}
+try {
+  const result = await fn(args);
+  console.log(typeof result === "string" ? result : JSON.stringify(result, null, 2));
+} catch (err) {
+  log.error(err);
+  process.exitCode = 1;
+} finally {
+  await closeDb();
+}

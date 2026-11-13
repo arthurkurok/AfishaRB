@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="favorites_title">Һайланғандар</string>
+    <string name="favorites_subtitle">Селтәрһеҙ ҙә асыла</string>
+    <string name="favorites_upcoming">Алда</string>
+    <string name="favorites_past">Үткәндәр</string>
+    <string name="favorites_empty">Сараларҙы ромб ◇ менән һаҡлағыҙ — улар бында булыр, интернет булмаһа ла.</string>
+    <string name="favorites_empty_action">Сара табыу</string>
+    <string name="favorites_removed">Һайланғандарҙан алынды</string>
+    <string name="favorites_undo">Кире ҡайтарыу</string>
+    <string name="favorites_changed">Үҙгәрештәр бар — статусты тикшерегеҙ</string>
+    <string name="favorites_synced">%1$s яңыртылды</string>
+</resources>

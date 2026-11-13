@@ -1,0 +1,211 @@
+.layout {
+  display: grid;
+  gap: var(--space-4) var(--space-6);
+  padding-bottom: var(--space-7);
+}
+
+.form {
+  display: contents;
+}
+
+.queryBar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  grid-column: 1 / -1;
+}
+.query {
+  flex: 1 1 240px;
+  min-height: 52px;
+  border-radius: var(--radius-pill);
+  padding-inline: var(--space-5);
+}
+
+.openFilters {
+  position: relative;
+}
+.badge {
+  display: inline-grid;
+  place-items: center;
+  min-width: 22px;
+  height: 22px;
+  padding-inline: 6px;
+  border-radius: var(--radius-pill);
+  background: var(--color-accent);
+  color: var(--color-on-accent);
+  font-size: var(--type-caption-size);
+  font-weight: 700;
+}
+
+.sheet {
+  background: var(--color-surface);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-l);
+  padding: var(--space-4);
+}
+.sheetHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  margin-bottom: var(--space-3);
+}
+.filtersTitle {
+  font-size: var(--type-title-size);
+  line-height: var(--type-title-line);
+}
+.sheetClose {
+  display: none;
+}
+.sheetFoot {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin-top: var(--space-4);
+}
+
+/* Мобильный (с JavaScript): фильтры — полноэкранный лист по кнопке. Без JS панель видна в потоке. */
+@media (max-width: 959px) {
+  .enhanced .sheet {
+    display: none;
+  }
+  .enhanced .sheet[data-open] {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: 80;
+    border-radius: 0;
+    border: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding: var(--space-4) var(--gutter) 0;
+    padding-top: max(var(--space-4), env(safe-area-inset-top));
+  }
+  .enhanced .sheet[data-open] .sheetClose {
+    display: inline-grid;
+  }
+  .enhanced .sheet[data-open] .sheetFoot {
+    position: sticky;
+    bottom: 0;
+    background: var(--color-surface);
+    padding: var(--space-3) 0 max(var(--space-3), env(safe-area-inset-bottom));
+    border-top: 1px solid var(--color-line);
+  }
+}
+
+@media (min-width: 960px) {
+  .layout {
+    grid-template-columns: 300px minmax(0, 1fr);
+  }
+  .openFilters {
+    display: none;
+  }
+  .sheet {
+    grid-column: 1;
+    align-self: start;
+    position: sticky;
+    top: calc(var(--header-h) + var(--space-3));
+    max-height: calc(100dvh - var(--header-h) - var(--space-5));
+    overflow-y: auto;
+  }
+  .sheetFoot > button[type="submit"] {
+    display: none;
+  }
+  .enhanced .sheetFoot > button[type="submit"] {
+    display: none;
+  }
+  .results {
+    grid-column: 2;
+  }
+}
+
+.results {
+  min-width: 0;
+}
+
+.resultsHead {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--space-3);
+  margin-bottom: var(--space-3);
+}
+.count {
+  font-size: var(--type-h2-size);
+  line-height: var(--type-h2-line);
+}
+.sort {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 200px;
+}
+
+.active {
+  margin-bottom: var(--space-4);
+}
+.activeChip {
+  min-height: 40px;
+  padding-inline: var(--space-3);
+  cursor: pointer;
+  background: var(--color-surface-2);
+  border-color: var(--color-ink-2);
+  font-size: var(--type-caption-size);
+  white-space: normal;
+  text-align: left;
+}
+.activeChip:hover {
+  border-color: var(--color-accent);
+}
+
+.feed {
+  transition: opacity var(--motion-base) var(--motion-easing);
+}
+.feed[data-pending] {
+  opacity: 0.5;
+}
+
+.day {
+  margin-bottom: var(--space-6);
+}
+/* Липкий заголовок дня под шапкой сайта. */
+.dayTitle {
+  position: sticky;
+  top: var(--header-h);
+  z-index: 10;
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-3);
+  padding: var(--space-3) 0;
+  margin-bottom: var(--space-3);
+  background: var(--color-bg);
+  border-bottom: 1px solid var(--color-line);
+  font-family: var(--font-display-app);
+  font-size: var(--type-h2-size);
+  line-height: var(--type-h2-line);
+}
+.dayCount {
+  font-family: var(--font-text-app);
+  font-size: var(--type-caption-size);
+  font-weight: 500;
+  color: var(--color-ink-2);
+}
+
+.more {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  margin-top: var(--space-6);
+}
+
+.error {
+  color: var(--color-status-cancelled);
+  font-weight: 600;
+}
+
+.feeds {
+  margin-top: var(--space-5);
+  text-align: center;
+}

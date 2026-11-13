@@ -1,0 +1,38 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+.media {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border-bottom: 5px solid var(--cat);
+  margin: calc(var(--space-4) * -1) calc(var(--space-4) * -1) 0;
+  border-radius: 0;
+}
+.title {
+  font-size: var(--type-h1-size);
+  line-height: var(--type-h1-line);
+}
+.when {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+.whenText {
+  font-weight: 700;
+}
+.whenText::first-letter {
+  text-transform: uppercase;
+}
+.price {
+  font-family: var(--font-display-app);
+  font-size: var(--type-h2-size);
+  font-weight: 700;
+}
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}

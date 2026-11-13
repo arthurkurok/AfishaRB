@@ -1,0 +1,91 @@
+{
+  "sourceLanguage": "ru",
+  "strings": {
+    "Куда сходить сегодня в ${applicationName}": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Куда сходить сегодня в ${applicationName}"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Бөгөн ${applicationName} буйынса ҡайҙа барырға"
+          }
+        }
+      }
+    },
+    "Что сегодня в ${applicationName}": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Что сегодня в ${applicationName}"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Бөгөн ${applicationName} буйынса нимә бар"
+          }
+        }
+      }
+    },
+    "Афиша на сегодня в ${applicationName}": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Афиша на сегодня в ${applicationName}"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "${applicationName}: бөгөнгө афиша"
+          }
+        }
+      }
+    },
+    "Спросить гида ${applicationName}": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Спросить гида ${applicationName}"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "${applicationName} гидынан һорау"
+          }
+        }
+      }
+    },
+    "Открой гида в ${applicationName}": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Открой гида в ${applicationName}"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "${applicationName} гидын асыу"
+          }
+        }
+      }
+    }
+  },
+  "version": "1.0"
+}

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Статические ярлыки (App Shortcuts): долгий тап по иконке. Динамический — «последнее открытое событие». -->
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+    <shortcut
+        android:shortcutId="today"
+        android:enabled="true"
+        android:icon="@drawable/ic_shortcut_today"
+        android:shortcutShortLabel="@string/shortcut_today_short"
+        android:shortcutLongLabel="@string/shortcut_today_long">
+        <intent android:action="android.intent.action.VIEW" android:data="afisha://today" android:targetPackage="ru.tamasha.afisha" android:targetClass="ru.tamasha.afisha.MainActivity" />
+    </shortcut>
+    <shortcut
+        android:shortcutId="assistant"
+        android:enabled="true"
+        android:icon="@drawable/ic_shortcut_guide"
+        android:shortcutShortLabel="@string/shortcut_guide_short"
+        android:shortcutLongLabel="@string/shortcut_guide_long">
+        <intent android:action="android.intent.action.VIEW" android:data="afisha://assistant" android:targetPackage="ru.tamasha.afisha" android:targetClass="ru.tamasha.afisha.MainActivity" />
+    </shortcut>
+    <shortcut
+        android:shortcutId="search"
+        android:enabled="true"
+        android:icon="@drawable/ic_shortcut_search"
+        android:shortcutShortLabel="@string/shortcut_search_short"
+        android:shortcutLongLabel="@string/shortcut_search_long">
+        <intent android:action="android.intent.action.VIEW" android:data="afisha://search" android:targetPackage="ru.tamasha.afisha" android:targetClass="ru.tamasha.afisha.MainActivity" />
+    </shortcut>
+    <shortcut
+        android:shortcutId="favorites"
+        android:enabled="true"
+        android:icon="@drawable/ic_shortcut_favorites"
+        android:shortcutShortLabel="@string/shortcut_favorites_short"
+        android:shortcutLongLabel="@string/shortcut_favorites_long">
+        <intent android:action="android.intent.action.VIEW" android:data="afisha://favorites" android:targetPackage="ru.tamasha.afisha" android:targetClass="ru.tamasha.afisha.MainActivity" />
+    </shortcut>
+</shortcuts>

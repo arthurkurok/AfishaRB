@@ -1,0 +1,139 @@
+.passport {
+  padding: var(--space-5);
+  border-radius: var(--radius-l);
+  background: var(--color-surface);
+  border: 1px solid var(--color-line);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.head {
+  display: flex;
+  gap: var(--space-3);
+  align-items: flex-start;
+}
+.icon {
+  color: var(--color-meadow);
+  flex: none;
+  margin-top: 2px;
+}
+
+.facts {
+  display: grid;
+  gap: var(--space-3);
+  margin: 0;
+}
+.facts dt {
+  font-size: var(--type-caption-size);
+  font-weight: 700;
+  color: var(--color-ink-2);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.facts dd {
+  margin: var(--space-1) 0 0;
+}
+
+/* Источники — «печати»: ромбовидная рамка-штамп. */
+.seals {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.seal {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  border: 2px dashed var(--color-meadow);
+  border-radius: var(--radius-s);
+  font-weight: 600;
+  font-size: var(--type-caption-size);
+}
+.seal::before {
+  content: "";
+  width: 10px;
+  height: 10px;
+  background: var(--color-meadow);
+  transform: rotate(45deg);
+  flex: none;
+}
+.seal a {
+  color: var(--color-ink);
+  min-height: 24px;
+  display: inline-flex;
+  align-items: center;
+}
+
+.verified {
+  font-weight: 600;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 var(--space-1);
+  align-items: baseline;
+}
+.verified::before {
+  content: "";
+  width: 10px;
+  height: 10px;
+  margin-right: var(--space-1);
+  background: var(--color-meadow);
+  border-radius: 50%;
+  align-self: center;
+}
+.verified[data-freshness="stale"]::before,
+.verified[data-freshness="vanished"]::before {
+  background: var(--color-status-unverified);
+}
+.freshness {
+  font-weight: 400;
+  color: var(--color-ink-2);
+}
+
+.historyTitle {
+  margin-top: var(--space-2);
+}
+
+.timeline {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.node {
+  position: relative;
+  padding: 0 0 var(--space-4) var(--space-6);
+}
+.node::before {
+  content: "";
+  position: absolute;
+  left: 7px;
+  top: 6px;
+  width: 12px;
+  height: 12px;
+  background: var(--color-surface);
+  border: 2px solid var(--color-accent);
+  transform: rotate(45deg);
+  z-index: 1;
+}
+.node:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  left: 13px;
+  top: 14px;
+  bottom: 0;
+  width: 2px;
+  background: var(--color-line);
+}
+.node[data-kind="created"]::before {
+  border-color: var(--color-meadow);
+}
+.when {
+  display: block;
+  font-size: var(--type-caption-size);
+  font-weight: 700;
+  color: var(--color-ink-2);
+}

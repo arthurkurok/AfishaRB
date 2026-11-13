@@ -1,0 +1,36 @@
+.map {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.land {
+  fill: var(--color-surface-2);
+  stroke: var(--color-surface-2);
+  stroke-width: 40;
+  stroke-linejoin: round;
+  paint-order: stroke;
+}
+
+.marker path {
+  fill: var(--color-accent);
+  fill-opacity: 0.8;
+  stroke: var(--color-surface);
+  stroke-width: 2;
+  transition: fill-opacity var(--motion-fast) var(--motion-easing);
+}
+.marker:hover path,
+.marker[data-active] path {
+  fill: var(--color-meadow);
+  fill-opacity: 1;
+}
+
+.marker text {
+  font-size: 13px;
+  font-weight: 600;
+  fill: var(--color-ink);
+  paint-order: stroke;
+  stroke: var(--color-surface-2);
+  stroke-width: 4;
+  stroke-linejoin: round;
+}

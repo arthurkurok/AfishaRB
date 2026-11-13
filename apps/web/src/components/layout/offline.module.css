@@ -1,0 +1,26 @@
+.wrap {
+  position: fixed;
+  left: 50%;
+  bottom: calc(var(--space-4) + env(safe-area-inset-bottom, 0px));
+  transform: translateX(-50%);
+  z-index: 60;
+  width: min(560px, calc(100% - 2 * var(--gutter)));
+  pointer-events: none;
+}
+
+.banner {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-m);
+  background: var(--color-ink);
+  color: var(--color-bg);
+  box-shadow: var(--shadow-2);
+  pointer-events: auto;
+}
+
+.ok {
+  background: var(--color-meadow);
+  color: var(--color-on-accent);
+}

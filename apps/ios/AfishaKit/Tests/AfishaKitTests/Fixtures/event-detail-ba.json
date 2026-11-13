@@ -1,0 +1,129 @@
+{
+  "id": "01a19c9d-5fd6-75e0-8595-c29266346f39",
+  "title": "Мастер-класс по искусству малой графической формы",
+  "summary": "Мастер–класс посвящен созданию уникальных визуальных знаков в технике малой графики. Программа включает: знакомство с основами композиции и цветоведения; изучение исторических примеров знаковых систем; освоение современных инструментов цифрового рисования; разработку…",
+  "categories": [
+    "education",
+    "kids"
+  ],
+  "tags": [
+    "master_class"
+  ],
+  "age_rating": 12,
+  "pushkin_card": false,
+  "price": {
+    "min": "300.00",
+    "max": "300.00",
+    "is_free": false,
+    "currency": "RUB"
+  },
+  "image": {
+    "url": "https://cdn.culture.ru/images/e99968b1-3ec6-5778-8d71-23ed56dbfbf5",
+    "author": "Автор школы креативных индустрий",
+    "source": "Авторшколыкреативныхиндустрий",
+    "license": null,
+    "width": 2048,
+    "height": 1365,
+    "color": "a29a98"
+  },
+  "organization": "ГБПОУ РБ «Уфимское училище искусств (колледж)»",
+  "description_html": "<p>Мастер–класс посвящен созданию уникальных визуальных знаков в технике малой графики. Программа включает:</p><ul><li>знакомство с основами композиции и цветоведения;</li><li>изучение исторических примеров знаковых систем;</li></ul><ul><li>освоение современных инструментов цифрового рисования;</li></ul><ul><li>разработку индивидуального стиля;</li></ul><ul><li>создание серии авторских визуальных знаков;</li></ul><ul><li>работу с трансформацией и стилизацией форм;</li></ul><ul><li>финальную презентацию работ.</li></ul><p>Участники научатся создавать лаконичные графические символы, разовьют визуальное мышление и получат навыки работы с графическими редакторами. Каждый создаст собственную коллекцию знаков, которые можно использовать в дизайне и других сферах искусства. Мастер-класс способствует формированию художественного вкуса и навыков творческого проектирования в сфере просвещения. </p><p> Принимаются организованные группы от 8 человек.</p>",
+  "images": [
+    {
+      "url": "https://cdn.culture.ru/images/e99968b1-3ec6-5778-8d71-23ed56dbfbf5",
+      "author": "Автор школы креативных индустрий",
+      "source": "Авторшколыкреативныхиндустрий",
+      "license": null,
+      "width": 2048,
+      "height": 1365,
+      "color": "a29a98"
+    }
+  ],
+  "languages": [
+    "ru"
+  ],
+  "is_permanent": false,
+  "ticket_url": "https://iframeab-pre7341.intickets.ru/seance/75999378/?locale=ru_RU",
+  "accessibility": {},
+  "occurrences": [
+    {
+      "id": "01a19c9d-5fd8-7aa7-a19f-4a701523979d",
+      "venue": {
+        "id": "01a19c9d-5921-708e-bd41-91da19a9bdc5",
+        "name": "Школа креативных индустрий г. Уфы",
+        "address": "Респ. Башкортостан, г. Уфа, ул. Бакалинская, д. 64/5",
+        "geo": [
+          54.71996,
+          55.988479
+        ],
+        "municipality_id": "ufa",
+        "municipality": "Өфө"
+      },
+      "starts_at": "2026-11-02T10:00:00+05:00",
+      "ends_at": "2026-11-02T20:00:00+05:00",
+      "is_range": false,
+      "status": "scheduled",
+      "status_reason": null,
+      "previous_starts_at": null,
+      "availability": "unknown",
+      "ticket_url": "https://iframeab-pre7341.intickets.ru/seance/75999378/?locale=ru_RU",
+      "more_dates": 0,
+      "distance_km": null,
+      "reasons": [],
+      "freshness": "fresh"
+    },
+    {
+      "id": "01a19c9d-5fd8-7b4d-abc0-7b7cba9d6805",
+      "venue": {
+        "id": "01a19c9d-5921-708e-bd41-91da19a9bdc5",
+        "name": "Школа креативных индустрий г. Уфы",
+        "address": "Респ. Башкортостан, г. Уфа, ул. Бакалинская, д. 64/5",
+        "geo": [
+          54.71996,
+          55.988479
+        ],
+        "municipality_id": "ufa",
+        "municipality": "Өфө"
+      },
+      "starts_at": "2026-11-03T10:00:00+05:00",
+      "ends_at": "2026-11-03T20:00:00+05:00",
+      "is_range": false,
+      "status": "scheduled",
+      "status_reason": null,
+      "previous_starts_at": null,
+      "availability": "unknown",
+      "ticket_url": "https://iframeab-pre7341.intickets.ru/seance/75999378/?locale=ru_RU",
+      "more_dates": 0,
+      "distance_km": null,
+      "reasons": [],
+      "freshness": "fresh"
+    }
+  ],
+  "provenance": {
+    "trust_level": "official",
+    "sources": [
+      {
+        "id": "culture_ru",
+        "title": "Культура.РФ / PRO.Культура.РФ",
+        "url": "https://www.culture.ru/events/7275032/master-klass-po-iskusstvu-maloi-graficheskoi-formy"
+      }
+    ],
+    "last_verified_at": "2026-11-02T19:46:00+05:00",
+    "freshness": "fresh"
+  },
+  "history": [
+    {
+      "at": "2026-11-02T19:15:21+05:00",
+      "kind": "created",
+      "field": null,
+      "old": null,
+      "new": {
+        "title": "Мастер-класс по искусству малой графической формы"
+      },
+      "text": "Событие добавлено в афишу",
+      "source": "culture_ru"
+    }
+  ],
+  "source_url": "https://www.culture.ru/events/7275032/master-klass-po-iskusstvu-maloi-graficheskoi-formy",
+  "quality_score": 0.75
+}

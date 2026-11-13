@@ -1,0 +1,631 @@
+{
+  "items": [
+    {
+      "id": "01a19c9d-7bad-7481-862d-d5fafc3ea10d",
+      "event": {
+        "id": "01a19c9d-7bab-7453-bbf5-74ef6ada5e32",
+        "title": "Викторина «В гостях у осенины»",
+        "summary": "Для всех юных знатоков природы и любителей осенних загадок состоится увлекательная викторина «В гостях у Осенины»! Это отличная возможность для детей весело и с пользой провести время, узнать что-то новое об осени и проявить свои знания.",
+        "categories": [
+          "education",
+          "kids"
+        ],
+        "tags": [
+          "accessible",
+          "free"
+        ],
+        "age_rating": 6,
+        "pushkin_card": false,
+        "price": {
+          "min": "0.00",
+          "max": "0.00",
+          "is_free": true,
+          "currency": "RUB"
+        },
+        "image": {
+          "url": "https://cdn.culture.ru/images/5dd8f20d-9e57-5bdf-8696-fc9cbfc9484a",
+          "author": "яндекс",
+          "source": "https://ya.ru/images/search?img_url=https%3A%2F%2Fcdn.culture.ru%2Fimages%2F04d9d794-b07f-53a6-844d-985573544955&amp;lr=125969&amp;pos=19&amp;rpt=simage&amp;search_client=unknown&amp;source=serp&amp;stype=image&amp;text=картинки%20викторина%20в%20гостях%20у%20осенины",
+          "license": null,
+          "width": 1280,
+          "height": 720,
+          "color": "d6a864"
+        },
+        "organization": "МБУК Районный дом культуры МР Хайбуллинский район Республики Башкортостан"
+      },
+      "venue": {
+        "id": "01a19c9d-65a7-7979-8439-607b54e27aed",
+        "name": "Новозирганский сельский дом культуры",
+        "address": "Респ. Башкортостан, Хайбуллинский р-н., с. Новый Зирган, ул. З.Баракатова, д. 43",
+        "geo": [
+          51.80137679864155,
+          58.29442234512425
+        ],
+        "municipality_id": "haybullinskiy-rayon",
+        "municipality": "Хайбуллинский район"
+      },
+      "starts_at": "2026-11-02T10:00:00+05:00",
+      "ends_at": "2026-11-02T21:00:00+05:00",
+      "is_range": false,
+      "status": "scheduled",
+      "status_reason": null,
+      "previous_starts_at": null,
+      "availability": "unknown",
+      "ticket_url": null,
+      "more_dates": 0,
+      "distance_km": null,
+      "reasons": [
+        "free",
+        "time_fit",
+        "category_match",
+        "new"
+      ],
+      "freshness": "fresh"
+    },
+    {
+      "id": "01a19c9d-84d8-7f7d-ac22-1b209495450d",
+      "event": {
+        "id": "01a19c9d-84d6-76e0-adcd-61bb1c874ee8",
+        "title": "Посиделки «Добрым словом друг друга согреем.",
+        "summary": "У нас пройдут осенние посиделки под названием «Добрым словом друг друга согреем». Хозяйка посиделок расскажет участникам, что такое доброта, и почему нам всем необходимо совершать добрые дела, какой смысл люди вкладывают в слово «добро», и о том, что доброта делает нас…",
+        "categories": [
+          "museum",
+          "kids"
+        ],
+        "tags": [
+          "accessible",
+          "free",
+          "youth"
+        ],
+        "age_rating": 6,
+        "pushkin_card": false,
+        "price": {
+          "min": "0.00",
+          "max": "0.00",
+          "is_free": true,
+          "currency": "RUB"
+        },
+        "image": {
+          "url": "https://cdn.culture.ru/images/801fa0e9-26ab-5b75-9c8a-336fdec12bb0",
+          "author": "ЯНДЕКС",
+          "source": "Культура.РФ",
+          "license": null,
+          "width": 1280,
+          "height": 720,
+          "color": "73a3d1"
+        },
+        "organization": "МБУ районный Дом культуры Давлекановский район РБ"
+      },
+      "venue": {
+        "id": "01a19c9d-84bb-7fa4-83ac-55a335064c94",
+        "name": "Хотомлинский клуб",
+        "address": "Респ. Башкортостан, Давлекановский р-н., д. Хотимля",
+        "geo": [
+          54.13683145431915,
+          55.39915274985955
+        ],
+        "municipality_id": "davlekanovskiy-rayon",
+        "municipality": "Давлекановский район"
+      },
+      "starts_at": "2026-11-02T10:00:00+05:00",
+      "ends_at": "2026-11-02T21:00:00+05:00",
+      "is_range": false,
+      "status": "scheduled",
+      "status_reason": null,
+      "previous_starts_at": null,
+      "availability": "unknown",
+      "ticket_url": null,
+      "more_dates": 0,
+      "distance_km": null,
+      "reasons": [
+        "free",
+        "time_fit",
+        "category_match",
+        "new"
+      ],
+      "freshness": "fresh"
+    },
+    {
+      "id": "01a19c9d-84c8-747f-a097-6743b1505c41",
+      "event": {
+        "id": "01a19c9d-84c6-7035-b0ce-16441495a3d8",
+        "title": "Уличная акция «Мы против террора»",
+        "summary": "В Старокарагушевском СДК пройдет уличная акция «Мы против террора». Готовиться к ней начали заранее: подготовили листовки и памятки, оформили стенд, договорились с учителями, чтобы школьников тоже пригласили.",
+        "categories": [
+          "music",
+          "kids"
+        ],
+        "tags": [
+          "accessible",
+          "free",
+          "youth"
+        ],
+        "age_rating": 0,
+        "pushkin_card": false,
+        "price": {
+          "min": "0.00",
+          "max": "0.00",
+          "is_free": true,
+          "currency": "RUB"
+        },
+        "image": {
+          "url": "https://cdn.culture.ru/images/2f2a97f0-633f-5c52-a91f-59ddf79cbd2a",
+          "author": "Султанова Роза Фадисовна",
+          "source": "из сити интернет",
+          "license": null,
+          "width": 1024,
+          "height": 686,
+          "color": "c3abb9"
+        },
+        "organization": "МАУ «Бураевский районный Дом культуры им. Рауфы Галиевой»"
+      },
+      "venue": {
+        "id": "01a19c9d-84c5-7868-8d86-e0d3f5398362",
+        "name": "Старокарагушевский дом культуры",
+        "address": "Респ. Башкортостан, Бураевский р-н., д. Старокарагушево, ул. Мира, д. 10",
+        "geo": [
+          55.742595,
+          55.800875
+        ],
+        "municipality_id": "buraevskiy-rayon",
+        "municipality": "Бураевский район"
+      },
+      "starts_at": "2026-11-02T11:00:00+05:00",
+      "ends_at": "2026-11-02T21:12:00+05:00",
+      "is_range": false,
+      "status": "scheduled",
+      "status_reason": null,
+      "previous_starts_at": null,
+      "availability": "unknown",
+      "ticket_url": null,
+      "more_dates": 0,
+      "distance_km": null,
+      "reasons": [
+        "free",
+        "time_fit",
+        "category_match",
+        "new"
+      ],
+      "freshness": "fresh"
+    },
+    {
+      "id": "01a19c9d-697e-7fe1-9e4f-85ea72df8ef6",
+      "event": {
+        "id": "01a19c9d-697c-7a3c-815e-03329c3f720d",
+        "title": "Мастер класс «Рукоделие без границ»",
+        "summary": "Работники культуры готовятся к проведению творческого конкурса декоративно-прикладного искусства. Участники коллективов художественной самодеятельности представят изделия, выполненные своими руками в различных направлениях творчества.",
+        "categories": [
+          "museum",
+          "kids"
+        ],
+        "tags": [
+          "accessible",
+          "free",
+          "youth"
+        ],
+        "age_rating": 0,
+        "pushkin_card": false,
+        "price": {
+          "min": "0.00",
+          "max": "0.00",
+          "is_free": true,
+          "currency": "RUB"
+        },
+        "image": {
+          "url": "https://cdn.culture.ru/images/14e24146-b8a4-545e-b556-6ece50852ea4",
+          "author": "Неизвестен",
+          "source": "Архив автора",
+          "license": null,
+          "width": 2048,
+          "height": 1152,
+          "color": "68576d"
+        },
+        "organization": "МБУ Централизованная клубная система МР Кугарчинский район РБ"
+      },
+      "venue": {
+        "id": "01a19c9d-6362-74eb-9bfc-d5b03c156021",
+        "name": "Исимовский сельский многофункциональный клуб",
+        "address": "Респ. Башкортостан, Кугарчинский р-н., с. Исимово, ул. 40 лет Победы,  д 26А",
+        "geo": [
+          52.542742,
+          56.506466
+        ],
+        "municipality_id": "kugarchinskiy-rayon",
+        "municipality": "Кугарчинский район"
+      },
+      "starts_at": "2026-11-02T14:00:00+05:00",
+      "ends_at": "2026-11-02T21:00:00+05:00",
+      "is_range": false,
+      "status": "scheduled",
+      "status_reason": null,
+      "previous_starts_at": null,
+      "availability": "unknown",
+      "ticket_url": null,
+      "more_dates": 0,
+      "distance_km": null,
+      "reasons": [
+        "free",
+        "time_fit",
+        "category_match",
+        "new"
+      ],
+      "freshness": "fresh"
+    },
+    {
+      "id": "01a19cb8-8d2a-7931-a348-81807447dffd",
+      "event": {
+        "id": "01a19cb8-8d16-78c6-9358-533a6c385401",
+        "title": "Беседа «Жизнь прекрасна не трать напрасно»",
+        "summary": "Беседа посвящена теме профилактики вредных привычек у подростков, таких как алкоголизм, курение, наркомания и игромания, а также пропаганде здорового образа жизни.",
+        "categories": [
+          "education",
+          "kids"
+        ],
+        "tags": [
+          "accessible",
+          "free"
+        ],
+        "age_rating": 12,
+        "pushkin_card": false,
+        "price": {
+          "min": "0.00",
+          "max": "0.00",
+          "is_free": true,
+          "currency": "RUB"
+        },
+        "image": {
+          "url": "https://cdn.culture.ru/images/988720ba-1887-5e5f-8df6-d8c4e79837aa",
+          "author": "неизвестен",
+          "source": "https://kasheloff.ru/photos/9-federalniyx-universitetov/18",
+          "license": null,
+          "width": 2048,
+          "height": 1120,
+          "color": "8a6b5e"
+        },
+        "organization": "МАУ «Культурно-досуговый центр» муниципального района Абзелиловский район Республики Башкортостан"
+      },
+      "venue": {
+        "id": "01a19cb8-6554-7051-88ee-4bfe45e873df",
+        "name": "Саиткуловский сельский клуб",
+        "address": "Респ. Башкортостан, Абзелиловский р-н., д. Саиткулово, ул. Акташ, стр. 3",
+        "geo": [
+          53.438680343131665,
+          58.31392731486714
+        ],
+        "municipality_id": "abzelilovskii-raion",
+        "municipality": "Абзелиловский район"
+      },
+      "starts_at": "2026-11-02T18:00:00+05:00",
+      "ends_at": "2026-11-02T20:05:00+05:00",
+      "is_range": false,
+      "status": "scheduled",
+      "status_reason": null,
+      "previous_starts_at": null,
+      "availability": "unknown",
+      "ticket_url": null,
+      "more_dates": 0,
+      "distance_km": null,
+      "reasons": [
+        "free",
+        "time_fit",
+        "category_match",
+        "new"
+      ],
+      "freshness": "fresh"
+    },
+    {
+      "id": "01a19c9d-84be-7f1c-8766-5bb60b4cba76",
+      "event": {
+        "id": "01a19c9d-84bc-78e2-adde-3c4f45f0b7b8",
+        "title": "Выставка рисунков «Мои Дедушка и Бабушка»",
+        "summary": "Добрей людей на свете я не знаю, Чем бабушка и дедушка мои. Они всегда заботой окружают, Купают в своей искренней любви У нас состоится выставка детских рисунков в честь уважения и почитания их дорогих и любимых бабушек и дедушек.",
+        "categories": [
+          "education",
+          "kids"
+        ],
+        "tags": [
+          "free",
+          "youth"
+        ],
+        "age_rating": 6,
+        "pushkin_card": false,
+        "price": {
+          "min": "0.00",
+          "max": "0.00",
+          "is_free": true,
+          "currency": "RUB"
+        },
+        "image": {
+          "url": "https://cdn.culture.ru/images/04b3f627-3aef-5db0-b1d1-bc2b3ad969b5",
+          "author": "ЯНДЕКС",
+          "source": "Культура.РФ",
+          "license": null,
+          "width": 960,
+          "height": 720,
+          "color": "a5a19b"
+        },
+        "organization": "МБУ районный Дом культуры Давлекановский район РБ"
+      },
+      "venue": {
+        "id": "01a19c9d-84bb-7fa4-83ac-55a335064c94",
+        "name": "Хотомлинский клуб",
+        "address": "Респ. Башкортостан, Давлекановский р-н., д. Хотимля",
+        "geo": [
+          54.13683145431915,
+          55.39915274985955
+        ],
+        "municipality_id": "davlekanovskiy-rayon",
+        "municipality": "Давлекановский район"
+      },
+      "starts_at": "2026-11-02T10:00:00+05:00",
+      "ends_at": "2026-11-02T21:00:00+05:00",
+      "is_range": false,
+      "status": "scheduled",
+      "status_reason": null,
+      "previous_starts_at": null,
+      "availability": "unknown",
+      "ticket_url": null,
+      "more_dates": 0,
+      "distance_km": null,
+      "reasons": [
+        "free",
+        "time_fit",
+        "category_match",
+        "new"
+      ],
+      "freshness": "fresh"
+    },
+    {
+      "id": "01a19c9d-7f4d-7773-983a-d7120f6208d6",
+      "event": {
+        "id": "01a19c9d-7f4b-713b-bc86-d0f59f021c18",
+        "title": "Танцевальный кружок«Рвезылык»",
+        "summary": "В сельском клубе продолжает работу детский танцевальный кружок , где участникам прививается любовь и уважение к творчеству своего народа, участники коллектива в форме доносят искусство марийского народа до зрителя.",
+        "categories": [
+          "education",
+          "kids"
+        ],
+        "tags": [
+          "free",
+          "youth"
+        ],
+        "age_rating": 12,
+        "pushkin_card": false,
+        "price": {
+          "min": "0.00",
+          "max": "0.00",
+          "is_free": true,
+          "currency": "RUB"
+        },
+        "image": {
+          "url": "https://cdn.culture.ru/images/2864dc92-9191-5343-95f8-223dd8d6890b",
+          "author": "Байгазова Татьяна Владимировна",
+          "source": "https://pro.culture.ru/uploads/8f43738327104a697691b7214d5cebe2.jpg",
+          "license": null,
+          "width": 1280,
+          "height": 960,
+          "color": "826e54"
+        },
+        "organization": "МБУ «Мишкинский районный Дворец культуры» МР Мишкинский район Республики Башкортостан"
+      },
+      "venue": {
+        "id": "01a19c9d-6ac9-7d18-a767-51417a0b1b54",
+        "name": "Староарзаматовский сельский клуб",
+        "address": "Респ. Башкортостан, Мишкинский р-н., д. Староарзаматово, ул. Яныша Ялкайна, д. 58",
+        "geo": [
+          55.622227524065,
+          56.10039596078688
+        ],
+        "municipality_id": "mishkinskiy-rayon",
+        "municipality": "Мишкинский район"
+      },
+      "starts_at": "2026-11-02T10:00:00+05:00",
+      "ends_at": "2026-11-02T21:00:00+05:00",
+      "is_range": false,
+      "status": "scheduled",
+      "status_reason": null,
+      "previous_starts_at": null,
+      "availability": "unknown",
+      "ticket_url": null,
+      "more_dates": 0,
+      "distance_km": null,
+      "reasons": [
+        "free",
+        "time_fit",
+        "category_match",
+        "new"
+      ],
+      "freshness": "fresh"
+    },
+    {
+      "id": "01a19c9d-7f27-7346-8377-7602b5acb6d3",
+      "event": {
+        "id": "01a19c9d-7f24-78fa-a558-1ae221fb97da",
+        "title": "Танцевальный кружок «Улыбочки»",
+        "summary": "В сельском клубе работает детский танцевальный кружок. При создании танцевального кружка «Улыбочки» перед руководителем стояла цель: воспитание любви и уважения к творчеству своего народа, донести искусство марийского народа до зрителя.",
+        "categories": [
+          "education",
+          "kids"
+        ],
+        "tags": [
+          "free"
+        ],
+        "age_rating": 6,
+        "pushkin_card": false,
+        "price": {
+          "min": "0.00",
+          "max": "0.00",
+          "is_free": true,
+          "currency": "RUB"
+        },
+        "image": {
+          "url": "https://cdn.culture.ru/images/74dbb27d-6d60-5cdd-8594-ed0bc6fd21aa",
+          "author": "Байгазова Татьяна Владимировна",
+          "source": "https://pro.culture.ru/uploads/603ae1a5e440a32e618f8cc3d1766950.jpg",
+          "license": null,
+          "width": 1824,
+          "height": 1368,
+          "color": "777b6f"
+        },
+        "organization": "МБУ «Мишкинский районный Дворец культуры» МР Мишкинский район Республики Башкортостан"
+      },
+      "venue": {
+        "id": "01a19c9d-6ac9-7d18-a767-51417a0b1b54",
+        "name": "Староарзаматовский сельский клуб",
+        "address": "Респ. Башкортостан, Мишкинский р-н., д. Староарзаматово, ул. Яныша Ялкайна, д. 58",
+        "geo": [
+          55.622227524065,
+          56.10039596078688
+        ],
+        "municipality_id": "mishkinskiy-rayon",
+        "municipality": "Мишкинский район"
+      },
+      "starts_at": "2026-11-02T10:00:00+05:00",
+      "ends_at": "2026-11-02T21:00:00+05:00",
+      "is_range": false,
+      "status": "scheduled",
+      "status_reason": null,
+      "previous_starts_at": null,
+      "availability": "unknown",
+      "ticket_url": null,
+      "more_dates": 0,
+      "distance_km": null,
+      "reasons": [
+        "free",
+        "time_fit",
+        "category_match",
+        "new"
+      ],
+      "freshness": "fresh"
+    },
+    {
+      "id": "01a19c9d-8465-7d30-bf33-c0eb148ecf67",
+      "event": {
+        "id": "01a19c9d-8463-7849-8703-1f4ed61b5a69",
+        "title": "«Единым духом — сильны»",
+        "summary": "День народного единства, который отмечаем ежегодно 4 ноября, — это не просто ещё одна дата в календаре. Это праздник, который напоминает о том, как важно держаться вместе, поддерживать друг друга и помнить: сила народа — в сплочённости.",
+        "categories": [
+          "folk",
+          "kids"
+        ],
+        "tags": [
+          "free"
+        ],
+        "age_rating": 0,
+        "pushkin_card": false,
+        "price": {
+          "min": "0.00",
+          "max": "0.00",
+          "is_free": true,
+          "currency": "RUB"
+        },
+        "image": {
+          "url": "https://cdn.culture.ru/images/e80ebdaa-0d9f-5dc7-9331-291b15a942a7",
+          "author": "интернет",
+          "source": "https://цбс-белгород.рф/2024/11/01/edinym-duhom-my-silny-3/",
+          "license": null,
+          "width": 960,
+          "height": 640,
+          "color": "b8b2b5"
+        },
+        "organization": "МБУ «Центральная районная библиотека» МР Учалинский район РБ"
+      },
+      "venue": {
+        "id": "01a19c9d-8462-7f54-bf11-edc24ee99ebf",
+        "name": "Библиотека с. Имангулово",
+        "address": "Респ. Башкортостан, Учалинский р-н., с. Имангулово, ул. Центральная, д. 49",
+        "geo": [
+          54.27412641085861,
+          59.32204604130673
+        ],
+        "municipality_id": "uchalinskiy-rayon",
+        "municipality": "Учалинский район"
+      },
+      "starts_at": "2026-11-02T10:00:00+05:00",
+      "ends_at": "2026-11-02T21:00:00+05:00",
+      "is_range": false,
+      "status": "scheduled",
+      "status_reason": null,
+      "previous_starts_at": null,
+      "availability": "unknown",
+      "ticket_url": null,
+      "more_dates": 0,
+      "distance_km": null,
+      "reasons": [
+        "free",
+        "time_fit",
+        "category_match",
+        "new"
+      ],
+      "freshness": "fresh"
+    },
+    {
+      "id": "01a19c9d-8118-703c-8dea-dc2415f2daf9",
+      "event": {
+        "id": "01a19c9d-8115-7c70-b574-6b79de6097ad",
+        "title": "Развлекательные игры «күңелле бала саҡ»",
+        "summary": "В сельском клубе для детей пройдет веселая игровая программа «Күңелле бала саҡ», наполненная забавными заданиями, подвижными играми и дружеским общением. Ребята примут участие в эстафетах и конкурсах на ловкость, разгадают загадки, выполнят задания на внимание и смекалку.",
+        "categories": [
+          "education",
+          "kids"
+        ],
+        "tags": [
+          "free"
+        ],
+        "age_rating": 6,
+        "pushkin_card": false,
+        "price": {
+          "min": "0.00",
+          "max": "0.00",
+          "is_free": true,
+          "currency": "RUB"
+        },
+        "image": {
+          "url": "https://cdn.culture.ru/images/c0b878e4-cda4-5905-8099-137625b0f6c3",
+          "author": "Неизвестный",
+          "source": "https://molti-shop.ru/info/articles/2025/letnie_igrushki_chem_zanyat_rebyenka_na_ulitse_bez_gadzhetov/",
+          "license": null,
+          "width": 1536,
+          "height": 1024,
+          "color": "7b7222"
+        },
+        "organization": "МАУ «Культурно-досуговый центр» муниципального района Абзелиловский район Республики Башкортостан"
+      },
+      "venue": {
+        "id": "01a19c9d-8115-74ad-a6ac-517b1de80163",
+        "name": "Рахметовский сельский клуб",
+        "address": "Респ. Башкортостан, Абзелиловский р-н., д. Рахметово, ул. Заки Хасанова, д. 16",
+        "geo": [
+          53.823978,
+          58.886022
+        ],
+        "municipality_id": "abzelilovskii-raion",
+        "municipality": "Абзелиловский район"
+      },
+      "starts_at": "2026-11-02T12:00:00+05:00",
+      "ends_at": "2026-11-02T21:00:00+05:00",
+      "is_range": false,
+      "status": "scheduled",
+      "status_reason": null,
+      "previous_starts_at": null,
+      "availability": "unknown",
+      "ticket_url": null,
+      "more_dates": 0,
+      "distance_km": null,
+      "reasons": [
+        "free",
+        "time_fit",
+        "category_match",
+        "new"
+      ],
+      "freshness": "fresh"
+    }
+  ],
+  "total": 822,
+  "next_cursor": "MTA",
+  "applied": {
+    "date_from": "2026-11-02",
+    "date_to": "2026-11-08",
+    "timezone": "Asia/Yekaterinburg"
+  }
+}

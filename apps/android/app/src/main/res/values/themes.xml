@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Сплэш (core-splashscreen): ромб на «холсте»/«бархате» из токенов -->
+    <style name="Theme.Afisha.Splash" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/afisha_bg</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_splash</item>
+        <item name="postSplashScreenTheme">@style/Theme.Afisha</item>
+    </style>
+
+    <!-- AppCompat нужен для смены языка внутри приложения на Android < 13 -->
+    <style name="Theme.Afisha" parent="Theme.AppCompat.DayNight.NoActionBar">
+        <item name="android:windowBackground">@color/afisha_bg</item>
+        <item name="colorPrimary">@color/afisha_accent</item>
+        <item name="colorAccent">@color/afisha_accent</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+    </style>
+</resources>

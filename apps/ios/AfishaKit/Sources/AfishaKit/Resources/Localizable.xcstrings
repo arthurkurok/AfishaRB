@@ -1,0 +1,5082 @@
+{
+  "sourceLanguage": "ru",
+  "strings": {
+    "about.fonts": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Шрифты Golos Text и Commissioner — лицензия SIL Open Font License 1.1."
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Golos Text һәм Commissioner шрифттары — SIL Open Font License 1.1 лицензияһы."
+          }
+        }
+      }
+    },
+    "about.sources": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Данные — из PRO.Культура.РФ, сайтов учреждений и кабинета учреждения. У каждого события видно источник и время проверки."
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Мәғлүмәттәр — PRO.Культура.РФ, учреждение сайттарынан һәм учреждение кабинетынан. Һәр сараның сығанағы һәм тикшереү ваҡыты күренә."
+          }
+        }
+      }
+    },
+    "about.text": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "«Тамаша» — единая достоверная афиша культурных событий Республики Башкортостан: театры, концерты, музеи, праздники и лекции во всех городах и районах."
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "«Тамаша» — Башҡортостан Республикаһы мәҙәни сараларының берҙәм ышаныслы афишаһы: бөтә ҡалаларҙа һәм райондарҙа театрҙар, концерттар, музейҙар, байрамдар һәм лекциялар."
+          }
+        }
+      }
+    },
+    "about.translation": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Перевод интерфейса на башкирский язык выполнен командой проекта. Заметили неточность — напишите нам, правки принимаются."
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Интерфейсты башҡорт теленә тәржемәне проект командаһы башҡарҙы. Хата күрһәгеҙ — яҙығыҙ, төҙәтмәләр ҡабул ителә."
+          }
+        }
+      }
+    },
+    "about.translation.suggest": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Предложить правку перевода"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Тәржемәгә төҙәтмә тәҡдим итеү"
+          }
+        }
+      }
+    },
+    "ago.days": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld день назад"
+                }
+              },
+              "few": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld дня назад"
+                }
+              },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld дней назад"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld дня назад"
+                }
+              }
+            }
+          }
+        },
+        "ba": {
+          "variations": {
+            "plural": {
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld көн элек"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "ago.hours": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld ч назад"
+                }
+              },
+              "few": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld ч назад"
+                }
+              },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld ч назад"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld ч назад"
+                }
+              }
+            }
+          }
+        },
+        "ba": {
+          "variations": {
+            "plural": {
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld сәғәт элек"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "ago.minutes": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld мин назад"
+                }
+              },
+              "few": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld мин назад"
+                }
+              },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld мин назад"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld мин назад"
+                }
+              }
+            }
+          }
+        },
+        "ba": {
+          "variations": {
+            "plural": {
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld минут элек"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "ago.now": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "только что"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "яңы ғына"
+          }
+        }
+      }
+    },
+    "app.name": {
+      "comment": "Бренд",
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Тамаша"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Тамаша"
+          }
+        }
+      }
+    },
+    "app.tagline": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Афиша культуры Башкортостана"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Башҡортостан мәҙәниәте афишаһы"
+          }
+        }
+      }
+    },
+    "card.more_dates": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "ещё %lld дата"
+                }
+              },
+              "few": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "ещё %lld даты"
+                }
+              },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "ещё %lld дат"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "ещё %lld даты"
+                }
+              }
+            }
+          }
+        },
+        "ba": {
+          "variations": {
+            "plural": {
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "тағы %lld көн"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "card.pushkin": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Пушкинская карта"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Пушкин картаһы"
+          }
+        }
+      }
+    },
+    "card.pushkin.spoken": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "по Пушкинской карте"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Пушкин картаһы менән"
+          }
+        }
+      }
+    },
+    "category.cinema": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Кино"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Кино"
+          }
+        }
+      }
+    },
+    "category.education": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Лекции и встречи"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Лекциялар һәм осрашыуҙар"
+          }
+        }
+      }
+    },
+    "category.folk": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Народная культура и праздники"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Халыҡ мәҙәниәте һәм байрамдар"
+          }
+        }
+      }
+    },
+    "category.kids": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Детям"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Балаларға"
+          }
+        }
+      }
+    },
+    "category.museum": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Музеи и выставки"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Музейҙар һәм күргәҙмәләр"
+          }
+        }
+      }
+    },
+    "category.music": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Музыка"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Музыка"
+          }
+        }
+      }
+    },
+    "category.theatre": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Театр"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Театр"
+          }
+        }
+      }
+    },
+    "city.change.hint": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Выбрать другой город или район"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Башҡа ҡала йәки район һайлау"
+          }
+        }
+      }
+    },
+    "city.choose": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Выберите город"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ҡаланы һайлағыҙ"
+          }
+        }
+      }
+    },
+    "city.current": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Город: %@"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ҡала: %@"
+          }
+        }
+      }
+    },
+    "city.default": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Уфа"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Өфө"
+          }
+        }
+      }
+    },
+    "city.detect": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Определить по геопозиции"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Урын буйынса билдәләү"
+          }
+        }
+      }
+    },
+    "city.list": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Города и районы"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ҡалалар һәм райондар"
+          }
+        }
+      }
+    },
+    "city.search": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Уфа, Өфө, Стерлитамак…"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Өфө, Уфа, Стәрлетамаҡ…"
+          }
+        }
+      }
+    },
+    "common.close": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Закрыть"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ябыу"
+          }
+        }
+      }
+    },
+    "common.collapse": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Свернуть"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Йыйыу"
+          }
+        }
+      }
+    },
+    "common.expand": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Читать полностью"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Тулыһынса уҡыу"
+          }
+        }
+      }
+    },
+    "common.retry": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Повторить"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ҡабатлау"
+          }
+        }
+      }
+    },
+    "common.show_all": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Все"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Барыһы"
+          }
+        }
+      }
+    },
+    "count.events": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld событие"
+                }
+              },
+              "few": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld события"
+                }
+              },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld событий"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld события"
+                }
+              }
+            }
+          }
+        },
+        "ba": {
+          "variations": {
+            "plural": {
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld сара"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "date.today": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Сегодня"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Бөгөн"
+          }
+        }
+      }
+    },
+    "date.today.lower": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "сегодня"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "бөгөн"
+          }
+        }
+      }
+    },
+    "date.tomorrow": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Завтра"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Иртәгә"
+          }
+        }
+      }
+    },
+    "date.tomorrow.lower": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "завтра"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "иртәгә"
+          }
+        }
+      }
+    },
+    "date.until": {
+      "comment": "Выставка идёт до даты",
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "до %@"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ көнөнә тиклем"
+          }
+        }
+      }
+    },
+    "distance.km": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ км"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ км"
+          }
+        }
+      }
+    },
+    "distance.m": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld м"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld м"
+          }
+        }
+      }
+    },
+    "error.not_found": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Событие не найдено. Возможно, его убрали из афиши."
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Сара табылманы. Бәлки, уны афишанан алғандарҙыр."
+          }
+        }
+      }
+    },
+    "error.offline": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Не получается связаться с сервером. Избранное доступно без сети."
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Сервер менән бәйләнеп булмай. Һайланғандар селтәрһеҙ ҙә асыла."
+          }
+        }
+      }
+    },
+    "error.server": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Сервер ответил ошибкой. Попробуйте ещё раз чуть позже."
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Серверҙа хата булды. Бераҙҙан ҡабатлап ҡарағыҙ."
+          }
+        }
+      }
+    },
+    "event.about": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "О событии"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Сара тураһында"
+          }
+        }
+      }
+    },
+    "event.ask_guide": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Спросить Гида"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Гидтан һорау"
+          }
+        }
+      }
+    },
+    "event.calendar": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "В календарь"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Календарға"
+          }
+        }
+      }
+    },
+    "event.calendar.note": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Добавлено из афиши «Тамаша»"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "«Тамаша» афишаһынан өҫтәлде"
+          }
+        }
+      }
+    },
+    "event.cancelled.refund": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Деньги за билеты возвращает касса продавца."
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Билеттар өсөн аҡсаны һатыусы кассаһы ҡайтара."
+          }
+        }
+      }
+    },
+    "event.languages": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Язык мероприятия"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Сара теле"
+          }
+        }
+      }
+    },
+    "event.map": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Карта: %@"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Карта: %@"
+          }
+        }
+      }
+    },
+    "event.organizer": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Организатор"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ойоштороусы"
+          }
+        }
+      }
+    },
+    "event.photo.author": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Фото: %@"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Фото: %@"
+          }
+        }
+      }
+    },
+    "event.price": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Цена"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Хаҡы"
+          }
+        }
+      }
+    },
+    "event.pushkin.hint": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Можно оплатить Пушкинской картой (14–22 года)."
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Пушкин картаһы менән түләргә була (14–22 йәш)."
+          }
+        }
+      }
+    },
+    "event.register": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Записаться"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Яҙылыу"
+          }
+        }
+      }
+    },
+    "event.report": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Сообщить о неточности"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Хата тураһында хәбәр итеү"
+          }
+        }
+      }
+    },
+    "event.rescheduled.from": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Было: %@"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Элек: %@"
+          }
+        }
+      }
+    },
+    "event.route": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Маршрут"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Маршрут"
+          }
+        }
+      }
+    },
+    "event.share": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Поделиться"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Бүлешеү"
+          }
+        }
+      }
+    },
+    "event.share.story": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Картинка"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Рәсем"
+          }
+        }
+      }
+    },
+    "event.sold_out.hint": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Билетов нет. Иногда билеты возвращаются в продажу — загляните позже."
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Билеттар юҡ. Ҡайһы саҡта билеттар яңынан һатыуға сыға — һуңыраҡ ҡарағыҙ."
+          }
+        }
+      }
+    },
+    "event.tags": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Особенности"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Үҙенсәлектәр"
+          }
+        }
+      }
+    },
+    "event.tickets": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Купить билет"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Билет алыу"
+          }
+        }
+      }
+    },
+    "event.tickets.seller": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Продавец: %@"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Һатыусы: %@"
+          }
+        }
+      }
+    },
+    "event.venue": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Площадка"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Майҙансыҡ"
+          }
+        }
+      }
+    },
+    "favorites.add": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "В избранное"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Һайланғандарға"
+          }
+        }
+      }
+    },
+    "favorites.empty": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Здесь будут сохранённые события"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Бында һаҡланған саралар булыр"
+          }
+        }
+      }
+    },
+    "favorites.empty.action": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Перейти к афише"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Афишаға күсеү"
+          }
+        }
+      }
+    },
+    "favorites.empty.hint": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Нажмите на ромб на карточке — событие сохранится и откроется даже без сети."
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Карточкалағы ромбҡа баҫығыҙ — сара һаҡланыр һәм селтәрһеҙ ҙә асылыр."
+          }
+        }
+      }
+    },
+    "favorites.offline": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Сохранено на устройстве — открывается без интернета"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ҡорамалда һаҡланған — интернетһыҙ асыла"
+          }
+        }
+      }
+    },
+    "favorites.past": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Прошедшие"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Үткәндәр"
+          }
+        }
+      }
+    },
+    "favorites.remove": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Убрать из избранного"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Һайланғандарҙан алыу"
+          }
+        }
+      }
+    },
+    "favorites.upcoming": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Предстоящие"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Алда торғандар"
+          }
+        }
+      }
+    },
+    "filters.accessible": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Доступная среда"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Үтемле мөхит"
+          }
+        }
+      }
+    },
+    "filters.accessible.hint": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Для колясок, тифлокомментарий, РЖЯ — если указано источником"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Коляскалар өсөн, тифлокомментарий, ишарә теле — сығанаҡта күрһәтелһә"
+          }
+        }
+      }
+    },
+    "filters.age": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Возраст"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Йәш"
+          }
+        }
+      }
+    },
+    "filters.categories": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Категории"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Категориялар"
+          }
+        }
+      }
+    },
+    "filters.child": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "С ребёнком"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Бала менән"
+          }
+        }
+      }
+    },
+    "filters.child.chip": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Ребёнку %lld год"
+                }
+              },
+              "few": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Ребёнку %lld года"
+                }
+              },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Ребёнку %lld лет"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Ребёнку %lld года"
+                }
+              }
+            }
+          }
+        },
+        "ba": {
+          "variations": {
+            "plural": {
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Балаға %lld йәш"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "filters.child.hint": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Покажем события с возрастным знаком до %@ включительно"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ йәш билдәһенә тиклемге сараларҙы күрһәтербеҙ"
+          }
+        }
+      }
+    },
+    "filters.date": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Когда"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ҡасан"
+          }
+        }
+      }
+    },
+    "filters.date.custom": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Выбрать даты"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Көндәрҙе һайлау"
+          }
+        }
+      }
+    },
+    "filters.date.from": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "С"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Башы"
+          }
+        }
+      }
+    },
+    "filters.date.to": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "По"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Аҙағы"
+          }
+        }
+      }
+    },
+    "filters.hide_sold_out": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Скрыть распроданные"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Һатылып бөткәндәрҙе йәшереү"
+          }
+        }
+      }
+    },
+    "filters.hide_sold_out.chip": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Без распроданных"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Һатылып бөткәндәрһеҙ"
+          }
+        }
+      }
+    },
+    "filters.more": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ещё"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Тағы"
+          }
+        }
+      }
+    },
+    "filters.near": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Рядом со мной"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Минең янымда"
+          }
+        }
+      }
+    },
+    "filters.near.chip": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "В радиусе %@ км"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ км радиуста"
+          }
+        }
+      }
+    },
+    "filters.place": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Где"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ҡайҙа"
+          }
+        }
+      }
+    },
+    "filters.place.all": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Вся республика"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Бөтә республика"
+          }
+        }
+      }
+    },
+    "filters.price": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Цена"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Хаҡы"
+          }
+        }
+      }
+    },
+    "filters.pushkin.hint": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Для 14–22 лет"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "14–22 йәштәгеләр өсөн"
+          }
+        }
+      }
+    },
+    "filters.radius": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ км"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ км"
+          }
+        }
+      }
+    },
+    "filters.rating.chip": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "До %lld+"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld+ тиклем"
+          }
+        }
+      }
+    },
+    "filters.show": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Показать"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Күрһәтеү"
+          }
+        }
+      }
+    },
+    "filters.show.count": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Показать %lld событие"
+                }
+              },
+              "few": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Показать %lld события"
+                }
+              },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Показать %lld событий"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Показать %lld события"
+                }
+              }
+            }
+          }
+        },
+        "ba": {
+          "variations": {
+            "plural": {
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld сараны күрһәтеү"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "filters.time": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Время суток"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Тәүлек ваҡыты"
+          }
+        }
+      }
+    },
+    "guide.ask_about": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Расскажи об этом событии: %@"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Был сара тураһында һөйлә: %@"
+          }
+        }
+      }
+    },
+    "guide.chip.hint": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Нажмите, чтобы изменить или убрать"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Үҙгәртеү йәки алып ташлау өсөн баҫығыҙ"
+          }
+        }
+      }
+    },
+    "guide.chip.inferred": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Гид предположил: %@"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Гид фараз итте: %@"
+          }
+        }
+      }
+    },
+    "guide.chip.remove": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Убрать условие"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Шартты алып ташлау"
+          }
+        }
+      }
+    },
+    "guide.chip.removed": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Без условия «%@»"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "«%@» шартынан башҡа"
+          }
+        }
+      }
+    },
+    "guide.chip.user": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Вы сказали: %@"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Һеҙ әйттегеҙ: %@"
+          }
+        }
+      }
+    },
+    "guide.example.1": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Куда сходить с ребёнком 5 лет в субботу в Уфе?"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Шәмбе көнө бала менән Өфөлә ҡайҙа барырға?"
+          }
+        }
+      }
+    },
+    "guide.example.2": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Концерт сегодня вечером"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Бөгөн кис концерт"
+          }
+        }
+      }
+    },
+    "guide.example.3": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Бесплатные выставки на выходных"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ял көндәрендә бушлай күргәҙмәләр"
+          }
+        }
+      }
+    },
+    "guide.example.4": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Спектакль по Пушкинской карте до 1000 ₽"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Пушкин картаһы менән спектакль"
+          }
+        }
+      }
+    },
+    "guide.examples": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Например"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Мәҫәлән"
+          }
+        }
+      }
+    },
+    "guide.input": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Спросите, куда сходить…"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ҡайҙа барырға икәнен һорағыҙ…"
+          }
+        }
+      }
+    },
+    "guide.new": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Новый разговор"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Яңы әңгәмә"
+          }
+        }
+      }
+    },
+    "guide.relaxed": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Точных совпадений не было, поэтому я: %@"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Теүәл тура килеүҙәр булманы, шуға күрә: %@"
+          }
+        }
+      }
+    },
+    "guide.rules_mode": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Гид работает в упрощённом режиме — без ИИ, по правилам. События те же, из проверенной афиши, но сложные запросы он понимает хуже."
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Гид ябайлаштырылған режимда эшләй — яһалма интеллектһыҙ, ҡағиҙәләр буйынса. Саралар шул уҡ, тикшерелгән афишанан, әммә ҡатмарлы һорауҙарҙы насарыраҡ аңлай."
+          }
+        }
+      }
+    },
+    "guide.said": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Гид: %@"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Гид: %@"
+          }
+        }
+      }
+    },
+    "guide.send": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Отправить"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ебәреү"
+          }
+        }
+      }
+    },
+    "guide.thinking": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Подбираю варианты…"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Варианттар һайлайым…"
+          }
+        }
+      }
+    },
+    "guide.understood": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Я понял так:"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Мин былай аңланым:"
+          }
+        }
+      }
+    },
+    "guide.welcome.text": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Напишите своими словами, что ищете: день, город, с кем идёте, бюджет. Я подберу только реальные события из афиши."
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Нимә эҙләгәнегеҙҙе үҙ һүҙҙәрегеҙ менән яҙығыҙ: көн, ҡала, кем менән барасаҡһығыҙ, бюджет. Мин афишаның ысын сараларын ғына һайлайым."
+          }
+        }
+      }
+    },
+    "guide.welcome.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Здравствуйте! Я Бал, гид афиши"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Һаумыһығыҙ! Мин — Бал, афиша гиды"
+          }
+        }
+      }
+    },
+    "guide.you.said": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Вы: %@"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Һеҙ: %@"
+          }
+        }
+      }
+    },
+    "home.categories": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Что вам интересно"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Һеҙгә нимә ҡыҙыҡлы"
+          }
+        }
+      }
+    },
+    "home.collection.free": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Бесплатно"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Бушлай"
+          }
+        }
+      }
+    },
+    "home.collection.kids": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Детям"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Балаларға"
+          }
+        }
+      }
+    },
+    "home.collection.pushkin": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Пушкинская карта"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Пушкин картаһы"
+          }
+        }
+      }
+    },
+    "home.feed.empty": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "На этот день событий пока нет."
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Был көнгә әлегә саралар юҡ."
+          }
+        }
+      }
+    },
+    "home.feed.empty.action": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Показать на неделю"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Аҙнаға күрһәтеү"
+          }
+        }
+      }
+    },
+    "home.feed.more": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Все %lld событие"
+                }
+              },
+              "few": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Все %lld события"
+                }
+              },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Все %lld событий"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Все %lld события"
+                }
+              }
+            }
+          }
+        },
+        "ba": {
+          "variations": {
+            "plural": {
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Бөтә %lld сара"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "home.feed.title": {
+      "comment": "Период · город",
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ · %2$@"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ · %2$@"
+          }
+        }
+      }
+    },
+    "home.guide.example": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Например: «куда сходить с ребёнком в субботу до 1000 ₽»"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Мәҫәлән: «шәмбе көнө бала менән Өфөлә ҡайҙа барырға»"
+          }
+        }
+      }
+    },
+    "home.guide.hint": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Откроет чат с Гидом"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Гид менән чатты аса"
+          }
+        }
+      }
+    },
+    "home.guide.prompt": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Спросите, куда сходить"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ҡайҙа барырға икәнен һорағыҙ"
+          }
+        }
+      }
+    },
+    "home.period": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Период"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Осор"
+          }
+        }
+      }
+    },
+    "home.stats": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Сеансов в афише: %1$lld · площадок: %2$lld · городов и районов: %3$lld"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Афишала сеанстар: %1$lld · майҙансыҡтар: %2$lld · ҡалалар һәм райондар: %3$lld"
+          }
+        }
+      }
+    },
+    "home.today": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Сегодня"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Бөгөн"
+          }
+        }
+      }
+    },
+    "intent.today.empty": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@: на сегодня событий не нашлось. Загляните в афишу на выходные."
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@: бөгөнгә саралар табылманы. Ял көндәренә афишаны ҡарағыҙ."
+          }
+        }
+      }
+    },
+    "intent.today.found": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@: сегодня событий — %2$lld. Ближайшее — %3$@, %4$@."
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@: бөгөн саралар — %2$lld. Иң яҡыны — %3$@, %4$@."
+          }
+        }
+      }
+    },
+    "language.ba": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "башкирский"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "башҡорт теле"
+          }
+        }
+      }
+    },
+    "language.en": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "английский"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "инглиз теле"
+          }
+        }
+      }
+    },
+    "language.ru": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "русский"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "рус теле"
+          }
+        }
+      }
+    },
+    "language.tt": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "татарский"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "татар теле"
+          }
+        }
+      }
+    },
+    "location.denied": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Доступ к геопозиции выключен. Включите его в Настройках iOS или выберите город вручную."
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Урынға рөхсәт һүндерелгән. Уны iOS көйләүҙәрендә асығыҙ йәки ҡаланы ҡул менән һайлағыҙ."
+          }
+        }
+      }
+    },
+    "offline.cached": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Нет связи — показываем сохранённое %@"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Бәйләнеш юҡ — %@ һаҡланғанды күрһәтәбеҙ"
+          }
+        }
+      }
+    },
+    "onboarding.start": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Начать"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Башлау"
+          }
+        }
+      }
+    },
+    "onboarding.text": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Выберите язык и город — покажем, что происходит рядом. Всё можно поменять в настройках."
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Телде һәм ҡаланы һайлағыҙ — янығыҙҙа нимә булғанын күрһәтербеҙ. Бөтәһен дә көйләүҙәрҙә үҙгәртергә була."
+          }
+        }
+      }
+    },
+    "onboarding.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Добро пожаловать в «Тамашу»"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "«Тамаша»ға рәхим итегеҙ"
+          }
+        }
+      }
+    },
+    "passport.freshness.stale": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Данные давно не обновлялись — уточните в кассе."
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Мәғлүмәттәр күптән яңыртылманы — кассала аныҡлағыҙ."
+          }
+        }
+      }
+    },
+    "passport.freshness.vanished": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Событие пропало из источника. Модератор проверяет."
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Сара сығанаҡтан юғалды. Модератор тикшерә."
+          }
+        }
+      }
+    },
+    "passport.history": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "История изменений"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Үҙгәрештәр тарихы"
+          }
+        }
+      }
+    },
+    "passport.lead": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Откуда эти данные и когда их проверяли"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Был мәғлүмәттәр ҡайҙан һәм ҡасан тикшерелгән"
+          }
+        }
+      }
+    },
+    "passport.source": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Источник: %@"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Сығанаҡ: %@"
+          }
+        }
+      }
+    },
+    "passport.source.hint": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Откроет страницу источника"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Сығанаҡ битен аса"
+          }
+        }
+      }
+    },
+    "passport.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Паспорт события"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Сара паспорты"
+          }
+        }
+      }
+    },
+    "passport.verified": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Проверено %@"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Тикшерелде: %@"
+          }
+        }
+      }
+    },
+    "price.exact": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ ₽"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ ₽"
+          }
+        }
+      }
+    },
+    "price.exact.spoken": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld рубль"
+                }
+              },
+              "few": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld рубля"
+                }
+              },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld рублей"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld рубля"
+                }
+              }
+            }
+          }
+        },
+        "ba": {
+          "variations": {
+            "plural": {
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld һум"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "price.free": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Бесплатно"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Бушлай"
+          }
+        }
+      }
+    },
+    "price.free.spoken": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "бесплатно"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "бушлай"
+          }
+        }
+      }
+    },
+    "price.from": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "от %@ ₽"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ һумдан"
+          }
+        }
+      }
+    },
+    "price.from.spoken": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "от %lld рубля"
+                }
+              },
+              "few": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "от %lld рублей"
+                }
+              },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "от %lld рублей"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "от %lld рубля"
+                }
+              }
+            }
+          }
+        },
+        "ba": {
+          "variations": {
+            "plural": {
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld һумдан"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "price.range": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@–%2$@ ₽"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@–%2$@ ₽"
+          }
+        }
+      }
+    },
+    "price.upto": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "до %@ ₽"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ һумға тиклем"
+          }
+        }
+      }
+    },
+    "reason.accessible": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "доступная среда"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "үтемле мөхит"
+          }
+        }
+      }
+    },
+    "reason.age_fit": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "подходит по возрасту"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "йәшкә тап килә"
+          }
+        }
+      }
+    },
+    "reason.budget_fit": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "в бюджете"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "бюджетҡа тура килә"
+          }
+        }
+      }
+    },
+    "reason.category_match": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "по теме запроса"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "һорау темаһы буйынса"
+          }
+        }
+      }
+    },
+    "reason.free": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "бесплатно"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "бушлай"
+          }
+        }
+      }
+    },
+    "reason.last_chance": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "последний шанс"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "һуңғы мөмкинлек"
+          }
+        }
+      }
+    },
+    "reason.near": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "рядом"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "яҡында"
+          }
+        }
+      }
+    },
+    "reason.new": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "новое в афише"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "афишала яңы"
+          }
+        }
+      }
+    },
+    "reason.on_bashkir": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "на башкирском"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "башҡортса"
+          }
+        }
+      }
+    },
+    "reason.popular": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "популярно"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "популяр"
+          }
+        }
+      }
+    },
+    "reason.pushkin": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "по Пушкинской карте"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Пушкин картаһы менән"
+          }
+        }
+      }
+    },
+    "reason.text_match": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "совпадает с запросом"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "һорауға тура килә"
+          }
+        }
+      }
+    },
+    "reason.time_fit": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "в нужное время"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "кәрәкле ваҡытта"
+          }
+        }
+      }
+    },
+    "report.comment": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Комментарий"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Аңлатма"
+          }
+        }
+      }
+    },
+    "report.comment.placeholder": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Что не так? Например: начало в 18:00, а не в 19:00"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Нимә дөрөҫ түгел? Мәҫәлән: 19:00 түгел, 18:00-ҙә башлана"
+          }
+        }
+      }
+    },
+    "report.footer": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Сообщение увидит модератор афиши. Мы проверим и исправим карточку."
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Хәбәрҙе афиша модераторы күрер. Беҙ тикшерербеҙ һәм карточканы төҙәтербеҙ."
+          }
+        }
+      }
+    },
+    "report.reason": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Что неточно"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Нимә дөрөҫ түгел"
+          }
+        }
+      }
+    },
+    "report.reason.cancelled": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Событие отменено"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Сара юҡҡа сығарылған"
+          }
+        }
+      }
+    },
+    "report.reason.other": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Другое"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Башҡа"
+          }
+        }
+      }
+    },
+    "report.reason.wrong_place": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Неверное место"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Урыны дөрөҫ түгел"
+          }
+        }
+      }
+    },
+    "report.reason.wrong_price": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Неверная цена"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Хаҡы дөрөҫ түгел"
+          }
+        }
+      }
+    },
+    "report.reason.wrong_time": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Неверные дата или время"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Көнө йәки ваҡыты дөрөҫ түгел"
+          }
+        }
+      }
+    },
+    "report.send": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Отправить"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ебәреү"
+          }
+        }
+      }
+    },
+    "report.sent": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Спасибо! Сообщение отправлено модератору."
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Рәхмәт! Хәбәр модераторға ебәрелде."
+          }
+        }
+      }
+    },
+    "route.apple": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apple Карты"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apple Карталар"
+          }
+        }
+      }
+    },
+    "route.dgis": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "2ГИС"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "2ГИС"
+          }
+        }
+      }
+    },
+    "route.yandex": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Яндекс Карты"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Яндекс Карталар"
+          }
+        }
+      }
+    },
+    "rules.1.text": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Подборки, Гид и сортировка «Подходящие» показывают только реальные события из проверенной афиши. Места в выдаче не продаются."
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Һайлауҙар, Гид һәм «Тап килгәндәр» тәртибе тикшерелгән афишаның ысын сараларын ғына күрһәтә. Һөҙөмтәләрҙәге урындар һатылмай."
+          }
+        }
+      }
+    },
+    "rules.1.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Что мы рекомендуем"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Беҙ нимә тәҡдим итәбеҙ"
+          }
+        }
+      }
+    },
+    "rules.2.text": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Только то, что вы указали в запросе и фильтрах: дата, город, возраст ребёнка, бюджет, категории; геопозиция — если вы её разрешили. История просмотров для рекомендаций не используется."
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Һеҙ һорауҙа һәм фильтрҙарҙа күрһәткән мәғлүмәт кенә: көн, ҡала, баланың йәше, бюджет, категориялар; урын — әгәр рөхсәт итһәгеҙ. Ҡарауҙар тарихы тәҡдимдәр өсөн ҡулланылмай."
+          }
+        }
+      }
+    },
+    "rules.2.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Какие сведения используются"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ниндәй мәғлүмәттәр ҡулланыла"
+          }
+        }
+      }
+    },
+    "rules.3.text": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Учитываются совпадение с запросом, время начала, расстояние, цена, возрастной знак и полнота данных события. Под каждой карточкой Гида — причины, почему она в подборке."
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Һорауға тура килеү, башланыу ваҡыты, алыҫлыҡ, хаҡ, йәш билдәһе һәм сара мәғлүмәттәренең тулылығы иҫәпкә алына. Гидтың һәр карточкаһы аҫтында — ни өсөн һайлауға эләгеүенең сәбәптәре."
+          }
+        }
+      }
+    },
+    "rules.3.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Как работает ранжирование"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Тәртипкә һалыу нисек эшләй"
+          }
+        }
+      }
+    },
+    "rules.4.text": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "PRO.Культура.РФ, сайты учреждений культуры и кабинет учреждения. У каждого события есть паспорт с источниками и историей изменений."
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "PRO.Культура.РФ, мәҙәниәт учреждениелары сайттары һәм учреждение кабинеты. Һәр сараның сығанаҡтары һәм үҙгәрештәр тарихы булған паспорты бар."
+          }
+        }
+      }
+    },
+    "rules.4.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Источники данных"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Мәғлүмәт сығанаҡтары"
+          }
+        }
+      }
+    },
+    "rules.5.text": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Владелец сервиса и контакты для вопросов о рекомендациях указаны на странице правил на сайте."
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Хеҙмәттең хужаһы һәм тәҡдимдәр буйынса һорауҙар өсөн бәйләнеш мәғлүмәттәре сайттағы ҡағиҙәләр битендә күрһәтелгән."
+          }
+        }
+      }
+    },
+    "rules.5.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Владелец и контакты"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Хужаһы һәм бәйләнеш"
+          }
+        }
+      }
+    },
+    "rules.full": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Полный текст правил"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ҡағиҙәләрҙең тулы тексты"
+          }
+        }
+      }
+    },
+    "search.empty": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ничего не нашлось"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Бер нәмә лә табылманы"
+          }
+        }
+      }
+    },
+    "search.empty.hint": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Попробуйте другую дату или уберите часть фильтров."
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Башҡа көндө һайлағыҙ йәки фильтрҙарҙың бер өлөшөн алып ташлағыҙ."
+          }
+        }
+      }
+    },
+    "search.filter.remove": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Убрать фильтр: %@"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Фильтрҙы алып ташлау: %@"
+          }
+        }
+      }
+    },
+    "search.filters": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Фильтры"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Фильтрҙар"
+          }
+        }
+      }
+    },
+    "search.filters.count": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Фильтры · %lld"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Фильтрҙар · %lld"
+          }
+        }
+      }
+    },
+    "search.filters.reset": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Сбросить"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Таҙартыу"
+          }
+        }
+      }
+    },
+    "search.found": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Нашлось %lld событие"
+                }
+              },
+              "few": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Нашлось %lld события"
+                }
+              },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Нашлось %lld событий"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Нашлось %lld события"
+                }
+              }
+            }
+          }
+        },
+        "ba": {
+          "variations": {
+            "plural": {
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld сара табылды"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "search.prompt": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Спектакль, концерт, площадка…"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Спектакль, концерт, майҙансыҡ…"
+          }
+        }
+      }
+    },
+    "settings.about": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "О приложении"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ҡушымта тураһында"
+          }
+        }
+      }
+    },
+    "settings.about_project": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "О проекте"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Проект тураһында"
+          }
+        }
+      }
+    },
+    "settings.accessibility": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Удобство"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Уңайлылыҡ"
+          }
+        }
+      }
+    },
+    "settings.api": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Сервер"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Сервер"
+          }
+        }
+      }
+    },
+    "settings.city": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Город"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ҡала"
+          }
+        }
+      }
+    },
+    "settings.language": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Язык"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Тел"
+          }
+        }
+      }
+    },
+    "settings.language.ba_note": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Перевод на башкирский выполнен командой проекта. Правки принимаются — раздел «О проекте»."
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Башҡортсаға тәржемәне проект командаһы башҡарҙы. Төҙәтмәләр ҡабул ителә — «Проект тураһында» бүлеге."
+          }
+        }
+      }
+    },
+    "settings.large_text": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Крупный текст"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Эре текст"
+          }
+        }
+      }
+    },
+    "settings.large_text.hint": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Увеличивает шрифт во всём приложении"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Бөтә ҡушымтала шрифтты ҙурайта"
+          }
+        }
+      }
+    },
+    "settings.recommendations": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Как работают рекомендации"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Тәҡдимдәр нисек эшләй"
+          }
+        }
+      }
+    },
+    "settings.simple": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Режим «Просто»"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "«Ябай» режимы"
+          }
+        }
+      }
+    },
+    "settings.simple.hint": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Крупные кнопки: «Сегодня», «Рядом», «Спросить Гида»"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Эре төймәләр: «Бөгөн», «Яҡында», «Гидтан һорау»"
+          }
+        }
+      }
+    },
+    "settings.version": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Версия"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Версия"
+          }
+        }
+      }
+    },
+    "simple.exit": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Обычный режим"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ғәҙәти режим"
+          }
+        }
+      }
+    },
+    "simple.greeting": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Афиша: %@"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Афиша: %@"
+          }
+        }
+      }
+    },
+    "simple.guide": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Спросить Гида"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Гидтан һорау"
+          }
+        }
+      }
+    },
+    "simple.guide.hint": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Напишите своими словами, что ищете"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Нимә эҙләгәнегеҙҙе үҙ һүҙҙәрегеҙ менән яҙығыҙ"
+          }
+        }
+      }
+    },
+    "simple.near": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Рядом"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Яҡында"
+          }
+        }
+      }
+    },
+    "simple.near.hint": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "События сегодня в 10 км от вас"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Бөгөн һеҙҙән 10 км эсендәге саралар"
+          }
+        }
+      }
+    },
+    "simple.today": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Сегодня"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Бөгөн"
+          }
+        }
+      }
+    },
+    "simple.today.hint": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Что идёт сегодня в вашем городе"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Бөгөн ҡалағыҙҙа нимә бар"
+          }
+        }
+      }
+    },
+    "sort.date": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "По дате"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Көнө буйынса"
+          }
+        }
+      }
+    },
+    "sort.distance": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ближе ко мне"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Миңә яҡынырағы"
+          }
+        }
+      }
+    },
+    "sort.popular": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Популярные"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Популярҙары"
+          }
+        }
+      }
+    },
+    "sort.price": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Сначала дешёвые"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Башта арзандары"
+          }
+        }
+      }
+    },
+    "sort.relevance": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Подходящие"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Тап килгәндәр"
+          }
+        }
+      }
+    },
+    "sort.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Сортировка"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Тәртип"
+          }
+        }
+      }
+    },
+    "status.cancelled": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Отменено"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Юҡҡа сығарылды"
+          }
+        }
+      }
+    },
+    "status.ended": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Прошло"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Үтте"
+          }
+        }
+      }
+    },
+    "status.few_left": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Осталось мало билетов"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Билеттар аҙ ҡалды"
+          }
+        }
+      }
+    },
+    "status.few_left.spoken": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "мало билетов"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "билеттар аҙ"
+          }
+        }
+      }
+    },
+    "status.postponed": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Перенесено, новая дата уточняется"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Күсерелде, яңы көнө аныҡлана"
+          }
+        }
+      }
+    },
+    "status.rescheduled": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Перенесено"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Күсерелде"
+          }
+        }
+      }
+    },
+    "status.rescheduled.to": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Перенесено → %@"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Күсерелде → %@"
+          }
+        }
+      }
+    },
+    "status.sold_out": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Билетов нет"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Билеттар юҡ"
+          }
+        }
+      }
+    },
+    "status.unverified": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Информация уточняется"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Мәғлүмәт аныҡлана"
+          }
+        }
+      }
+    },
+    "tab.favorites": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Избранное"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Һайланғандар"
+          }
+        }
+      }
+    },
+    "tab.guide": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Гид"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Гид"
+          }
+        }
+      }
+    },
+    "tab.home": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Главная"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Баш бит"
+          }
+        }
+      }
+    },
+    "tab.search": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Поиск"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Эҙләү"
+          }
+        }
+      }
+    },
+    "tab.settings": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Настройки"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Көйләүҙәр"
+          }
+        }
+      }
+    },
+    "tag.accessible": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Доступная среда"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Үтемле мөхит"
+          }
+        }
+      }
+    },
+    "tag.excursion": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Экскурсия"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Экскурсия"
+          }
+        }
+      }
+    },
+    "tag.family": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Для всей семьи"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Бөтә ғаилә өсөн"
+          }
+        }
+      }
+    },
+    "tag.festival": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Фестиваль"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Фестиваль"
+          }
+        }
+      }
+    },
+    "tag.free": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Бесплатно"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Бушлай"
+          }
+        }
+      }
+    },
+    "tag.master_class": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Мастер-класс"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Оҫталыҡ дәресе"
+          }
+        }
+      }
+    },
+    "tag.on_bashkir": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "На башкирском языке"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Башҡорт телендә"
+          }
+        }
+      }
+    },
+    "tag.outdoor": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Под открытым небом"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Асыҡ һауала"
+          }
+        }
+      }
+    },
+    "tag.premiere": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Премьера"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Премьера"
+          }
+        }
+      }
+    },
+    "tag.pushkin": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Пушкинская карта"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Пушкин картаһы"
+          }
+        }
+      }
+    },
+    "tag.youth": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Молодёжи"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Йәштәргә"
+          }
+        }
+      }
+    },
+    "time.day": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "День"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Көндөҙ"
+          }
+        }
+      }
+    },
+    "time.evening": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Вечер"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Кис"
+          }
+        }
+      }
+    },
+    "time.morning": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Утро"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Иртә"
+          }
+        }
+      }
+    },
+    "trust.aggregated": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Собрано из открытых источников"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Асыҡ сығанаҡтарҙан йыйылған"
+          }
+        }
+      }
+    },
+    "trust.extracted": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Извлечено автоматически, проверяется"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Автоматик рәүештә алынған, тикшерелә"
+          }
+        }
+      }
+    },
+    "trust.official": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Официальный источник"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Рәсми сығанаҡ"
+          }
+        }
+      }
+    },
+    "trust.official_plus": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Официальный источник, подтверждено учреждением"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Рәсми сығанаҡ, учреждение раҫлаған"
+          }
+        }
+      }
+    },
+    "trust.partner": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Партнёрский источник"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Партнёр сығанағы"
+          }
+        }
+      }
+    },
+    "when.month": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Месяц"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ай"
+          }
+        }
+      }
+    },
+    "when.today": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Сегодня"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Бөгөн"
+          }
+        }
+      }
+    },
+    "when.tomorrow": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Завтра"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Иртәгә"
+          }
+        }
+      }
+    },
+    "when.week": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Неделя"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Аҙна"
+          }
+        }
+      }
+    },
+    "when.weekend": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Выходные"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ял көндәре"
+          }
+        }
+      }
+    },
+    "widget.near": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "рядом"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "яҡында"
+          }
+        }
+      }
+    },
+    "widget.offline": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Нет связи, показаны сохранённые события"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Бәйләнеш юҡ, һаҡланған саралар күрһәтелә"
+          }
+        }
+      }
+    },
+    "widget.today.description": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ближайшие события сегодня в вашем городе или рядом с вами"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Бөгөн ҡалағыҙҙағы йәки янығыҙҙағы иң яҡын саралар"
+          }
+        }
+      }
+    },
+    "widget.today.empty": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Сегодня больше событий нет — загляните в афишу на выходные"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Бөгөн башҡа саралар юҡ — ял көндәренә афишаны ҡарағыҙ"
+          }
+        }
+      }
+    },
+    "widget.today.header": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Сегодня · %@"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Бөгөн · %@"
+          }
+        }
+      }
+    },
+    "widget.today.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Сегодня рядом"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Бөгөн яҡында"
+          }
+        }
+      }
+    }
+  },
+  "version": "1.0"
+}

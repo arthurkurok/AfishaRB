@@ -1,0 +1,66 @@
+.footer {
+  margin-top: auto;
+  background: var(--color-surface-2);
+  border-top: 1px solid var(--color-line);
+  position: relative;
+}
+
+/* Кайма-орнамент по верхнему краю: ряд ромбов (маска задаёт форму, цвет — токен). */
+.footer::before {
+  content: "";
+  position: absolute;
+  inset: -6px 0 auto;
+  height: 12px;
+  background: var(--color-accent);
+  mask:
+    url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%2720%27 height=%2712%27%3E%3Cpath d=%27M10 0l6 6-6 6-6-6z%27/%3E%3C/svg%3E")
+    0 0 / 20px 12px repeat-x;
+  opacity: 0.7;
+}
+
+.inner {
+  display: grid;
+  gap: var(--space-5);
+  padding-block: var(--space-6) var(--space-7);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.name {
+  font-family: var(--font-display-app);
+  font-weight: 800;
+  font-size: var(--type-title-size);
+}
+
+.links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1) var(--space-5);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.links a {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--tap);
+  color: var(--color-ink);
+}
+
+.sources {
+  max-width: 60ch;
+}
+
+@media (min-width: 960px) {
+  .inner {
+    grid-template-columns: auto 1fr;
+    align-items: start;
+  }
+  .sources {
+    grid-column: 1 / -1;
+  }
+}

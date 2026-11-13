@@ -1,0 +1,13 @@
+# Базовый профиль (рукописный стартовый): холодный старт и первая лента главной.
+# Полный профиль генерируется Macrobenchmark-модулем на эталонном устройстве (см. README).
+HSPLru/tamasha/afisha/AfishaApplication;->**(**)**
+HSPLru/tamasha/afisha/MainActivity;->**(**)**
+HSPLru/tamasha/afisha/MainViewModel;->**(**)**
+HSPLru/tamasha/afisha/navigation/**;->**(**)**
+HSPLru/tamasha/afisha/feature/home/**;->**(**)**
+HSPLru/tamasha/afisha/core/designsystem/**;->**(**)**
+HSPLru/tamasha/afisha/core/model/**;->**(**)**
+HSPLru/tamasha/afisha/core/data/**;->**(**)**
+HSPLru/tamasha/afisha/core/network/**;->**(**)**
+HSPLru/tamasha/afisha/api/**;->**(**)**
+Lru/tamasha/afisha/**;

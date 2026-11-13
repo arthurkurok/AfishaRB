@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="home_brand">Тамаша</string>
+    <string name="home_brand_subtitle">Афиша культуры Башкортостана</string>
+    <string name="home_today">Сегодня</string>
+    <string name="home_tomorrow">Завтра</string>
+    <string name="home_weekend">Выходные</string>
+    <string name="home_city_cd">Город: %1$s. Изменить</string>
+    <string name="home_settings">Настройки</string>
+    <string name="home_feed_title">Афиша на %1$s</string>
+    <string name="home_show_all">Все %1$d</string>
+    <string name="home_all">Все</string>
+    <string name="home_empty">На этот день в %1$s пока ничего нет. Посмотрим всю республику?</string>
+    <string name="home_empty_all">На этот день событий пока нет. Загляните в выходные — или спросите Гида.</string>
+    <string name="home_empty_action_city">Вся республика</string>
+    <string name="home_empty_action_guide">Спросить Гида</string>
+    <string name="home_collection_free">Бесплатно на этой неделе</string>
+    <string name="home_collection_kids">С детьми</string>
+    <string name="home_collection_pushkin">По Пушкинской карте</string>
+    <string name="home_collection_on_bashkir">На башкирском языке</string>
+    <string name="home_stats">В афише %1$s событий на %2$s площадках в %3$d городах и районах</string>
+    <string name="home_guide_title">Не знаете, куда пойти?</string>
+    <string name="home_guide_text">Гид подберёт события под ваш день, бюджет и возраст детей.</string>
+    <string name="home_guide_action">Спросить Гида</string>
+    <string name="home_simple_today">Что сегодня</string>
+    <string name="home_simple_near">Рядом со мной</string>
+    <string name="home_simple_guide">Спросить Гида</string>
+    <string name="home_whole_republic">вся республика</string>
+</resources>

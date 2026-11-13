@@ -1,0 +1,176 @@
+.card {
+  --cat: var(--color-category-education);
+  --rh: 84px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: var(--color-surface);
+  border: 1px solid var(--color-line);
+  border-bottom: 4px solid var(--cat);
+  border-radius: var(--radius-l);
+  overflow: hidden;
+  transition:
+    box-shadow var(--motion-base) var(--motion-easing),
+    transform var(--motion-base) var(--motion-easing);
+}
+.card:has(.link:hover) {
+  box-shadow: var(--shadow-2);
+  transform: translateY(-2px);
+}
+.card:has(.link:focus-visible) {
+  outline: var(--focus-ring);
+  outline-offset: 3px;
+}
+
+.media {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  background: var(--color-surface-2);
+  overflow: hidden;
+}
+
+.status {
+  position: absolute;
+  left: var(--space-2);
+  top: var(--space-2);
+  right: var(--space-7);
+  z-index: 1;
+}
+
+/* Дата в ромбе: наполовину заходит на постер, справа от неё — название. */
+.body {
+  display: grid;
+  grid-template-columns: var(--rh) minmax(0, 1fr);
+  grid-template-areas:
+    "date title"
+    "meta meta"
+    "extra extra";
+  column-gap: var(--space-3);
+  row-gap: var(--space-2);
+  padding: var(--space-3) var(--space-4) var(--space-4);
+  flex: 1;
+  align-content: start;
+}
+
+.date {
+  grid-area: date;
+  margin-top: calc(var(--rh) / -2 - var(--space-3));
+  position: relative;
+  z-index: 2;
+}
+
+.title {
+  grid-area: title;
+  align-self: start;
+  font-family: var(--font-text-app);
+  font-size: var(--type-title-size);
+  line-height: var(--type-title-line);
+  font-weight: var(--type-title-weight);
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.link {
+  color: var(--color-ink);
+  text-decoration: none;
+}
+.link:focus-visible {
+  outline: none;
+}
+/* Вся карточка кликабельна, но в доступном дереве — одна ссылка. */
+.link::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+}
+
+.meta {
+  grid-area: meta;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+.body > :not(.date, .title, .meta) {
+  grid-column: 1 / -1;
+  position: relative;
+  z-index: 4;
+}
+
+.place {
+  font-size: var(--type-caption-size);
+  line-height: var(--type-caption-line);
+  color: var(--color-ink-2);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.pushkin {
+  border-color: var(--color-status-rescheduled);
+  color: var(--color-status-rescheduled);
+}
+
+/* Компактная карточка (Mini App, боковые колонки): строка с миниатюрой, дата — текстом в ромбе поменьше. */
+.compact {
+  --rh: 64px;
+  display: grid;
+  grid-template-columns: 104px minmax(0, 1fr);
+  border-bottom-width: 1px;
+  border-left: 4px solid var(--cat);
+  border-radius: var(--radius-m);
+}
+.compact .media {
+  aspect-ratio: auto;
+  height: 100%;
+  min-height: 104px;
+}
+.compact .body {
+  padding: var(--space-3);
+}
+.compact .body {
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-areas:
+    "title"
+    "meta"
+    "extra";
+}
+.compact .date {
+  display: none;
+}
+.when {
+  font-size: var(--type-caption-size);
+  line-height: var(--type-caption-line);
+  font-weight: 600;
+  color: var(--color-ink);
+}
+.compact .title {
+  font-size: var(--type-body-size);
+  line-height: var(--type-body-line);
+}
+
+.card[data-status="cancelled"] .title,
+.card[data-status="ended"] .title {
+  color: var(--color-ink-2);
+}
+
+.skeletonCard {
+  border-bottom-color: var(--color-line);
+}
+.skeletonCard .body {
+  display: block;
+}
+
+@media (max-width: 359px) {
+  .compact {
+    grid-template-columns: 1fr;
+  }
+  .compact .media {
+    aspect-ratio: 16 / 9;
+    min-height: 0;
+  }
+}

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Башкирские строки дизайн-системы. Перевод выполнен командой; правки носителей языка приветствуются. -->
+<resources>
+    <string name="category_theatre">Театр</string>
+    <string name="category_music">Музыка</string>
+    <string name="category_museum">Музейҙар һәм күргәҙмәләр</string>
+    <string name="category_kids">Балаларға</string>
+    <string name="category_folk">Халыҡ мәҙәниәте һәм байрамдар</string>
+    <string name="category_cinema">Кино</string>
+    <string name="category_education">Лекциялар һәм осрашыуҙар</string>
+    <string name="category_short_theatre">Театр</string>
+    <string name="category_short_music">Музыка</string>
+    <string name="category_short_museum">Музейҙар</string>
+    <string name="category_short_kids">Балаларға</string>
+    <string name="category_short_folk">Халыҡ</string>
+    <string name="category_short_cinema">Кино</string>
+    <string name="category_short_education">Лекциялар</string>
+
+    <string name="status_few_left">Билеттар аҙ ҡалды</string>
+    <string name="status_sold_out">Билеттар юҡ</string>
+    <string name="status_rescheduled">Күсерелде</string>
+    <string name="status_rescheduled_to">Күсерелде → %1$s</string>
+    <string name="status_postponed">Күсерелде, яңы көнө аныҡлана</string>
+    <string name="status_cancelled">Юҡҡа сығарылды</string>
+    <string name="status_ended">Үтте</string>
+    <string name="status_unverified">Мәғлүмәт аныҡлана</string>
+
+    <string name="reason_age_fit">Йәшкә тура килә</string>
+    <string name="reason_budget_fit">Бюджетҡа һыя</string>
+    <string name="reason_free">Бушлай</string>
+    <string name="reason_near">Яҡында</string>
+    <string name="reason_time_fit">Уңайлы ваҡыт</string>
+    <string name="reason_category_match">Һеҙҙең тема</string>
+    <string name="reason_pushkin">Пушкин картаһы</string>
+    <string name="reason_accessible">Уңайлы мөхит</string>
+    <string name="reason_popular">Популяр</string>
+    <string name="reason_new">Яңы</string>
+    <string name="reason_last_chance">Һуңғы мөмкинлек</string>
+    <string name="reason_on_bashkir">Башҡортса</string>
+    <string name="reason_text_match">Һорауға тура килә</string>
+
+    <string name="tag_free">Бушлай</string>
+    <string name="tag_pushkin">Пушкин картаһы</string>
+    <string name="tag_premiere">Премьера</string>
+    <string name="tag_family">Бөтә ғаилә өсөн</string>
+    <string name="tag_youth">Йәштәргә</string>
+    <string name="tag_accessible">Уңайлы мөхит</string>
+    <string name="tag_on_bashkir">Башҡорт телендә</string>
+    <string name="tag_outdoor">Асыҡ һауала</string>
+    <string name="tag_master_class">Оҫталыҡ дәресе</string>
+    <string name="tag_excursion">Экскурсия</string>
+    <string name="tag_festival">Фестиваль</string>
+
+    <string name="card_pushkin">Пушкин картаһы</string>
+    <string name="card_age_cd">Йәш сикләүе %1$s</string>
+    <string name="card_open">Асыу</string>
+    <string name="card_illustration_cd">«%1$s» категорияһы иллюстрацияһы</string>
+    <string name="card_image_cd">Афиша: %1$s</string>
+    <plurals name="card_more_dates">
+        <item quantity="one">тағы %d көн</item>
+        <item quantity="other">тағы %d көн</item>
+    </plurals>
+    <string name="favorite_add">Һайланғандарға өҫтәү</string>
+    <string name="favorite_remove">Һайланғандарҙан алыу</string>
+    <string name="favorite_added_state">Һайланғандарҙа</string>
+
+    <string name="action_retry">Ҡабатлау</string>
+    <string name="state_loading">Йөкләйбеҙ…</string>
+    <string name="state_offline">Сервер менән бәйләнеп булмай. Һайланғандар селтәрһеҙ ҙә асыла.</string>
+    <string name="state_offline_cached">Селтәр юҡ — %1$s һаҡланғанды күрһәтәбеҙ</string>
+    <string name="state_error">Нимәлер килеп сыҡманы. Тағы бер тапҡыр һынап ҡарағыҙ.</string>
+    <string name="state_not_found">Бындай сара юҡ — бәлки, уны афишанан алғандарҙыр.</string>
+    <string name="mascot_cd">Бал ҡорто</string>
+    <string name="umbrella_cd">Категориялар буйынса һайлау</string>
+    <string name="umbrella_item_cd">%1$s, саралар: %2$d</string>
+    <string name="umbrella_all">Бөтәһе</string>
+    <string name="selected">һайланған</string>
+    <string name="not_selected">һайланмаған</string>
+    <string name="city_title">Ҡала йәки район</string>
+    <string name="city_search">Эҙләү: Өфө, Уфа, Белорет…</string>
+    <string name="city_all">Бөтә республика</string>
+    <string name="city_upcoming">саралар: %1$d</string>
+</resources>

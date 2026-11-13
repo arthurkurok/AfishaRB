@@ -1,0 +1,20 @@
+{"id":"tz","text":"Куда пойти в субботу с ребёнком до 1000 рублей","expect":{"date_from":"2026-11-07","date_to":"2026-11-07","budget":1000,"with_kids":true,"kids_ages":[]}}
+{"id":"colloq-city","text":"что в стерлике на выходных","expect":{"municipality_id":"sterlitamak","date_from":"2026-11-07","date_to":"2026-11-08"}}
+{"id":"bashkir-city","text":"иртәгә Өфөлә концерт","expect":{"date_from":"2026-11-03","municipality_id":"ufa","categories":["music"]}}
+{"id":"evening","text":"завтра вечером джаз","expect":{"date_from":"2026-11-03","time_of_day":["evening"],"categories":["music"]}}
+{"id":"pushkin","text":"спектакль по пушкинской карте на этой неделе","expect":{"pushkin":true,"categories":["theatre"]}}
+{"id":"accessible","text":"концерт с доступной средой для коляски","expect":{"accessible":true,"categories":["music"]}}
+{"id":"total-budget","text":"1500 на двоих в субботу","expect":{"budget":1500,"budget_per":"total","date_from":"2026-11-07"}}
+{"id":"per-ticket","text":"до 700 за билет завтра","expect":{"budget":700,"budget_per":"ticket","date_from":"2026-11-03"}}
+{"id":"word-age","text":"с пятилетним сыном в музей","expect":{"kids_ages":[5],"with_kids":true,"categories":["museum"]}}
+{"id":"teen","text":"с подростком на выходных","expect":{"kids_ages":[13],"with_kids":true}}
+{"id":"title","text":"Лебединое озеро","expect":{"text":"лебединое озеро"}}
+{"id":"genre-ballet","text":"балет в Уфе","expect":{"municipality_id":"ufa","categories":["theatre"],"text":"балет"}}
+{"id":"invalid-date","text":"31 февраля","expect":{"date_from":null}}
+{"id":"near","text":"что рядом сегодня","expect":{"near_me":true,"date_from":"2026-11-02"}}
+{"id":"offtopic-weather","text":"какая погода завтра","expect":{"intent":"offtopic"}}
+{"id":"offtopic-currency","text":"курс доллара","expect":{"intent":"offtopic"}}
+{"id":"hello","text":"Привет","expect":{"intent":"help"}}
+{"id":"dotted","text":"концерт 15.12","expect":{"date_from":"2026-12-15","categories":["music"]}}
+{"id":"next-week","text":"на следующей неделе в театр","expect":{"date_from":"2026-11-09","date_to":"2026-11-15","categories":["theatre"]}}
+{"id":"plan-day","text":"спланируй мне день в Уфе в субботу","expect":{"intent":"plan_day","municipality_id":"ufa","date_from":"2026-11-07"}}

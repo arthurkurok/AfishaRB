@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="favorites_title">Избранное</string>
+    <string name="favorites_subtitle">Доступно без сети</string>
+    <string name="favorites_upcoming">Впереди</string>
+    <string name="favorites_past">Прошедшие</string>
+    <string name="favorites_empty">Сохраняйте события ромбом ◇ — они будут здесь, даже без интернета.</string>
+    <string name="favorites_empty_action">Найти событие</string>
+    <string name="favorites_removed">Убрано из избранного</string>
+    <string name="favorites_undo">Вернуть</string>
+    <string name="favorites_changed">Есть изменения — проверьте статус</string>
+    <string name="favorites_synced">Обновлено %1$s</string>
+</resources>

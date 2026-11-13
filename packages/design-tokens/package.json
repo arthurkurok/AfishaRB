@@ -1,0 +1,21 @@
+{
+  "name": "@afisha/design-tokens",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Дизайн-токены «Живой орнамент»: tokens.json (W3C DTCG) → CSS custom properties и TS-константы; временные ассеты маскота",
+  "exports": {
+    "./tokens.json": "./tokens.json",
+    "./tokens.css": "./generated/tokens.css",
+    ".": "./generated/tokens.ts",
+    "./assets/*": "./assets/*"
+  },
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "typecheck": "tsc --noEmit",
+    "test": "node scripts/build.mjs --check && node scripts/contrast-check.mjs"
+  },
+  "devDependencies": {
+    "typescript": "~5.9.3"
+  }
+}

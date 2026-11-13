@@ -1,0 +1,22 @@
+{
+  "name": "@afisha/eval",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Оценка качества ИИ-гида: разбор запросов, уточнения, заземлённость, провокации (docs/05-ai-agent.md §9)",
+  "scripts": {
+    "generate": "tsx generate.ts",
+    "eval": "tsx run.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@afisha/api": "workspace:*",
+    "@afisha/contract": "workspace:*",
+    "drizzle-orm": "^0.45.4"
+  },
+  "devDependencies": {
+    "tsx": "^4.23.15",
+    "typescript": "~5.9.3",
+    "@types/node": "^24.19.2"
+  }
+}

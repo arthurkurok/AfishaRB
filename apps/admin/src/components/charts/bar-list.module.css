@@ -1,0 +1,107 @@
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.row {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 15rem) minmax(0, 1fr);
+  align-items: center;
+  gap: var(--space-1) var(--space-3);
+  min-height: 32px;
+  padding-block: 2px;
+  border-radius: var(--radius-s);
+}
+.row:hover {
+  background: color-mix(in srgb, var(--color-surface-2) 60%, transparent);
+}
+
+.label {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0 var(--space-2);
+  font-size: var(--type-caption-size);
+  line-height: var(--type-caption-line);
+  color: var(--color-ink);
+  min-width: 0;
+}
+
+.flag {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  color: var(--color-status-cancelled);
+  font-weight: 700;
+}
+
+/* Область построения: волосяная базовая линия слева, столбик растёт от неё. */
+.plot {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-width: 0;
+  border-left: 1px solid var(--viz-grid);
+  min-height: 24px;
+}
+
+.bar {
+  display: block;
+  block-size: 12px;
+  max-inline-size: calc(100% - 4.5rem);
+  background: var(--viz-series);
+  border-radius: 0 4px 4px 0;
+  flex: none;
+}
+.row:hover .bar {
+  background: color-mix(in srgb, var(--viz-series) 82%, var(--color-surface));
+}
+
+.value {
+  font-size: var(--type-caption-size);
+  line-height: var(--type-caption-line);
+  font-weight: 600;
+  color: var(--color-ink);
+  white-space: nowrap;
+}
+
+/* Подсказка при наведении (дублирует табличный вид, не заменяет его). */
+.tip {
+  position: absolute;
+  z-index: 5;
+  inset-inline-start: min(15rem, 40%);
+  inset-block-end: calc(100% - 2px);
+  display: none;
+  max-inline-size: min(22rem, 90%);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-s);
+  background: var(--color-ink);
+  color: var(--color-bg);
+  font-size: var(--type-caption-size);
+  line-height: var(--type-caption-line);
+  box-shadow: var(--shadow-2);
+  pointer-events: none;
+}
+.row:hover .tip {
+  display: block;
+}
+
+@media (max-width: 599px) {
+  .row {
+    grid-template-columns: minmax(0, 1fr);
+    padding-block: var(--space-1);
+  }
+  .tip {
+    inset-inline-start: 0;
+  }
+}
+
+@media (forced-colors: active) {
+  .bar {
+    background: CanvasText;
+  }
+}

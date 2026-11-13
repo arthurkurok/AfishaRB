@@ -1,0 +1,114 @@
+/* Сгенерировано packages/design-tokens/scripts/build.mjs из tokens.json — не править вручную. */
+
+:root {
+  --color-bg: #f6f0e4;
+  --color-surface: #ffffff;
+  --color-surface-2: #efe6d6;
+  --color-ink: #16120f;
+  --color-ink-2: #5c5047;
+  --color-line: #ddd2c0;
+  --color-accent: #b8322a;
+  --color-on-accent: #ffffff;
+  --color-honey: #e8a92e;
+  --color-meadow: #2f7a4b;
+  --color-focus: #2e64a8;
+  --color-category-theatre: #b8322a;
+  --color-category-music: #2e64a8;
+  --color-category-museum: #8f6209;
+  --color-category-kids: #a84a14;
+  --color-category-folk: #2f7a4b;
+  --color-category-cinema: #6b3a6e;
+  --color-category-education: #1f6b70;
+  --color-status-rescheduled: #2e64a8;
+  --color-status-cancelled: #b8322a;
+  --color-status-ended: #5c5047;
+  --color-status-few-left: #e8a92e;
+  --color-status-unverified: #8f6209;
+  --color-on-category: #ffffff;
+  --font-display: Commissioner, "Golos Text", system-ui, sans-serif;
+  --font-text: "Golos Text", system-ui, sans-serif;
+  --type-display-size: 2.5rem;
+  --type-display-line: 2.75rem;
+  --type-display-weight: 700;
+  --type-display-family: var(--font-display);
+  --type-h1-size: 1.75rem;
+  --type-h1-line: 2rem;
+  --type-h1-weight: 700;
+  --type-h1-family: var(--font-display);
+  --type-h2-size: 1.375rem;
+  --type-h2-line: 1.75rem;
+  --type-h2-weight: 600;
+  --type-h2-family: var(--font-display);
+  --type-title-size: 1.125rem;
+  --type-title-line: 1.5rem;
+  --type-title-weight: 600;
+  --type-title-family: var(--font-text);
+  --type-body-size: 1rem;
+  --type-body-line: 1.5rem;
+  --type-body-weight: 400;
+  --type-body-family: var(--font-text);
+  --type-caption-size: 0.8125rem;
+  --type-caption-line: 1.125rem;
+  --type-caption-weight: 500;
+  --type-caption-family: var(--font-text);
+  --type-date-big-size: 2rem;
+  --type-date-big-line: 2rem;
+  --type-date-big-weight: 800;
+  --type-date-big-family: var(--font-display);
+  --radius-s: 8px;
+  --radius-m: 14px;
+  --radius-l: 22px;
+  --radius-pill: 999px;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --motion-fast: 120ms;
+  --motion-base: 220ms;
+  --motion-slow: 360ms;
+  --motion-easing: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --touch-min-ios: 44px;
+  --touch-min-android: 48px;
+  color-scheme: light;
+}
+
+:root[data-theme="dark"] {
+  --color-bg: #16120f;
+  --color-surface: #231d18;
+  --color-surface-2: #2e2620;
+  --color-ink: #f6f0e4;
+  --color-ink-2: #bfb3a5;
+  --color-line: #3a3029;
+  --color-accent: #f07a68;
+  --color-on-accent: #16120f;
+  --color-meadow: #6cc08a;
+  --color-focus: #7fa9e8;
+  --color-status-rescheduled: #7fa9e8;
+  --color-status-cancelled: #f07a68;
+  --color-status-ended: #bfb3a5;
+  --color-status-unverified: #e8a92e;
+  color-scheme: dark;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --color-bg: #16120f;
+    --color-surface: #231d18;
+    --color-surface-2: #2e2620;
+    --color-ink: #f6f0e4;
+    --color-ink-2: #bfb3a5;
+    --color-line: #3a3029;
+    --color-accent: #f07a68;
+    --color-on-accent: #16120f;
+    --color-meadow: #6cc08a;
+    --color-focus: #7fa9e8;
+    --color-status-rescheduled: #7fa9e8;
+    --color-status-cancelled: #f07a68;
+    --color-status-ended: #bfb3a5;
+    --color-status-unverified: #e8a92e;
+    color-scheme: dark;
+  }
+}

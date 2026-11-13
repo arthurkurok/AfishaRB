@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="assistant_title">Гид</string>
+    <string name="assistant_subtitle">Афишала булған ысын сараларҙы ғына һайлай</string>
+    <string name="assistant_back">Кире</string>
+    <string name="assistant_hint">Мәҫәлән: шәмбелә бала менән ҡайҙа барырға</string>
+    <string name="assistant_send">Ебәреү</string>
+    <string name="assistant_voice">Тауыш менән әйтеү</string>
+    <string name="assistant_greeting">Һаумыһығыҙ! Мин Бал, афиша гиды. Ҡасан һәм ҡайҙа барырға теләүегеҙҙе һөйләгеҙ — сараларҙы һайлап бирермен. Бер нәмә лә уйлап сығармайым: афишала булғандарын ғына.</string>
+    <string name="assistant_greeting_event">Был сара тураһында һорағыҙ — паспорт мәғлүмәттәре буйынса яуап бирермен.</string>
+    <string name="assistant_example_1">Бөгөн кисен ҡайҙа барырға?</string>
+    <string name="assistant_example_2">Шәмбелә 5 йәшлек балаға спектакль</string>
+    <string name="assistant_example_3">Ял көндәрендә бушлай концерттар</string>
+    <string name="assistant_rules_banner">Гид ябайлаштырылған режимда эшләй: төп һорауҙарҙы ИИ-һыҙ аңлай. Һайлап алынғандар — барыбер афишанан ғына.</string>
+    <string name="assistant_understood">Мин былай аңланым:</string>
+    <string name="assistant_chip_explicit">һеҙ әйттегеҙ</string>
+    <string name="assistant_chip_inferred">өҫтәлгән, үҙгәртеү өсөн баҫығыҙ</string>
+    <string name="assistant_relaxed">Варианттар табыу өсөн мин %1$s.</string>
+    <string name="assistant_error">Гид менән бәйләнеп булмай. Интернетты тикшереп, тағы бер тапҡыр һынап ҡарағыҙ.</string>
+    <string name="assistant_retry">Ҡабатлау</string>
+    <string name="assistant_thinking">Бал уйлай…</string>
+    <string name="assistant_you">Һеҙ</string>
+    <string name="assistant_guide">Гид</string>
+    <string name="assistant_change">Шартты үҙгәртеү</string>
+    <string name="assistant_remove">Был шартты алыу</string>
+    <string name="assistant_today">Бөгөнгә</string>
+    <string name="assistant_tomorrow">Иртәгәгә</string>
+    <string name="assistant_weekend">Ял көндәренә</string>
+    <string name="assistant_whole_republic">бөтә республика</string>
+    <string name="assistant_open">Ентеклерәк</string>
+    <string name="assistant_clear">Яңы әңгәмә</string>
+</resources>

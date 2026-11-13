@@ -1,0 +1,259 @@
+{
+  "id": "01a19c9d-5fe0-7a83-8729-50620300081d",
+  "title": "Мастер-класс по современной визуальной культуре",
+  "summary": "Знакомство с экранным искусством как с фундаментом современной визуальной культуры. Участников мастер–класса ждет погружение в историю художественной съемки и связь классических приемов живописи с современными технологиями.",
+  "categories": [
+    "education",
+    "kids"
+  ],
+  "tags": [
+    "master_class"
+  ],
+  "age_rating": 12,
+  "pushkin_card": false,
+  "price": {
+    "min": "350.00",
+    "max": "350.00",
+    "is_free": false,
+    "currency": "RUB"
+  },
+  "image": {
+    "url": "https://cdn.culture.ru/images/cfced03e-fc8a-5c4b-961c-686604c4123a",
+    "author": "Автор школы креативных индустрий",
+    "source": "Авторшколыкреативныхиндустрий",
+    "license": null,
+    "width": 1280,
+    "height": 853,
+    "color": "7e6351"
+  },
+  "organization": "ГБПОУ РБ «Уфимское училище искусств (колледж)»",
+  "description_html": "<p>Знакомство с экранным искусством как с фундаментом современной визуальной культуры. Участников мастер–класса</p><p>ждет погружение в историю художественной съемки и связь классических приемов живописи с современными технологиями.</p><p>В программе освоение работы со светом, композиции по золотому сечению и динамический монтаж.</p><p>Под руководством наставника можно будет создать выразительные аудиовизуальные образы из повседневных моментов.</p><p> Мастер-класс направлен на развитие зрительной культуры, творческого видения и понимание эстетических основ экранного творчества. Акцент сделан на этических нормах при работе с наследием и важности традиционных духовно-нравственных ценностей в информационном поле. </p><p> Принимаются организованные группы от 8 человек. <br /></p>",
+  "images": [
+    {
+      "url": "https://cdn.culture.ru/images/cfced03e-fc8a-5c4b-961c-686604c4123a",
+      "author": "Автор школы креативных индустрий",
+      "source": "Авторшколыкреативныхиндустрий",
+      "license": null,
+      "width": 1280,
+      "height": 853,
+      "color": "7e6351"
+    }
+  ],
+  "languages": [
+    "ru"
+  ],
+  "is_permanent": false,
+  "ticket_url": "https://iframeab-pre7341.intickets.ru/seance/75899714/?locale=ru_RU",
+  "accessibility": {},
+  "occurrences": [
+    {
+      "id": "01a19c9d-5fe3-7424-9025-955e26cf4b8b",
+      "venue": {
+        "id": "01a19c9d-5921-708e-bd41-91da19a9bdc5",
+        "name": "Школа креативных индустрий г. Уфы",
+        "address": "Респ. Башкортостан, г. Уфа, ул. Бакалинская, д. 64/5",
+        "geo": [
+          54.71996,
+          55.988479
+        ],
+        "municipality_id": "ufa",
+        "municipality": "Уфа"
+      },
+      "starts_at": "2026-11-02T10:00:00+05:00",
+      "ends_at": "2026-11-02T20:00:00+05:00",
+      "is_range": false,
+      "status": "scheduled",
+      "status_reason": null,
+      "previous_starts_at": null,
+      "availability": "unknown",
+      "ticket_url": "https://iframeab-pre7341.intickets.ru/seance/75899714/?locale=ru_RU",
+      "more_dates": 0,
+      "distance_km": null,
+      "reasons": [],
+      "freshness": "fresh"
+    },
+    {
+      "id": "01a19c9d-5fe3-74d0-a763-20b64cb5e067",
+      "venue": {
+        "id": "01a19c9d-5921-708e-bd41-91da19a9bdc5",
+        "name": "Школа креативных индустрий г. Уфы",
+        "address": "Респ. Башкортостан, г. Уфа, ул. Бакалинская, д. 64/5",
+        "geo": [
+          54.71996,
+          55.988479
+        ],
+        "municipality_id": "ufa",
+        "municipality": "Уфа"
+      },
+      "starts_at": "2026-11-03T10:00:00+05:00",
+      "ends_at": "2026-11-03T20:00:00+05:00",
+      "is_range": false,
+      "status": "scheduled",
+      "status_reason": null,
+      "previous_starts_at": null,
+      "availability": "unknown",
+      "ticket_url": "https://iframeab-pre7341.intickets.ru/seance/75899714/?locale=ru_RU",
+      "more_dates": 0,
+      "distance_km": null,
+      "reasons": [],
+      "freshness": "fresh"
+    },
+    {
+      "id": "01a19c9d-5fe3-7516-96c1-258ccbf30e09",
+      "venue": {
+        "id": "01a19c9d-5921-708e-bd41-91da19a9bdc5",
+        "name": "Школа креативных индустрий г. Уфы",
+        "address": "Респ. Башкортостан, г. Уфа, ул. Бакалинская, д. 64/5",
+        "geo": [
+          54.71996,
+          55.988479
+        ],
+        "municipality_id": "ufa",
+        "municipality": "Уфа"
+      },
+      "starts_at": "2026-12-21T10:00:00+05:00",
+      "ends_at": "2026-12-21T20:00:00+05:00",
+      "is_range": false,
+      "status": "scheduled",
+      "status_reason": null,
+      "previous_starts_at": null,
+      "availability": "unknown",
+      "ticket_url": "https://iframeab-pre7341.intickets.ru/seance/75899714/?locale=ru_RU",
+      "more_dates": 0,
+      "distance_km": null,
+      "reasons": [],
+      "freshness": "fresh"
+    },
+    {
+      "id": "01a19c9d-5fe3-7560-bbbc-28f7fd2ec7b7",
+      "venue": {
+        "id": "01a19c9d-5921-708e-bd41-91da19a9bdc5",
+        "name": "Школа креативных индустрий г. Уфы",
+        "address": "Респ. Башкортостан, г. Уфа, ул. Бакалинская, д. 64/5",
+        "geo": [
+          54.71996,
+          55.988479
+        ],
+        "municipality_id": "ufa",
+        "municipality": "Уфа"
+      },
+      "starts_at": "2026-12-22T10:00:00+05:00",
+      "ends_at": "2026-12-22T20:00:00+05:00",
+      "is_range": false,
+      "status": "scheduled",
+      "status_reason": null,
+      "previous_starts_at": null,
+      "availability": "unknown",
+      "ticket_url": "https://iframeab-pre7341.intickets.ru/seance/75899714/?locale=ru_RU",
+      "more_dates": 0,
+      "distance_km": null,
+      "reasons": [],
+      "freshness": "fresh"
+    },
+    {
+      "id": "01a19c9d-5fe3-75d4-8f9b-906199badef2",
+      "venue": {
+        "id": "01a19c9d-5921-708e-bd41-91da19a9bdc5",
+        "name": "Школа креативных индустрий г. Уфы",
+        "address": "Респ. Башкортостан, г. Уфа, ул. Бакалинская, д. 64/5",
+        "geo": [
+          54.71996,
+          55.988479
+        ],
+        "municipality_id": "ufa",
+        "municipality": "Уфа"
+      },
+      "starts_at": "2026-12-23T10:00:00+05:00",
+      "ends_at": "2026-12-23T20:00:00+05:00",
+      "is_range": false,
+      "status": "scheduled",
+      "status_reason": null,
+      "previous_starts_at": null,
+      "availability": "unknown",
+      "ticket_url": "https://iframeab-pre7341.intickets.ru/seance/75899714/?locale=ru_RU",
+      "more_dates": 0,
+      "distance_km": null,
+      "reasons": [],
+      "freshness": "fresh"
+    },
+    {
+      "id": "01a19c9d-5fe3-763c-b81a-170f21d0f385",
+      "venue": {
+        "id": "01a19c9d-5921-708e-bd41-91da19a9bdc5",
+        "name": "Школа креативных индустрий г. Уфы",
+        "address": "Респ. Башкортостан, г. Уфа, ул. Бакалинская, д. 64/5",
+        "geo": [
+          54.71996,
+          55.988479
+        ],
+        "municipality_id": "ufa",
+        "municipality": "Уфа"
+      },
+      "starts_at": "2026-12-24T10:00:00+05:00",
+      "ends_at": "2026-12-24T20:00:00+05:00",
+      "is_range": false,
+      "status": "scheduled",
+      "status_reason": null,
+      "previous_starts_at": null,
+      "availability": "unknown",
+      "ticket_url": "https://iframeab-pre7341.intickets.ru/seance/75899714/?locale=ru_RU",
+      "more_dates": 0,
+      "distance_km": null,
+      "reasons": [],
+      "freshness": "fresh"
+    },
+    {
+      "id": "01a19c9d-5fe3-7685-a766-26c4a74fef26",
+      "venue": {
+        "id": "01a19c9d-5921-708e-bd41-91da19a9bdc5",
+        "name": "Школа креативных индустрий г. Уфы",
+        "address": "Респ. Башкортостан, г. Уфа, ул. Бакалинская, д. 64/5",
+        "geo": [
+          54.71996,
+          55.988479
+        ],
+        "municipality_id": "ufa",
+        "municipality": "Уфа"
+      },
+      "starts_at": "2026-12-25T10:00:00+05:00",
+      "ends_at": "2026-12-25T20:00:00+05:00",
+      "is_range": false,
+      "status": "scheduled",
+      "status_reason": null,
+      "previous_starts_at": null,
+      "availability": "unknown",
+      "ticket_url": "https://iframeab-pre7341.intickets.ru/seance/75899714/?locale=ru_RU",
+      "more_dates": 0,
+      "distance_km": null,
+      "reasons": [],
+      "freshness": "fresh"
+    }
+  ],
+  "provenance": {
+    "trust_level": "official",
+    "sources": [
+      {
+        "id": "culture_ru",
+        "title": "Культура.РФ / PRO.Культура.РФ",
+        "url": "https://www.culture.ru/events/7275054/master-klass-po-sovremennoi-vizualnoi-kulture"
+      }
+    ],
+    "last_verified_at": "2026-11-02T19:46:00+05:00",
+    "freshness": "fresh"
+  },
+  "history": [
+    {
+      "at": "2026-11-02T19:15:21+05:00",
+      "kind": "created",
+      "field": null,
+      "old": null,
+      "new": {
+        "title": "Мастер-класс по современной визуальной культуре"
+      },
+      "text": "Событие добавлено в афишу",
+      "source": "culture_ru"
+    }
+  ],
+  "source_url": "https://www.culture.ru/events/7275054/master-klass-po-sovremennoi-vizualnoi-kulture",
+  "quality_score": 0.75
+}

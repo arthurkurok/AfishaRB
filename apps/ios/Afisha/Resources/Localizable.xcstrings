@@ -1,0 +1,178 @@
+{
+  "sourceLanguage": "ru",
+  "strings": {
+    "Куда сходить сегодня": {
+      "comment": "App Intent",
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Куда сходить сегодня"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Бөгөн ҡайҙа барырға"
+          }
+        }
+      }
+    },
+    "Подбирает культурные события на сегодня в выбранном городе Башкортостана.": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Подбирает культурные события на сегодня в выбранном городе Башкортостана."
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Башҡортостандың һайланған ҡалаһында бөгөнгө мәҙәни сараларҙы һайлай."
+          }
+        }
+      }
+    },
+    "Город": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Город"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ҡала"
+          }
+        }
+      }
+    },
+    "Куда сходить сегодня в ${city}": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Куда сходить сегодня в ${city}"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Бөгөн ${city} ҡалаһында ҡайҙа барырға"
+          }
+        }
+      }
+    },
+    "Событие": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Событие"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Сара"
+          }
+        }
+      }
+    },
+    "Открыть событие": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Открыть событие"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Сараны асыу"
+          }
+        }
+      }
+    },
+    "Спросить Гида": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Спросить Гида"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Гидтан һорау"
+          }
+        }
+      }
+    },
+    "Открывает Гида афиши с вашим вопросом.": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Открывает Гида афиши с вашим вопросом."
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Афиша гидын һорауығыҙ менән аса."
+          }
+        }
+      }
+    },
+    "Вопрос": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Вопрос"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Һорау"
+          }
+        }
+      }
+    },
+    "%@": {
+      "comment": "Динамический текст ответа Siri (уже локализован приложением)",
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@"
+          }
+        }
+      }
+    }
+  },
+  "version": "1.0"
+}

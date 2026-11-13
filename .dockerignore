@@ -1,0 +1,49 @@
+# Контекст сборки образов — корень репозитория (infra/docker/*.Dockerfile).
+# В контекст не должно попадать ничего, что собирается внутри образа, данные, секреты и служебные каталоги.
+
+# Зависимости и артефакты сборки (внутри образа ставятся и собираются заново)
+**/node_modules
+.pnpm-store
+**/.next
+**/dist
+**/.turbo
+**/.vite
+**/.vite-temp
+**/.vitest-cache
+**/coverage
+**/playwright-report
+**/test-results
+**/blob-report
+**/*.tsbuildinfo
+**/.cache
+
+# Нативные приложения (собираются Xcode и Gradle)
+apps/ios
+apps/android
+**/DerivedData
+**/.gradle
+**/xcuserdata
+
+# Данные, отчёты жюри, документация, eval
+data/
+jury/
+docs/
+eval/
+
+# Служебное
+.git
+.github
+.gitlab-ci.yml
+.claude
+.idea
+.vscode
+**/.DS_Store
+**/*.log
+
+# Секреты: в образ не попадают никогда (сертификат НУЦ в infra/certs/ — публичный и нужен образу)
+.env
+.env.*
+!.env.example
+**/*.key
+**/*.p12
+cosign.key

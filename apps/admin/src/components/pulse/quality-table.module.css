@@ -1,0 +1,29 @@
+.index {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+/* Метр индекса: заливка по уровню (статусные цвета), дорожка — нейтральная; число и слово рядом. */
+.meter {
+  display: inline-block;
+  inline-size: 64px;
+  block-size: 6px;
+  border-radius: var(--radius-pill);
+  background: var(--viz-track);
+  overflow: hidden;
+}
+.meter > span {
+  display: block;
+  block-size: 100%;
+  border-radius: var(--radius-pill);
+}
+.meter[data-level="low"] > span {
+  background: var(--color-status-cancelled);
+}
+.meter[data-level="mid"] > span {
+  background: var(--color-status-few-left);
+}
+.meter[data-level="high"] > span {
+  background: var(--color-meadow);
+}

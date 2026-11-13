@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="search_title">Поиск</string>
+    <string name="search_hint">Спектакль, концерт, площадка…</string>
+    <string name="search_clear">Очистить</string>
+    <string name="search_back">Назад</string>
+    <string name="search_filters">Фильтры</string>
+    <string name="search_filters_count">Фильтры: %1$d</string>
+    <string name="search_found">Найдено: %1$d</string>
+    <string name="search_empty">Ничего не нашлось. Попробуйте убрать часть фильтров — или спросите Гида своими словами.</string>
+    <string name="search_reset">Сбросить фильтры</string>
+    <string name="search_ask_guide">Спросить Гида</string>
+    <string name="search_load_more_error">Не удалось загрузить ещё. Повторить</string>
+    <string name="search_long_running">Идут долго: выставки и экспозиции</string>
+    <string name="search_near_me">Рядом со мной</string>
+    <string name="search_locating">Определяем, где вы…</string>
+    <string name="search_location_denied">Без доступа к геопозиции поиск «рядом» недоступен — выберите город.</string>
+
+    <string name="when_today">Сегодня</string>
+    <string name="when_tomorrow">Завтра</string>
+    <string name="when_weekend">Выходные</string>
+    <string name="when_week">Неделя</string>
+    <string name="when_month">Месяц</string>
+    <string name="when_dates">Даты…</string>
+
+    <string name="filter_title">Фильтры</string>
+    <string name="filter_when">Когда</string>
+    <string name="filter_time_of_day">Время суток</string>
+    <string name="tod_morning">Утро</string>
+    <string name="tod_day">День</string>
+    <string name="tod_evening">Вечер</string>
+    <string name="filter_place">Где</string>
+    <string name="filter_categories">Категории</string>
+    <string name="filter_price">Цена</string>
+    <string name="price_any">Любая</string>
+    <string name="price_free">Бесплатно</string>
+    <string name="price_up_to">до %1$s ₽</string>
+    <string name="filter_age">Возраст</string>
+    <string name="age_with_child">С ребёнком</string>
+    <string name="age_child_years">Ребёнку %1$d</string>
+    <string name="age_child_hint">Покажем только подходящие по возрастному знаку, без 18+.</string>
+    <string name="age_rating_max">Знак не старше</string>
+    <string name="age_any">Любой</string>
+    <string name="filter_more">Ещё</string>
+    <string name="filter_pushkin">Пушкинская карта</string>
+    <string name="filter_accessible">Доступная среда</string>
+    <string name="filter_on_bashkir">На башкирском языке</string>
+    <string name="filter_hide_sold_out">Скрыть распроданные</string>
+    <string name="filter_sort">Сортировка</string>
+    <string name="sort_relevance">Подходящие</string>
+    <string name="sort_date">По дате</string>
+    <string name="sort_price">Сначала дешёвые</string>
+    <string name="sort_distance">Ближе ко мне</string>
+    <string name="sort_popular">Популярные</string>
+    <string name="filter_reset">Сбросить</string>
+    <string name="filter_apply">Показать</string>
+    <string name="date_picker_title">Выберите даты</string>
+    <string name="date_picker_ok">Готово</string>
+    <string name="date_picker_cancel">Отмена</string>
+    <string name="decrease">Меньше</string>
+    <string name="increase">Больше</string>
+</resources>

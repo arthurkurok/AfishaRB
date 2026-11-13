@@ -1,0 +1,48 @@
+.badge {
+  --tone: var(--color-ink-2);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  max-width: 100%;
+  padding: 2px var(--space-3) 2px var(--space-2);
+  border-radius: var(--radius-pill);
+  background: var(--color-surface);
+  color: var(--tone);
+  border: 2px solid var(--tone);
+  font-size: var(--type-caption-size);
+  line-height: var(--type-caption-line);
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.badge[data-kind="rescheduled"],
+.badge[data-kind="postponed"] {
+  --tone: var(--color-status-rescheduled);
+}
+.badge[data-kind="cancelled"] {
+  --tone: var(--color-status-cancelled);
+}
+.badge[data-kind="sold_out"],
+.badge[data-kind="ended"] {
+  --tone: var(--color-status-ended);
+}
+.badge[data-kind="unverified"] {
+  --tone: var(--color-status-unverified);
+}
+.badge[data-kind="scheduled"] {
+  --tone: var(--color-meadow);
+}
+/* «Мало билетов»: шафрановый фон, тёмный текст (шафран — только фон под тёмным текстом). */
+.badge[data-kind="few_left"] {
+  --tone: var(--color-status-few-left);
+  background: var(--color-status-few-left);
+  color: var(--color-ink);
+}
+:global([data-theme="dark"]) .badge[data-kind="few_left"] {
+  color: var(--color-bg);
+}
+@media (prefers-color-scheme: dark) {
+  :global(:root:not([data-theme="light"])) .badge[data-kind="few_left"] {
+    color: var(--color-bg);
+  }
+}

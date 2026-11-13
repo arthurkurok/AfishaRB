@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Тамаша</string>
+    <string name="nav_home">Баш бит</string>
+    <string name="nav_search">Эҙләү</string>
+    <string name="nav_guide">Гид</string>
+    <string name="nav_favorites">Һайланғандар</string>
+    <string name="nav_settings">Көйләүҙәр</string>
+
+    <string name="shortcut_today_short">Бөгөн</string>
+    <string name="shortcut_today_long">Бөгөн нимә бар</string>
+    <string name="shortcut_guide_short">Гид</string>
+    <string name="shortcut_guide_long">Гидтан һорау</string>
+    <string name="shortcut_search_short">Эҙләү</string>
+    <string name="shortcut_search_long">Сара табыу</string>
+    <string name="shortcut_favorites_short">Һайланғандар</string>
+    <string name="shortcut_favorites_long">Минең һайланғандар</string>
+
+    <string name="widget_today_title">Бөгөн яҡында</string>
+    <string name="widget_today_description">Ҡалағыҙҙа бөгөнгө иң яҡын саралар</string>
+    <string name="widget_today_header">Бөгөн · %1$s</string>
+    <string name="widget_whole_republic">Башҡортостан</string>
+    <string name="widget_empty">Бөгөн саралар юҡ — ял көндәренә афишаны ҡарағыҙ</string>
+    <string name="widget_offline">Селтәр юҡ — ҡушымтаны асығыҙ</string>
+    <string name="widget_more">Бөтә афиша</string>
+
+    <string name="channel_changes">Һайланғандарҙағы үҙгәрештәр</string>
+    <string name="channel_changes_description">Һаҡланған саралар өсөн юҡҡа сығарыу, күсереү, «билеттар юҡ»</string>
+    <string name="channel_reminders">Иҫкә төшөрөүҙәр</string>
+    <string name="channel_reminders_description">Сара алдынан һәм сара көнөндә</string>
+    <string name="notify_cancelled">Юҡҡа сығарылды: %1$s</string>
+    <string name="notify_rescheduled">Күсерелде: %1$s</string>
+    <string name="notify_postponed">Күсерелде, көнө аныҡлана: %1$s</string>
+    <string name="notify_sold_out">Билеттар юҡ: %1$s</string>
+    <string name="notify_status_changed">Үҙгәрҙе: %1$s</string>
+    <string name="notify_new_time">Яңы ваҡыт: %1$s</string>
+    <string name="notify_reminder_title">Тиҙҙән: %1$s</string>
+    <string name="notify_reminder_text">%1$s</string>
+    <string name="notifications_denied">Рөхсәтһеҙ белдереүҙәр килмәйәсәк — үҙгәрештәр «Һайланғандар»ҙа күренә.</string>
+    <string name="location_denied">Геопозицияға рөхсәт булмаһа, «яҡында» мөмкин түгел — ҡаланы һайлағыҙ.</string>
+</resources>

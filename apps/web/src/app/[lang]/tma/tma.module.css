@@ -1,0 +1,71 @@
+/* Безопасные зоны Telegram (Bot API 8.0+) с запасным вариантом env() для браузера. */
+.shell {
+  --tma-top: max(env(safe-area-inset-top, 0px), var(--tg-safe-area-inset-top, 0px));
+  --tma-bottom: max(env(safe-area-inset-bottom, 0px), var(--tg-safe-area-inset-bottom, 0px));
+  min-height: var(--tg-viewport-stable-height, 100dvh);
+  padding-top: calc(var(--tma-top) + var(--tg-content-safe-area-inset-top, 0px));
+  padding-bottom: calc(var(--tma-bottom) + var(--tg-content-safe-area-inset-bottom, 0px) + var(--space-5));
+  padding-left: var(--tg-safe-area-inset-left, 0px);
+  padding-right: var(--tg-safe-area-inset-right, 0px);
+  display: flex;
+  flex-direction: column;
+}
+
+.bar {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-4);
+  background: var(--color-bg);
+  border-bottom: 1px solid var(--color-line);
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: var(--touch-min-ios);
+  color: var(--color-ink);
+  text-decoration: none;
+  font-family: var(--font-display-app);
+  font-weight: 800;
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+}
+.nav a {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--touch-min-ios);
+  padding-inline: var(--space-2);
+  color: var(--color-ink);
+  font-weight: 600;
+  text-decoration: none;
+  border-radius: var(--radius-pill);
+}
+.nav a:hover {
+  background: var(--color-surface-2);
+}
+.lang {
+  border: 1px solid var(--color-line);
+}
+
+.main {
+  flex: 1;
+  padding: var(--space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  min-width: 0;
+}
+
+:global([data-tma="true"]) .bar {
+  border-bottom: 0;
+}

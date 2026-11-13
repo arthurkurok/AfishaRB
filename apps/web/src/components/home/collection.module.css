@@ -1,0 +1,25 @@
+.section {
+  margin-block: var(--space-7);
+}
+
+.title {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+.title::before {
+  content: "";
+  width: 14px;
+  height: 14px;
+  background: var(--col-accent);
+  transform: rotate(45deg);
+  border-radius: 2px;
+  flex: none;
+}
+
+.all {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--tap);
+  font-weight: 600;
+}

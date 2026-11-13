@@ -1,0 +1,77 @@
+{
+  "sourceLanguage": "ru",
+  "strings": {
+    "CFBundleDisplayName": {
+      "comment": "Название под иконкой",
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Тамаша"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Тамаша"
+          }
+        }
+      }
+    },
+    "CFBundleName": {
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Тамаша"
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Тамаша"
+          }
+        }
+      }
+    },
+    "NSLocationWhenInUseUsageDescription": {
+      "comment": "Запрос геопозиции",
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Геопозиция нужна, чтобы показать события рядом с вами. Мы не храним её на сервере."
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Янығыҙҙағы сараларҙы күрһәтеү өсөн урынығыҙ кәрәк. Беҙ уны серверҙа һаҡламайбыҙ."
+          }
+        }
+      }
+    },
+    "NSCalendarsWriteOnlyAccessUsageDescription": {
+      "comment": "Запрос записи в календарь",
+      "extractionState": "manual",
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Чтобы добавить выбранное событие в ваш календарь."
+          }
+        },
+        "ba": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Һайланған сараны календарығыҙға өҫтәү өсөн."
+          }
+        }
+      }
+    }
+  },
+  "version": "1.0"
+}

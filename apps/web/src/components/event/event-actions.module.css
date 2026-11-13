@@ -1,0 +1,79 @@
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: var(--space-6);
+  transform: translateX(-50%);
+  z-index: 70;
+  pointer-events: none;
+}
+.toast:not(:empty) {
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-m);
+  background: var(--color-ink);
+  color: var(--color-bg);
+  box-shadow: var(--shadow-2);
+}
+
+.dialog {
+  width: min(560px, calc(100% - 2 * var(--gutter)));
+  max-height: calc(100dvh - 2 * var(--space-5));
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-l);
+  background: var(--color-surface);
+  color: var(--color-ink);
+  box-shadow: var(--shadow-2);
+}
+.dialog::backdrop {
+  background: color-mix(in srgb, var(--color-ink) 55%, transparent);
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  padding: var(--space-5);
+}
+
+.head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.reasons {
+  display: flex;
+  flex-direction: column;
+}
+
+.done {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  align-items: flex-start;
+}
+
+.error {
+  color: var(--color-status-cancelled);
+  font-weight: 600;
+}
+
+.collapsible {
+  max-height: calc(var(--lines) * 1.5em);
+  overflow: hidden;
+  position: relative;
+}
+.collapsible::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0;
+  height: 3em;
+  background: linear-gradient(transparent, var(--color-bg));
+}
+.collapsible[data-open] {
+  max-height: none;
+}
+.collapsible[data-open]::after {
+  display: none;
+}

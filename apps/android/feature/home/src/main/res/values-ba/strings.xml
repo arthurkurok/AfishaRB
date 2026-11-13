@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="home_brand">Тамаша</string>
+    <string name="home_brand_subtitle">Башҡортостан мәҙәниәте афишаһы</string>
+    <string name="home_today">Бөгөн</string>
+    <string name="home_tomorrow">Иртәгә</string>
+    <string name="home_weekend">Ял көндәре</string>
+    <string name="home_city_cd">Ҡала: %1$s. Үҙгәртеү</string>
+    <string name="home_settings">Көйләүҙәр</string>
+    <string name="home_feed_title">Афиша: %1$s</string>
+    <string name="home_show_all">Бөтәһе %1$d</string>
+    <string name="home_all">Бөтәһе</string>
+    <string name="home_empty">Был көнгә %1$s буйынса әлегә бер нәмә лә юҡ. Бөтә республиканы ҡарайыҡмы?</string>
+    <string name="home_empty_all">Был көнгә әлегә саралар юҡ. Ял көндәренә күҙ һалығыҙ — йәки Гидтан һорағыҙ.</string>
+    <string name="home_empty_action_city">Бөтә республика</string>
+    <string name="home_empty_action_guide">Гидтан һорау</string>
+    <string name="home_collection_free">Был аҙнала бушлай</string>
+    <string name="home_collection_kids">Балалар менән</string>
+    <string name="home_collection_pushkin">Пушкин картаһы буйынса</string>
+    <string name="home_collection_on_bashkir">Башҡорт телендә</string>
+    <string name="home_stats">Афишала %1$s сара, %2$s майҙансыҡ, %3$d ҡала һәм район</string>
+    <string name="home_guide_title">Ҡайҙа барырға белмәйһегеҙме?</string>
+    <string name="home_guide_text">Гид көнөгөҙгә, бюджетығыҙға һәм балаларҙың йәшенә ярашлы сараларҙы һайлап бирер.</string>
+    <string name="home_guide_action">Гидтан һорау</string>
+    <string name="home_simple_today">Бөгөн нимә бар</string>
+    <string name="home_simple_near">Миңә яҡын</string>
+    <string name="home_simple_guide">Гидтан һорау</string>
+    <string name="home_whole_republic">бөтә республика</string>
+</resources>

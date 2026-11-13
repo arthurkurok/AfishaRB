@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Тамаша</string>
+    <string name="nav_home">Главная</string>
+    <string name="nav_search">Поиск</string>
+    <string name="nav_guide">Гид</string>
+    <string name="nav_favorites">Избранное</string>
+    <string name="nav_settings">Настройки</string>
+
+    <string name="shortcut_today_short">Сегодня</string>
+    <string name="shortcut_today_long">Что идёт сегодня</string>
+    <string name="shortcut_guide_short">Гид</string>
+    <string name="shortcut_guide_long">Спросить Гида</string>
+    <string name="shortcut_search_short">Поиск</string>
+    <string name="shortcut_search_long">Найти событие</string>
+    <string name="shortcut_favorites_short">Избранное</string>
+    <string name="shortcut_favorites_long">Моё избранное</string>
+
+    <string name="widget_today_title">Сегодня рядом</string>
+    <string name="widget_today_description">Ближайшие события сегодня в вашем городе</string>
+    <string name="widget_today_header">Сегодня · %1$s</string>
+    <string name="widget_whole_republic">Башкортостан</string>
+    <string name="widget_empty">Сегодня событий нет — загляните в афишу на выходные</string>
+    <string name="widget_offline">Нет сети — откройте приложение</string>
+    <string name="widget_more">Вся афиша</string>
+
+    <string name="channel_changes">Изменения в избранном</string>
+    <string name="channel_changes_description">Отмена, перенос, «билетов нет» для сохранённых событий</string>
+    <string name="channel_reminders">Напоминания</string>
+    <string name="channel_reminders_description">Накануне и в день события</string>
+    <string name="notify_cancelled">Отменено: %1$s</string>
+    <string name="notify_rescheduled">Перенесено: %1$s</string>
+    <string name="notify_postponed">Перенесено, дата уточняется: %1$s</string>
+    <string name="notify_sold_out">Билетов нет: %1$s</string>
+    <string name="notify_status_changed">Изменилось: %1$s</string>
+    <string name="notify_new_time">Новое время: %1$s</string>
+    <string name="notify_reminder_title">Скоро: %1$s</string>
+    <string name="notify_reminder_text">%1$s</string>
+    <string name="notifications_denied">Без разрешения уведомления не придут — изменения видны в «Избранном».</string>
+    <string name="location_denied">Без доступа к геопозиции «рядом» недоступно — выберите город.</string>
+</resources>

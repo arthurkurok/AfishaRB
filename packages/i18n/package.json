@@ -1,0 +1,21 @@
+{
+  "name": "@afisha/i18n",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Строки интерфейса ru/ba (ICU-подобный формат), даты и плюрализация в поясе региона",
+  "exports": {
+    ".": "./src/index.ts",
+    "./messages": "./src/messages.ts",
+    "./ru.json": "./ru.json",
+    "./ba.json": "./ba.json"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
+  },
+  "devDependencies": {
+    "typescript": "~5.9.3",
+    "vitest": "^5.0.5"
+  }
+}

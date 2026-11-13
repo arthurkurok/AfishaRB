@@ -1,0 +1,19 @@
+{
+  "name": "@afisha/contract",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Контракт API: zod-схемы и типы (источник истины для OpenAPI)",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "typescript": "~5.9.3"
+  }
+}

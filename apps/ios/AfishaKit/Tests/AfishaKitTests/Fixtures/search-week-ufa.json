@@ -1,0 +1,1227 @@
+{
+  "items": [
+    {
+      "id": "01a19c9d-5fe3-7424-9025-955e26cf4b8b",
+      "event": {
+        "id": "01a19c9d-5fe0-7a83-8729-50620300081d",
+        "title": "Мастер-класс по современной визуальной культуре",
+        "summary": "Знакомство с экранным искусством как с фундаментом современной визуальной культуры. Участников мастер–класса ждет погружение в историю художественной съемки и связь классических приемов живописи с современными технологиями.",
+        "categories": [
+          "education",
+          "kids"
+        ],
+        "tags": [
+          "master_class"
+        ],
+        "age_rating": 12,
+        "pushkin_card": false,
+        "price": {
+          "min": "350.00",
+          "max": "350.00",
+          "is_free": false,
+          "currency": "RUB"
+        },
+        "image": {
+          "url": "https://cdn.culture.ru/images/cfced03e-fc8a-5c4b-961c-686604c4123a",
+          "author": "Автор школы креативных индустрий",
+          "source": "Авторшколыкреативныхиндустрий",
+          "license": null,
+          "width": 1280,
+          "height": 853,
+          "color": "7e6351"
+        },
+        "organization": "ГБПОУ РБ «Уфимское училище искусств (колледж)»"
+      },
+      "venue": {
+        "id": "01a19c9d-5921-708e-bd41-91da19a9bdc5",
+        "name": "Школа креативных индустрий г. Уфы",
+        "address": "Респ. Башкортостан, г. Уфа, ул. Бакалинская, д. 64/5",
+        "geo": [
+          54.71996,
+          55.988479
+        ],
+        "municipality_id": "ufa",
+        "municipality": "Уфа"
+      },
+      "starts_at": "2026-11-02T10:00:00+05:00",
+      "ends_at": "2026-11-02T20:00:00+05:00",
+      "is_range": false,
+      "status": "scheduled",
+      "status_reason": null,
+      "previous_starts_at": null,
+      "availability": "unknown",
+      "ticket_url": "https://iframeab-pre7341.intickets.ru/seance/75899714/?locale=ru_RU",
+      "more_dates": 1,
+      "distance_km": null,
+      "reasons": [
+        "time_fit",
+        "new"
+      ],
+      "freshness": "fresh"
+    },
+    {
+      "id": "01a19c9d-5fd8-7aa7-a19f-4a701523979d",
+      "event": {
+        "id": "01a19c9d-5fd6-75e0-8595-c29266346f39",
+        "title": "Мастер-класс по искусству малой графической формы",
+        "summary": "Мастер–класс посвящен созданию уникальных визуальных знаков в технике малой графики. Программа включает: знакомство с основами композиции и цветоведения; изучение исторических примеров знаковых систем; освоение современных инструментов цифрового рисования; разработку…",
+        "categories": [
+          "education",
+          "kids"
+        ],
+        "tags": [
+          "master_class"
+        ],
+        "age_rating": 12,
+        "pushkin_card": false,
+        "price": {
+          "min": "300.00",
+          "max": "300.00",
+          "is_free": false,
+          "currency": "RUB"
+        },
+        "image": {
+          "url": "https://cdn.culture.ru/images/e99968b1-3ec6-5778-8d71-23ed56dbfbf5",
+          "author": "Автор школы креативных индустрий",
+          "source": "Авторшколыкреативныхиндустрий",
+          "license": null,
+          "width": 2048,
+          "height": 1365,
+          "color": "a29a98"
+        },
+        "organization": "ГБПОУ РБ «Уфимское училище искусств (колледж)»"
+      },
+      "venue": {
+        "id": "01a19c9d-5921-708e-bd41-91da19a9bdc5",
+        "name": "Школа креативных индустрий г. Уфы",
+        "address": "Респ. Башкортостан, г. Уфа, ул. Бакалинская, д. 64/5",
+        "geo": [
+          54.71996,
+          55.988479
+        ],
+        "municipality_id": "ufa",
+        "municipality": "Уфа"
+      },
+      "starts_at": "2026-11-02T10:00:00+05:00",
+      "ends_at": "2026-11-02T20:00:00+05:00",
+      "is_range": false,
+      "status": "scheduled",
+      "status_reason": null,
+      "previous_starts_at": null,
+      "availability": "unknown",
+      "ticket_url": "https://iframeab-pre7341.intickets.ru/seance/75999378/?locale=ru_RU",
+      "more_dates": 1,
+      "distance_km": null,
+      "reasons": [
+        "time_fit",
+        "new"
+      ],
+      "freshness": "fresh"
+    },
+    {
+      "id": "01a19c9d-5fdd-76be-b25b-ecfb02d7a2a5",
+      "event": {
+        "id": "01a19c9d-5fda-7caa-b4ea-127928bc7c28",
+        "title": "Мастер-класс «Графический дизайн: от идеи до макета»",
+        "summary": "Мероприятие Школы креативных индустрий посвящено основам графического дизайна и пути в профессию. Участники узнают, из чего складывается работа дизайнера: композиция, цвет, типографика, сетка, визуальная иерархия.",
+        "categories": [
+          "education",
+          "kids"
+        ],
+        "tags": [
+          "master_class"
+        ],
+        "age_rating": 12,
+        "pushkin_card": false,
+        "price": {
+          "min": "300.00",
+          "max": "300.00",
+          "is_free": false,
+          "currency": "RUB"
+        },
+        "image": {
+          "url": "https://cdn.culture.ru/images/3866a237-1462-580d-a633-5030d2dc5c12",
+          "author": "Автор школы креативных индустрий",
+          "source": "Авторшколыкреативныхиндустрий",
+          "license": null,
+          "width": 1600,
+          "height": 1204,
+          "color": "a49c95"
+        },
+        "organization": "ГБПОУ РБ «Уфимское училище искусств (колледж)»"
+      },
+      "venue": {
+        "id": "01a19c9d-5921-708e-bd41-91da19a9bdc5",
+        "name": "Школа креативных индустрий г. Уфы",
+        "address": "Респ. Башкортостан, г. Уфа, ул. Бакалинская, д. 64/5",
+        "geo": [
+          54.71996,
+          55.988479
+        ],
+        "municipality_id": "ufa",
+        "municipality": "Уфа"
+      },
+      "starts_at": "2026-11-02T10:00:00+05:00",
+      "ends_at": "2026-11-02T20:00:00+05:00",
+      "is_range": false,
+      "status": "scheduled",
+      "status_reason": null,
+      "previous_starts_at": null,
+      "availability": "unknown",
+      "ticket_url": "https://iframeab-pre7341.intickets.ru/seance/75997784/?locale=ru_RU",
+      "more_dates": 1,
+      "distance_km": null,
+      "reasons": [
+        "time_fit",
+        "new"
+      ],
+      "freshness": "fresh"
+    },
+    {
+      "id": "01a19c9d-53c0-7709-90d3-a6782c570e29",
+      "event": {
+        "id": "01a19c9d-53bc-7b5d-b631-91b1442df262",
+        "title": "Музейный урок «Литературная гостиная»",
+        "summary": "Музейный урок в форме литературной гостиной посвящен жизни и творчеству писателей Башкортостана, а также писателям-юбилярам! В программе: мастерская поэзии и прозы – творческая часть занятия; ознакомление с уникальными экспонатами из фондов Национального литературного музея…",
+        "categories": [
+          "education",
+          "kids"
+        ],
+        "tags": [
+          "youth"
+        ],
+        "age_rating": 6,
+        "pushkin_card": false,
+        "price": {
+          "min": "350.00",
+          "max": "400.00",
+          "is_free": false,
+          "currency": "RUB"
+        },
+        "image": {
+          "url": "https://cdn.culture.ru/images/f8cacdad-0b94-558e-99dd-790986a6dd8c",
+          "author": "Султангареев Расим Раилович",
+          "source": "личный архив",
+          "license": null,
+          "width": 800,
+          "height": 600,
+          "color": "918070"
+        },
+        "organization": "ГБУКиИ «Национальный литературный музей Республики Башкортостан»"
+      },
+      "venue": {
+        "id": "01a19c9d-4d49-7211-977c-9f8c636e56b8",
+        "name": "Национальный литературный музей Республики Башкортостан",
+        "address": "Респ. Башкортостан, г. Уфа, ул. Достоевского, д. 160",
+        "geo": [
+          54.728883,
+          55.976621
+        ],
+        "municipality_id": "ufa",
+        "municipality": "Уфа"
+      },
+      "starts_at": "2026-11-02T10:00:00+05:00",
+      "ends_at": "2026-11-02T21:00:00+05:00",
+      "is_range": false,
+      "status": "scheduled",
+      "status_reason": null,
+      "previous_starts_at": null,
+      "availability": "unknown",
+      "ticket_url": "https://litmuzey.ru/page100",
+      "more_dates": 0,
+      "distance_km": null,
+      "reasons": [
+        "time_fit",
+        "new"
+      ],
+      "freshness": "fresh"
+    },
+    {
+      "id": "01a19c9d-5ee2-7c8e-a525-5db253607e48",
+      "event": {
+        "id": "01a19c9d-5ee0-71ee-a1aa-1d35d142d801",
+        "title": "Познавательная программа «В мире креатива»",
+        "summary": "Познавательная программа Школы креативных индустрий открывает двери в мир современного искусства и цифровых технологий. Вас ждут увлекательные мастер-классы от опытных наставников, знакомство с основами графического дизайна, анимации, интерактивных технологий VR/AR, фото– и…",
+        "categories": [
+          "education",
+          "kids"
+        ],
+        "tags": [
+          "master_class",
+          "youth"
+        ],
+        "age_rating": 12,
+        "pushkin_card": false,
+        "price": {
+          "min": "300.00",
+          "max": "300.00",
+          "is_free": false,
+          "currency": "RUB"
+        },
+        "image": {
+          "url": "https://cdn.culture.ru/images/ba679d4f-97b0-5e18-9048-b37cc2e926f5",
+          "author": "Автор школы креативных индустрий Уфа",
+          "source": "АвторшколыкреативныхиндустрийУфа",
+          "license": null,
+          "width": 2048,
+          "height": 1365,
+          "color": "968d89"
+        },
+        "organization": "ГБПОУ РБ «Уфимское училище искусств (колледж)»"
+      },
+      "venue": {
+        "id": "01a19c9d-5921-708e-bd41-91da19a9bdc5",
+        "name": "Школа креативных индустрий г. Уфы",
+        "address": "Респ. Башкортостан, г. Уфа, ул. Бакалинская, д. 64/5",
+        "geo": [
+          54.71996,
+          55.988479
+        ],
+        "municipality_id": "ufa",
+        "municipality": "Уфа"
+      },
+      "starts_at": "2026-11-02T10:00:00+05:00",
+      "ends_at": "2026-11-02T20:00:00+05:00",
+      "is_range": false,
+      "status": "scheduled",
+      "status_reason": null,
+      "previous_starts_at": null,
+      "availability": "unknown",
+      "ticket_url": "https://iframeab-pre7341.intickets.ru/seance/75839999/?locale=ru_RU",
+      "more_dates": 1,
+      "distance_km": null,
+      "reasons": [
+        "time_fit",
+        "new"
+      ],
+      "freshness": "fresh"
+    },
+    {
+      "id": "01a19cb8-f291-7b31-853b-ce749a360ac7",
+      "event": {
+        "id": "01a19cb8-f285-7335-8c82-bd46f7ecc7f7",
+        "title": "Книжная выставка «Истоки семейного счастья»",
+        "summary": "2026 год в Республике Башкортостан объявлен Годом большой и дружной семьи. В рамках Года большой и дружной семьи в сельской библиотеке оформлена книжная выставка .",
+        "categories": [
+          "museum",
+          "kids"
+        ],
+        "tags": [
+          "accessible",
+          "family",
+          "free",
+          "youth"
+        ],
+        "age_rating": 6,
+        "pushkin_card": false,
+        "price": {
+          "min": "0.00",
+          "max": "0.00",
+          "is_free": true,
+          "currency": "RUB"
+        },
+        "image": {
+          "url": "https://cdn.culture.ru/images/37de2252-eb72-597d-84b3-e633f595c057",
+          "author": "Ялсина А.Н.",
+          "source": "https://vk.com/biblpozitiv",
+          "license": null,
+          "width": 1280,
+          "height": 960,
+          "color": "8b826f"
+        },
+        "organization": "МБУ «Централизованная система массовых библиотек г. Уфы»"
+      },
+      "venue": {
+        "id": "01a19c9d-4fdb-718d-893f-ba1b1e0fa612",
+        "name": "Модельная библиотека № 36 г. Уфы – Центр молодежного общения «Позитив»",
+        "address": "Респ. Башкортостан, г. Уфа, ул. Генерала Горбатова, д. 3/1",
+        "geo": [
+          54.718374,
+          56.00994
+        ],
+        "municipality_id": "ufa",
+        "municipality": "Уфа"
+      },
+      "starts_at": "2026-11-03T09:00:00+05:00",
+      "ends_at": "2026-11-03T20:00:00+05:00",
+      "is_range": false,
+      "status": "scheduled",
+      "status_reason": null,
+      "previous_starts_at": null,
+      "availability": "unknown",
+      "ticket_url": null,
+      "more_dates": 4,
+      "distance_km": null,
+      "reasons": [
+        "free",
+        "time_fit",
+        "new"
+      ],
+      "freshness": "fresh"
+    },
+    {
+      "id": "01a19cba-01a6-76d2-ba9c-e39aa04b44a2",
+      "event": {
+        "id": "01a19cba-01a0-76d1-a655-304d04ac98dc",
+        "title": "Художественная выставка «Цвети, моя Республика!»",
+        "summary": "В выставочном зале библиотеки член Союза русских художников Зиля Аксенова представит новую персональную выставку «Цвети, моя Республика!», которая стала признанием в любви родному Башкортостану.",
+        "categories": [
+          "museum"
+        ],
+        "tags": [
+          "accessible",
+          "free"
+        ],
+        "age_rating": 0,
+        "pushkin_card": false,
+        "price": {
+          "min": "0.00",
+          "max": "0.00",
+          "is_free": true,
+          "currency": "RUB"
+        },
+        "image": {
+          "url": "https://cdn.culture.ru/images/725f18e9-2c93-575e-9da7-261adf985ee4",
+          "author": "Из архива учреждения",
+          "source": "https://ufa-lib.ru/",
+          "license": null,
+          "width": 1262,
+          "height": 1064,
+          "color": "737055"
+        },
+        "organization": "МБУ «Централизованная система массовых библиотек г. Уфы»"
+      },
+      "venue": {
+        "id": "01a19c9d-4ee0-7a97-b552-87eed5674228",
+        "name": "Центральная городская библиотека Уфы",
+        "address": "Респ. Башкортостан, г. Уфа, ул. Комсомольская, д. 138",
+        "geo": [
+          54.75942449863486,
+          56.01658054611818
+        ],
+        "municipality_id": "ufa",
+        "municipality": "Уфа"
+      },
+      "starts_at": "2026-11-03T09:00:00+05:00",
+      "ends_at": "2026-11-03T20:00:00+05:00",
+      "is_range": false,
+      "status": "scheduled",
+      "status_reason": null,
+      "previous_starts_at": null,
+      "availability": "unknown",
+      "ticket_url": null,
+      "more_dates": 4,
+      "distance_km": null,
+      "reasons": [
+        "free",
+        "time_fit",
+        "new"
+      ],
+      "freshness": "fresh"
+    },
+    {
+      "id": "01a19cb9-5860-7937-8d45-87ae4e7b2db1",
+      "event": {
+        "id": "01a19cb9-5847-70c3-a2cd-db707614d9c9",
+        "title": "«Сила преодоления» — тематическая экскурсия для участников СВО и членов их семей",
+        "summary": "Программа раскрывает, как люди с нарушением зрения строят полноценную жизнь: осваивают профессии, создают производства, добиваются успехов в спорте и культуре, сохраняют социальную активность даже в самые тяжёлые периоды жизни.",
+        "categories": [
+          "museum"
+        ],
+        "tags": [
+          "accessible",
+          "excursion",
+          "free"
+        ],
+        "age_rating": 6,
+        "pushkin_card": false,
+        "price": {
+          "min": "0.00",
+          "max": "0.00",
+          "is_free": true,
+          "currency": "RUB"
+        },
+        "image": {
+          "url": "https://cdn.culture.ru/images/5354a212-a59b-5aa1-87f9-a7ed44b034ba",
+          "author": "Афлятунова Г.Я.",
+          "source": "личный фонд",
+          "license": null,
+          "width": 2048,
+          "height": 1428,
+          "color": "a29583"
+        },
+        "organization": "МБУ «Музей истории Башкирской организации ВОС» г. Уфы"
+      },
+      "venue": {
+        "id": "01a19c9d-86b6-76f9-ae41-08fc427630a7",
+        "name": "Музей истории Башкирской организации ВОС города Уфы",
+        "address": "Респ. Башкортостан, г. Уфа, ул. Кирова, д. 47",
+        "geo": [
+          54.729070012778834,
+          55.963958501815796
+        ],
+        "municipality_id": "ufa",
+        "municipality": "Уфа"
+      },
+      "starts_at": "2026-11-03T10:00:00+05:00",
+      "ends_at": "2026-11-03T16:00:00+05:00",
+      "is_range": false,
+      "status": "scheduled",
+      "status_reason": null,
+      "previous_starts_at": null,
+      "availability": "unknown",
+      "ticket_url": null,
+      "more_dates": 3,
+      "distance_km": null,
+      "reasons": [
+        "free",
+        "time_fit",
+        "new"
+      ],
+      "freshness": "fresh"
+    },
+    {
+      "id": "01a19cb9-1160-78e1-aeeb-d96a8c2c11fc",
+      "event": {
+        "id": "01a19cb9-1151-755b-8c2a-7336b2a2c1fd",
+        "title": "«Уфимская сюита Бориса Попова»",
+        "summary": "В библиотеке будет оформлена книжная выставка, посвящённая 100-летию со дня рождения известного уфимского краеведа, журналиста, педагога, коллекционера Бориса Леонидовича Попова. Б.Л. Попов окончил исторический факультет Башкирского государственного университета.",
+        "categories": [
+          "museum",
+          "kids"
+        ],
+        "tags": [
+          "accessible",
+          "free"
+        ],
+        "age_rating": 6,
+        "pushkin_card": false,
+        "price": {
+          "min": "0.00",
+          "max": "0.00",
+          "is_free": true,
+          "currency": "RUB"
+        },
+        "image": {
+          "url": "https://cdn.culture.ru/images/22d26966-831d-554a-a2be-3c3f057f3f87",
+          "author": "Прокофьева Н.Л.",
+          "source": "Архив автора",
+          "license": null,
+          "width": 2048,
+          "height": 1051,
+          "color": "78726f"
+        },
+        "organization": "Централизованная система детских библиотек г. Уфы"
+      },
+      "venue": {
+        "id": "01a19cb9-114e-7e98-9031-03c89d1ce65e",
+        "name": "Детская библиотека № 17 им. М. Г. Рахимкулова г. Уфы",
+        "address": "респ. Башкортостан, г. Уфа, ул. Комсомольская, д. 10",
+        "geo": [
+          54.7406013668773,
+          55.99403786665789
+        ],
+        "municipality_id": "ufa",
+        "municipality": "Уфа"
+      },
+      "starts_at": "2026-11-03T10:00:00+05:00",
+      "ends_at": "2026-11-03T18:00:00+05:00",
+      "is_range": false,
+      "status": "scheduled",
+      "status_reason": null,
+      "previous_starts_at": null,
+      "availability": "unknown",
+      "ticket_url": null,
+      "more_dates": 3,
+      "distance_km": null,
+      "reasons": [
+        "free",
+        "time_fit",
+        "new"
+      ],
+      "freshness": "fresh"
+    },
+    {
+      "id": "01a19cb9-1179-788c-b840-ccedd5e7d0f2",
+      "event": {
+        "id": "01a19cb9-116e-7350-ae2c-e243f9f0a056",
+        "title": "«Читать, чтобы помнить!»",
+        "summary": "В детской библиотеке начнет работу книжная выставка-панорама, посвященная историческим событиям Великой Отечественной войны и специальной военной операции.",
+        "categories": [
+          "museum",
+          "kids"
+        ],
+        "tags": [
+          "accessible",
+          "free"
+        ],
+        "age_rating": 6,
+        "pushkin_card": false,
+        "price": {
+          "min": "0.00",
+          "max": "0.00",
+          "is_free": true,
+          "currency": "RUB"
+        },
+        "image": {
+          "url": "https://cdn.culture.ru/images/784b666a-8b9e-53da-86e4-4072596a14d3",
+          "author": "Прокофьева Н.Л.",
+          "source": "Архив автора",
+          "license": null,
+          "width": 1729,
+          "height": 1165,
+          "color": "665851"
+        },
+        "organization": "Централизованная система детских библиотек г. Уфы"
+      },
+      "venue": {
+        "id": "01a19cb9-114e-7e98-9031-03c89d1ce65e",
+        "name": "Детская библиотека № 17 им. М. Г. Рахимкулова г. Уфы",
+        "address": "респ. Башкортостан, г. Уфа, ул. Комсомольская, д. 10",
+        "geo": [
+          54.7406013668773,
+          55.99403786665789
+        ],
+        "municipality_id": "ufa",
+        "municipality": "Уфа"
+      },
+      "starts_at": "2026-11-03T10:00:00+05:00",
+      "ends_at": "2026-11-03T18:00:00+05:00",
+      "is_range": false,
+      "status": "scheduled",
+      "status_reason": null,
+      "previous_starts_at": null,
+      "availability": "unknown",
+      "ticket_url": null,
+      "more_dates": 3,
+      "distance_km": null,
+      "reasons": [
+        "free",
+        "time_fit",
+        "new"
+      ],
+      "freshness": "fresh"
+    },
+    {
+      "id": "01a19c9d-732c-77c6-bb73-ee5ef8cd1497",
+      "event": {
+        "id": "01a19c9d-7329-71d3-8150-522a50062cea",
+        "title": "«Русь, Россия, Родина моя»",
+        "summary": "В библиотеке состоится патриотический час. Читателей познакомят с далекими событиями начала 17-го века, когда Москва была освобождена от польских интервентов.",
+        "categories": [
+          "folk",
+          "kids"
+        ],
+        "tags": [
+          "accessible",
+          "free"
+        ],
+        "age_rating": 6,
+        "pushkin_card": false,
+        "price": {
+          "min": "0.00",
+          "max": "0.00",
+          "is_free": true,
+          "currency": "RUB"
+        },
+        "image": {
+          "url": "https://cdn.culture.ru/images/4f2add28-ff9d-57e2-b85e-38d08a320829",
+          "author": "Дусеева Э.Х.",
+          "source": "Архив автора",
+          "license": null,
+          "width": 1758,
+          "height": 1015,
+          "color": "786c64"
+        },
+        "organization": "Централизованная система детских библиотек г. Уфы"
+      },
+      "venue": {
+        "id": "01a19c9d-7328-7625-8ad7-c94c106f9d42",
+        "name": "Детская библиотека № 19 г. Уфы",
+        "address": "Респ. Башкортостан, г. Уфа, ул. Ухтомского, д. 12",
+        "geo": [
+          54.70379679040528,
+          55.83045959472656
+        ],
+        "municipality_id": "ufa",
+        "municipality": "Уфа"
+      },
+      "starts_at": "2026-11-03T10:40:00+05:00",
+      "ends_at": "2026-11-03T12:00:00+05:00",
+      "is_range": false,
+      "status": "scheduled",
+      "status_reason": null,
+      "previous_starts_at": null,
+      "availability": "unknown",
+      "ticket_url": null,
+      "more_dates": 0,
+      "distance_km": null,
+      "reasons": [
+        "free",
+        "time_fit",
+        "new"
+      ],
+      "freshness": "fresh"
+    },
+    {
+      "id": "01a19c9d-6ece-75f1-a459-823af17105e7",
+      "event": {
+        "id": "01a19c9d-6ecb-7d8f-b664-2db833a90e8a",
+        "title": "Историческая беседа «Сила России в единстве»",
+        "summary": "В истории каждой державы есть особые даты и события, о которых хранит память народ. Одним из таких значимых событий стало освобождение Отечества от вражеского нашествия четыре века назад — подвиг, спасший Россию от порабощения и гибели государства Библиотека приглашает читателей…",
+        "categories": [
+          "education"
+        ],
+        "tags": [
+          "accessible",
+          "free"
+        ],
+        "age_rating": 12,
+        "pushkin_card": false,
+        "price": {
+          "min": "0.00",
+          "max": "0.00",
+          "is_free": true,
+          "currency": "RUB"
+        },
+        "image": {
+          "url": "https://cdn.culture.ru/images/9c512ed4-9097-571f-976d-3da986cd1e03",
+          "author": "Из архива учреждения",
+          "source": "https://vk.ru/wall-67930619_22611",
+          "license": null,
+          "width": 1600,
+          "height": 989,
+          "color": "8b7e76"
+        },
+        "organization": "МБУ «Централизованная система массовых библиотек г. Уфы»"
+      },
+      "venue": {
+        "id": "01a19c9d-4ee0-7a97-b552-87eed5674228",
+        "name": "Центральная городская библиотека Уфы",
+        "address": "Респ. Башкортостан, г. Уфа, ул. Комсомольская, д. 138",
+        "geo": [
+          54.75942449863486,
+          56.01658054611818
+        ],
+        "municipality_id": "ufa",
+        "municipality": "Уфа"
+      },
+      "starts_at": "2026-11-03T11:00:00+05:00",
+      "ends_at": "2026-11-03T12:00:00+05:00",
+      "is_range": false,
+      "status": "scheduled",
+      "status_reason": null,
+      "previous_starts_at": null,
+      "availability": "unknown",
+      "ticket_url": null,
+      "more_dates": 0,
+      "distance_km": null,
+      "reasons": [
+        "free",
+        "time_fit",
+        "new"
+      ],
+      "freshness": "fresh"
+    },
+    {
+      "id": "01a19c9d-7955-7df0-a643-14f6b7efb963",
+      "event": {
+        "id": "01a19c9d-7953-7816-9fb6-74146054838f",
+        "title": "«Россия — многоцветье культур»",
+        "summary": "В детской библиотеке пройдёт историко‑этнографический час, посвящённый Дню народного единства. Библиотекари поговорят с читателями о России – стране, занимающей самую большую территорию на планете и объединяющей народы разных национальностей, традиций и культур, расскажут о…",
+        "categories": [
+          "folk",
+          "kids"
+        ],
+        "tags": [
+          "accessible",
+          "free",
+          "master_class"
+        ],
+        "age_rating": 6,
+        "pushkin_card": false,
+        "price": {
+          "min": "0.00",
+          "max": "0.00",
+          "is_free": true,
+          "currency": "RUB"
+        },
+        "image": {
+          "url": "https://cdn.culture.ru/images/3b8778f5-ae11-5abd-aa12-9ebb432d634d",
+          "author": "Егошина А.В.",
+          "source": "Архив автора",
+          "license": null,
+          "width": 2048,
+          "height": 1536,
+          "color": "8b7773"
+        },
+        "organization": "Централизованная система детских библиотек г. Уфы"
+      },
+      "venue": {
+        "id": "01a19c9d-7952-7eed-aab2-4d1ff367be9b",
+        "name": "Модельная детская библиотека № 38 г. Уфы",
+        "address": "Респ. Башкортостан, г. Уфа, ул. Парковая, д. 6/2",
+        "geo": [
+          54.761644,
+          55.994462
+        ],
+        "municipality_id": "ufa",
+        "municipality": "Уфа"
+      },
+      "starts_at": "2026-11-03T11:00:00+05:00",
+      "ends_at": "2026-11-03T12:00:00+05:00",
+      "is_range": false,
+      "status": "scheduled",
+      "status_reason": null,
+      "previous_starts_at": null,
+      "availability": "unknown",
+      "ticket_url": null,
+      "more_dates": 0,
+      "distance_km": null,
+      "reasons": [
+        "free",
+        "time_fit",
+        "new"
+      ],
+      "freshness": "fresh"
+    },
+    {
+      "id": "01a19c9d-7714-704f-b4de-fca71ece3aea",
+      "event": {
+        "id": "01a19c9d-770f-799d-87dc-27466b6d15b2",
+        "title": "Мастер–класс «Цветок единства»",
+        "summary": "Библиотека приглашает на мастер‑класс, приуроченный ко Дню народного единства. В ходе занятия участники создадут символическую поделку – «Цветок Единства».",
+        "categories": [
+          "education",
+          "kids"
+        ],
+        "tags": [
+          "accessible",
+          "free",
+          "youth"
+        ],
+        "age_rating": 6,
+        "pushkin_card": false,
+        "price": {
+          "min": "0.00",
+          "max": "0.00",
+          "is_free": true,
+          "currency": "RUB"
+        },
+        "image": {
+          "url": "https://cdn.culture.ru/images/8ac3067f-3746-59c8-8589-eda5b1ce49f1",
+          "author": "Ялсина А.Н.",
+          "source": "https://36.ufa-lib.ru/",
+          "license": null,
+          "width": 1154,
+          "height": 864,
+          "color": "9a8c7f"
+        },
+        "organization": "МБУ «Централизованная система массовых библиотек г. Уфы»"
+      },
+      "venue": {
+        "id": "01a19c9d-4fdb-718d-893f-ba1b1e0fa612",
+        "name": "Модельная библиотека № 36 г. Уфы – Центр молодежного общения «Позитив»",
+        "address": "Респ. Башкортостан, г. Уфа, ул. Генерала Горбатова, д. 3/1",
+        "geo": [
+          54.718374,
+          56.00994
+        ],
+        "municipality_id": "ufa",
+        "municipality": "Уфа"
+      },
+      "starts_at": "2026-11-03T11:00:00+05:00",
+      "ends_at": "2026-11-03T12:00:00+05:00",
+      "is_range": false,
+      "status": "scheduled",
+      "status_reason": null,
+      "previous_starts_at": null,
+      "availability": "unknown",
+      "ticket_url": null,
+      "more_dates": 0,
+      "distance_km": null,
+      "reasons": [
+        "free",
+        "time_fit",
+        "new"
+      ],
+      "freshness": "fresh"
+    },
+    {
+      "id": "01a19c9d-6cf6-7cff-b6a8-d9cec59cb782",
+      "event": {
+        "id": "01a19c9d-6cf4-75b8-9d5a-6d0a4a8e14e9",
+        "title": "Концерт «От истоков — к единству»",
+        "summary": "В честь Дня Народного единства Городской Дворец культуры готовит яркий праздничный концерт. В основе программы – песни, которые уже давно полюбились публике и стали настоящими местными хитами: «Россия вперед», «Башкортостан», «Лучший город Земли», «Дустарыма» и другие знакомые…",
+        "categories": [
+          "music"
+        ],
+        "tags": [
+          "accessible",
+          "pushkin",
+          "youth"
+        ],
+        "age_rating": 12,
+        "pushkin_card": true,
+        "price": {
+          "min": "500.00",
+          "max": "500.00",
+          "is_free": false,
+          "currency": "RUB"
+        },
+        "image": {
+          "url": "https://cdn.culture.ru/images/684d32de-b61e-5677-8bf1-e4130cdb8627",
+          "author": "Бабаджанов Ашот Радикович",
+          "source": "Городской Дворец культуры",
+          "license": null,
+          "width": 1920,
+          "height": 1280,
+          "color": "4d3138"
+        },
+        "organization": "МБУ ГДК г.Уфа РБ"
+      },
+      "venue": {
+        "id": "01a19c9d-4dd3-7c28-8e05-50ae7cbc3f14",
+        "name": "Городской дворец культуры Уфы",
+        "address": "Респ. Башкортостан, г. Уфа, пр-кт. Октября, д. 137",
+        "geo": [
+          54.796283,
+          56.037132
+        ],
+        "municipality_id": "ufa",
+        "municipality": "Уфа"
+      },
+      "starts_at": "2026-11-03T12:00:00+05:00",
+      "ends_at": "2026-11-03T13:00:00+05:00",
+      "is_range": false,
+      "status": "scheduled",
+      "status_reason": null,
+      "previous_starts_at": null,
+      "availability": "unknown",
+      "ticket_url": "https://iframeab-pre5623.intickets.ru/seance/77001690/",
+      "more_dates": 0,
+      "distance_km": null,
+      "reasons": [
+        "time_fit",
+        "new"
+      ],
+      "freshness": "fresh"
+    },
+    {
+      "id": "01a19c9d-7fc8-7928-a416-3ae6e7e8e372",
+      "event": {
+        "id": "01a19c9d-7fc6-77b9-aa1d-d0f767310c14",
+        "title": "«Наша сила в единстве»",
+        "summary": "В библиотеке организуют стол просмотра, на котором будет представлена литература о памятных событиях 1612 года - энциклопедии, научно-популярные книги по истории России, сборники, а также тематические памятки-закладки, подготовленные библиотекой для раздачи.",
+        "categories": [
+          "folk",
+          "kids"
+        ],
+        "tags": [
+          "accessible",
+          "free",
+          "master_class"
+        ],
+        "age_rating": 6,
+        "pushkin_card": false,
+        "price": {
+          "min": "0.00",
+          "max": "0.00",
+          "is_free": true,
+          "currency": "RUB"
+        },
+        "image": {
+          "url": "https://cdn.culture.ru/images/85610217-8ed6-5506-93cf-7d52f70701e4",
+          "author": "Зиннатуллина И.М.",
+          "source": "Архив автора",
+          "license": null,
+          "width": 1976,
+          "height": 1481,
+          "color": "776456"
+        },
+        "organization": "Централизованная система детских библиотек г. Уфы"
+      },
+      "venue": {
+        "id": "01a19c9d-7fc6-7070-8b8a-f895e545d245",
+        "name": "Модельная детская библиотека № 7 г. Уфы",
+        "address": "Респ. Башкортостан, г. Уфа, ул. Кирова, д. 40/1",
+        "geo": [
+          54.72946,
+          55.958215
+        ],
+        "municipality_id": "ufa",
+        "municipality": "Уфа"
+      },
+      "starts_at": "2026-11-03T12:00:00+05:00",
+      "ends_at": "2026-11-03T13:00:00+05:00",
+      "is_range": false,
+      "status": "scheduled",
+      "status_reason": null,
+      "previous_starts_at": null,
+      "availability": "unknown",
+      "ticket_url": null,
+      "more_dates": 0,
+      "distance_km": null,
+      "reasons": [
+        "free",
+        "time_fit",
+        "new"
+      ],
+      "freshness": "fresh"
+    },
+    {
+      "id": "01a19c9d-6def-77d6-9132-9955e07956e9",
+      "event": {
+        "id": "01a19c9d-6ded-7513-8c12-9d4e4a14e8b4",
+        "title": "Исторический вояж «Россия объединяет сердца»",
+        "summary": "В преддверии празднования Дня народного единства в библиотеке будет проведено мероприятие. Исторический вояж начнётся с демонстрации презентации об истории России конца 16 века - начала 17 века.",
+        "categories": [
+          "education"
+        ],
+        "tags": [
+          "accessible",
+          "free",
+          "youth"
+        ],
+        "age_rating": 12,
+        "pushkin_card": false,
+        "price": {
+          "min": "0.00",
+          "max": "0.00",
+          "is_free": true,
+          "currency": "RUB"
+        },
+        "image": {
+          "url": "https://cdn.culture.ru/images/cfffffec-54e8-5505-b99a-48a956e4f851",
+          "author": "Телеганова Е.Н.",
+          "source": "https://vk.ru/biblioteka_35_ufa",
+          "license": null,
+          "width": 2048,
+          "height": 1536,
+          "color": "ababaa"
+        },
+        "organization": "МБУ «Централизованная система массовых библиотек г. Уфы»"
+      },
+      "venue": {
+        "id": "01a19c9d-6dec-7d13-9f3c-8a7308a840a8",
+        "name": "Модельная библиотека № 35 – арт-холл «Соты»",
+        "address": "Респ. Башкортостан, г. Уфа, ул. Юрия Гагарина, д. 74/1",
+        "geo": [
+          54.77939416981028,
+          56.075058871820495
+        ],
+        "municipality_id": "ufa",
+        "municipality": "Уфа"
+      },
+      "starts_at": "2026-11-03T12:00:00+05:00",
+      "ends_at": "2026-11-03T13:00:00+05:00",
+      "is_range": false,
+      "status": "scheduled",
+      "status_reason": null,
+      "previous_starts_at": null,
+      "availability": "unknown",
+      "ticket_url": null,
+      "more_dates": 0,
+      "distance_km": null,
+      "reasons": [
+        "free",
+        "time_fit",
+        "new"
+      ],
+      "freshness": "fresh"
+    },
+    {
+      "id": "01a19cb8-c892-780f-bb9e-3a3c73924516",
+      "event": {
+        "id": "01a19cb8-c881-726e-9790-7c7c9cba3642",
+        "title": "«По следам истории»",
+        "summary": "На экскурсии можно будет познакомиться с историческими фактами создания и становления Башкирской республиканской организации Всероссийского общества слепых, узнать, как развивалась производственная база для трудоустройства инвалидов по зрению, как создавались первичные…",
+        "categories": [
+          "museum",
+          "kids"
+        ],
+        "tags": [
+          "accessible",
+          "excursion",
+          "free",
+          "youth"
+        ],
+        "age_rating": 6,
+        "pushkin_card": false,
+        "price": {
+          "min": "0.00",
+          "max": "0.00",
+          "is_free": true,
+          "currency": "RUB"
+        },
+        "image": {
+          "url": "https://cdn.culture.ru/images/51c1cc9c-961d-5e35-86f1-e925b56ee54d",
+          "author": "Гульфия Янузаковна Афлятунова",
+          "source": "Из личного архива",
+          "license": null,
+          "width": 949,
+          "height": 899,
+          "color": "978e73"
+        },
+        "organization": "МБУ «Музей истории Башкирской организации ВОС» г. Уфы"
+      },
+      "venue": {
+        "id": "01a19c9d-86b6-76f9-ae41-08fc427630a7",
+        "name": "Музей истории Башкирской организации ВОС города Уфы",
+        "address": "Респ. Башкортостан, г. Уфа, ул. Кирова, д. 47",
+        "geo": [
+          54.729070012778834,
+          55.963958501815796
+        ],
+        "municipality_id": "ufa",
+        "municipality": "Уфа"
+      },
+      "starts_at": "2026-11-03T13:01:00+05:00",
+      "ends_at": "2026-11-03T17:00:00+05:00",
+      "is_range": false,
+      "status": "scheduled",
+      "status_reason": null,
+      "previous_starts_at": null,
+      "availability": "unknown",
+      "ticket_url": null,
+      "more_dates": 3,
+      "distance_km": null,
+      "reasons": [
+        "free",
+        "time_fit",
+        "new"
+      ],
+      "freshness": "fresh"
+    },
+    {
+      "id": "01a19c9d-721a-7391-a308-fb28cc2e7fd4",
+      "event": {
+        "id": "01a19c9d-7216-7cb7-a8d5-5fd7d2ffe64e",
+        "title": "Патриотический час «Подвиг народного ополчения»",
+        "summary": "В преддверии Дня народного единства для пользователей пройдет мероприятие, на котором познакомятся с историей возникновения праздника. В ходе мероприятия участники узнают о причинах зарождения Смуты, о том, как формировалось войско в Ярославле, как ратники преодолели долгий путь…",
+        "categories": [
+          "education"
+        ],
+        "tags": [
+          "accessible",
+          "free",
+          "youth"
+        ],
+        "age_rating": 16,
+        "pushkin_card": false,
+        "price": {
+          "min": "0.00",
+          "max": "0.00",
+          "is_free": true,
+          "currency": "RUB"
+        },
+        "image": {
+          "url": "https://cdn.culture.ru/images/938ff714-3f4c-5d12-b7e7-d45925fb1f65",
+          "author": "Модельная библиотека №4",
+          "source": "https://vk.ru/bibl_spektr",
+          "license": null,
+          "width": 1280,
+          "height": 960,
+          "color": "937868"
+        },
+        "organization": "МБУ «Централизованная система массовых библиотек г. Уфы»"
+      },
+      "venue": {
+        "id": "01a19c9d-7216-716d-b9d1-cee984564dcb",
+        "name": "Модельная библиотека № 4 г. Уфы – Информационно-досуговый центр «Спектр»",
+        "address": "Респ. Башкортостан, г. Уфа, пр-кт. Октября, д. 9",
+        "geo": [
+          54.742257,
+          55.987159
+        ],
+        "municipality_id": "ufa",
+        "municipality": "Уфа"
+      },
+      "starts_at": "2026-11-03T14:00:00+05:00",
+      "ends_at": "2026-11-03T15:00:00+05:00",
+      "is_range": false,
+      "status": "scheduled",
+      "status_reason": null,
+      "previous_starts_at": null,
+      "availability": "unknown",
+      "ticket_url": null,
+      "more_dates": 0,
+      "distance_km": null,
+      "reasons": [
+        "free",
+        "time_fit",
+        "new"
+      ],
+      "freshness": "fresh"
+    },
+    {
+      "id": "01a19c9d-8806-7a8c-ae23-ba60eb9d8663",
+      "event": {
+        "id": "01a19c9d-8803-7c30-b466-3b8411f27d82",
+        "title": "Литературно-историческое путешествие «В семье большой, в семье единой»",
+        "summary": "В преддверии Дня народного единства Башкирская библиотека для слепых приглашает читателей на литературно-историческое путешествие. В теплой и дружеской атмосфере участники встречи смогут погрузиться в историю праздника, узнать о событиях 1612 года, объединивших Россию, и…",
+        "categories": [
+          "education",
+          "kids"
+        ],
+        "tags": [
+          "accessible",
+          "free",
+          "youth"
+        ],
+        "age_rating": 6,
+        "pushkin_card": false,
+        "price": {
+          "min": "0.00",
+          "max": "0.00",
+          "is_free": true,
+          "currency": "RUB"
+        },
+        "image": {
+          "url": "https://cdn.culture.ru/images/54948865-3337-5d60-b325-c6d69b163fd6",
+          "author": "Ирина Борисевич",
+          "source": "Архив",
+          "license": null,
+          "width": 2048,
+          "height": 1237,
+          "color": "7f6e68"
+        },
+        "organization": "ГБУК РБ БРСБС им. М. Х. Тухватшина"
+      },
+      "venue": {
+        "id": "01a19c9d-51c2-787e-ac86-938da4ebee7e",
+        "name": "Башкирская республиканская специальная библиотека для слепых",
+        "address": "Респ. Башкортостан, г. Уфа, ул. Кирова, д. 47",
+        "geo": [
+          54.72931184575449,
+          55.96333488821975
+        ],
+        "municipality_id": "ufa",
+        "municipality": "Уфа"
+      },
+      "starts_at": "2026-11-03T14:00:00+05:00",
+      "ends_at": "2026-11-03T15:00:00+05:00",
+      "is_range": false,
+      "status": "scheduled",
+      "status_reason": null,
+      "previous_starts_at": null,
+      "availability": "unknown",
+      "ticket_url": null,
+      "more_dates": 0,
+      "distance_km": null,
+      "reasons": [
+        "free",
+        "time_fit",
+        "new"
+      ],
+      "freshness": "fresh"
+    }
+  ],
+  "total": 260,
+  "next_cursor": "MjA",
+  "applied": {
+    "date_from": "2026-11-02",
+    "date_to": "2026-11-08",
+    "timezone": "Asia/Yekaterinburg"
+  }
+}

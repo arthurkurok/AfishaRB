@@ -1,0 +1,2227 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Афиша культуры Башкортостана — открытый API",
+    "version": "1.0.0",
+    "description": "Достоверные культурные события Республики Башкортостан: поиск, паспорт события с источниками и историей изменений, справочники, фиды. Даты — в часовом поясе региона (+05:00).",
+    "license": {
+      "name": "Данные: условия открытых данных; изображения — по лицензии правообладателей"
+    }
+  },
+  "components": {
+    "schemas": {
+      "AppliedRange": {
+        "type": "object",
+        "properties": {
+          "date_from": {
+            "type": "string"
+          },
+          "date_to": {
+            "type": "string"
+          },
+          "timezone": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "date_from",
+          "date_to",
+          "timezone"
+        ]
+      },
+      "AssistantIntent": {
+        "type": "string",
+        "enum": [
+          "search",
+          "refine",
+          "event_question",
+          "plan_day",
+          "help",
+          "smalltalk",
+          "offtopic"
+        ]
+      },
+      "AssistantKind": {
+        "type": "string",
+        "enum": [
+          "results",
+          "clarify",
+          "empty",
+          "answer",
+          "offtopic",
+          "help",
+          "error"
+        ]
+      },
+      "AssistantMode": {
+        "type": "string",
+        "enum": [
+          "llm",
+          "rules"
+        ]
+      },
+      "AssistantPick": {
+        "type": "object",
+        "properties": {
+          "occurrence": {
+            "$ref": "#/components/schemas/OccurrenceCard"
+          },
+          "reason_codes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ReasonCode"
+            }
+          },
+          "reason_text": {
+            "type": "string",
+            "description": "Объяснение, прошедшее верификатор фактов"
+          }
+        },
+        "required": [
+          "occurrence",
+          "reason_codes",
+          "reason_text"
+        ]
+      },
+      "AssistantRequest": {
+        "type": "object",
+        "properties": {
+          "conversation_id": {
+            "type": "string"
+          },
+          "text": {
+            "type": "string",
+            "maxLength": 1000
+          },
+          "patch": {
+            "description": "Нажатие быстрого ответа или изменение чипа",
+            "type": "object",
+            "additionalProperties": {}
+          },
+          "event_id": {
+            "description": "Вопрос о конкретном событии",
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+          },
+          "lang": {
+            "$ref": "#/components/schemas/Lang",
+            "description": "Язык интерфейса и контента"
+          },
+          "municipality_id": {
+            "description": "Город по умолчанию из профиля",
+            "type": "string"
+          },
+          "near": {
+            "type": "string"
+          }
+        }
+      },
+      "AssistantResponse": {
+        "type": "object",
+        "properties": {
+          "conversation_id": {
+            "type": "string"
+          },
+          "kind": {
+            "$ref": "#/components/schemas/AssistantKind"
+          },
+          "text": {
+            "type": "string"
+          },
+          "chips": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SlotChip"
+            }
+          },
+          "clarify": {
+            "$ref": "#/components/schemas/Clarify"
+          },
+          "picks": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AssistantPick"
+            }
+          },
+          "relaxed": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Какие ограничения были ослаблены, если точных совпадений нет"
+          },
+          "followups": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/QuickReply"
+            }
+          },
+          "slots": {
+            "$ref": "#/components/schemas/Slots"
+          },
+          "mode": {
+            "$ref": "#/components/schemas/AssistantMode",
+            "description": "llm — с GigaChat, rules — режим без ИИ (деградация)"
+          }
+        },
+        "required": [
+          "conversation_id",
+          "kind",
+          "text",
+          "chips",
+          "picks",
+          "relaxed",
+          "followups",
+          "slots",
+          "mode"
+        ]
+      },
+      "AssistantStatus": {
+        "type": "object",
+        "properties": {
+          "providers": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "available": {
+            "type": "boolean"
+          },
+          "spentTokens": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "providers",
+          "available",
+          "spentTokens"
+        ]
+      },
+      "Availability": {
+        "type": "string",
+        "enum": [
+          "unknown",
+          "available",
+          "few_left",
+          "sold_out"
+        ]
+      },
+      "BudgetPer": {
+        "type": "string",
+        "enum": [
+          "ticket",
+          "total",
+          "unknown"
+        ]
+      },
+      "Category": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "$ref": "#/components/schemas/CategoryCode"
+          },
+          "title": {
+            "type": "string"
+          },
+          "color": {
+            "type": "string"
+          },
+          "count": {
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991
+          }
+        },
+        "required": [
+          "code",
+          "title",
+          "color"
+        ]
+      },
+      "CategoryCode": {
+        "type": "string",
+        "enum": [
+          "theatre",
+          "music",
+          "museum",
+          "kids",
+          "folk",
+          "cinema",
+          "education"
+        ]
+      },
+      "ChangeEntry": {
+        "type": "object",
+        "properties": {
+          "at": {
+            "type": "string",
+            "description": "RFC 3339 с офсетом региона, например 2026-11-07T11:00:00+05:00"
+          },
+          "kind": {
+            "type": "string"
+          },
+          "field": {
+            "type": "string"
+          },
+          "old": {},
+          "new": {},
+          "text": {
+            "type": "string",
+            "description": "Человекочитаемое описание изменения"
+          },
+          "source": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "at",
+          "kind",
+          "text"
+        ]
+      },
+      "Clarify": {
+        "type": "object",
+        "properties": {
+          "slot": {
+            "type": "string"
+          },
+          "question": {
+            "type": "string"
+          },
+          "options": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/QuickReply"
+            }
+          }
+        },
+        "required": [
+          "slot",
+          "question",
+          "options"
+        ]
+      },
+      "EventDetail": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+          },
+          "title": {
+            "type": "string"
+          },
+          "summary": {
+            "type": "string"
+          },
+          "categories": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CategoryCode"
+            }
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TagCode"
+            }
+          },
+          "age_rating": {
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991,
+            "description": "Возрастной знак 436-ФЗ: 0, 6, 12, 16, 18"
+          },
+          "pushkin_card": {
+            "type": "boolean"
+          },
+          "price": {
+            "$ref": "#/components/schemas/Price"
+          },
+          "image": {
+            "$ref": "#/components/schemas/Image"
+          },
+          "organization": {
+            "type": "string"
+          },
+          "description_html": {
+            "type": "string"
+          },
+          "images": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Image"
+            }
+          },
+          "languages": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "is_permanent": {
+            "type": "boolean"
+          },
+          "ticket_url": {
+            "type": "string"
+          },
+          "accessibility": {
+            "type": "object",
+            "additionalProperties": {}
+          },
+          "occurrences": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/OccurrenceSession"
+            }
+          },
+          "provenance": {
+            "$ref": "#/components/schemas/Provenance"
+          },
+          "history": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ChangeEntry"
+            }
+          },
+          "source_url": {
+            "type": "string"
+          },
+          "quality_score": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "summary",
+          "categories",
+          "tags",
+          "age_rating",
+          "pushkin_card",
+          "price",
+          "description_html",
+          "images",
+          "languages",
+          "is_permanent",
+          "accessibility",
+          "occurrences",
+          "provenance",
+          "history"
+        ]
+      },
+      "EventSummary": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+          },
+          "title": {
+            "type": "string"
+          },
+          "summary": {
+            "type": "string"
+          },
+          "categories": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CategoryCode"
+            }
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TagCode"
+            }
+          },
+          "age_rating": {
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991,
+            "description": "Возрастной знак 436-ФЗ: 0, 6, 12, 16, 18"
+          },
+          "pushkin_card": {
+            "type": "boolean"
+          },
+          "price": {
+            "$ref": "#/components/schemas/Price"
+          },
+          "image": {
+            "$ref": "#/components/schemas/Image"
+          },
+          "organization": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "summary",
+          "categories",
+          "tags",
+          "age_rating",
+          "pushkin_card",
+          "price"
+        ]
+      },
+      "Freshness": {
+        "type": "string",
+        "enum": [
+          "fresh",
+          "aging",
+          "stale",
+          "vanished"
+        ]
+      },
+      "Image": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string"
+          },
+          "author": {
+            "type": "string"
+          },
+          "source": {
+            "type": "string"
+          },
+          "license": {
+            "type": "string"
+          },
+          "width": {
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991
+          },
+          "height": {
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991
+          },
+          "color": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "url"
+        ]
+      },
+      "Lang": {
+        "type": "string",
+        "enum": [
+          "ru",
+          "ba"
+        ]
+      },
+      "Municipality": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "slug: ufa, sterlitamak, baymakskiy-rayon"
+          },
+          "kind": {
+            "$ref": "#/components/schemas/MunicipalityKind"
+          },
+          "name": {
+            "type": "string"
+          },
+          "name_ru": {
+            "type": "string"
+          },
+          "name_ba": {
+            "type": "string"
+          },
+          "center": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            },
+            "minItems": 2,
+            "maxItems": 2,
+            "description": "[lat, lon]"
+          },
+          "upcoming": {
+            "description": "Число предстоящих сеансов",
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991
+          }
+        },
+        "required": [
+          "id",
+          "kind",
+          "name",
+          "name_ru"
+        ]
+      },
+      "MunicipalityKind": {
+        "type": "string",
+        "enum": [
+          "city",
+          "district"
+        ]
+      },
+      "OccurrenceCard": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+          },
+          "event": {
+            "$ref": "#/components/schemas/EventSummary"
+          },
+          "venue": {
+            "$ref": "#/components/schemas/VenueRef"
+          },
+          "starts_at": {
+            "type": "string",
+            "description": "RFC 3339 с офсетом региона, например 2026-11-07T11:00:00+05:00"
+          },
+          "ends_at": {
+            "type": "string",
+            "description": "RFC 3339 с офсетом региона, например 2026-11-07T11:00:00+05:00"
+          },
+          "is_range": {
+            "type": "boolean",
+            "description": "Длительное событие (выставка): действует с starts_at по ends_at"
+          },
+          "status": {
+            "$ref": "#/components/schemas/OccurrenceStatus",
+            "description": "Статус сеанса: по плану, перенесено, отложено, отменено, распродано, уточняется, прошло"
+          },
+          "status_reason": {
+            "type": "string"
+          },
+          "previous_starts_at": {
+            "type": "string",
+            "description": "RFC 3339 с офсетом региона, например 2026-11-07T11:00:00+05:00"
+          },
+          "availability": {
+            "$ref": "#/components/schemas/Availability"
+          },
+          "ticket_url": {
+            "type": "string"
+          },
+          "more_dates": {
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991,
+            "description": "Сколько ещё сеансов этого события в выдаче свёрнуто"
+          },
+          "distance_km": {
+            "type": "number"
+          },
+          "reasons": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ReasonCode"
+            },
+            "description": "Почему карточка в выдаче (объяснимое ранжирование)"
+          },
+          "freshness": {
+            "$ref": "#/components/schemas/Freshness"
+          }
+        },
+        "required": [
+          "id",
+          "event",
+          "starts_at",
+          "is_range",
+          "status",
+          "availability",
+          "more_dates",
+          "reasons",
+          "freshness"
+        ]
+      },
+      "OccurrenceSession": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+          },
+          "venue": {
+            "$ref": "#/components/schemas/VenueRef"
+          },
+          "starts_at": {
+            "type": "string",
+            "description": "RFC 3339 с офсетом региона, например 2026-11-07T11:00:00+05:00"
+          },
+          "ends_at": {
+            "type": "string",
+            "description": "RFC 3339 с офсетом региона, например 2026-11-07T11:00:00+05:00"
+          },
+          "is_range": {
+            "type": "boolean",
+            "description": "Длительное событие (выставка): действует с starts_at по ends_at"
+          },
+          "status": {
+            "$ref": "#/components/schemas/OccurrenceStatus",
+            "description": "Статус сеанса: по плану, перенесено, отложено, отменено, распродано, уточняется, прошло"
+          },
+          "status_reason": {
+            "type": "string"
+          },
+          "previous_starts_at": {
+            "type": "string",
+            "description": "RFC 3339 с офсетом региона, например 2026-11-07T11:00:00+05:00"
+          },
+          "availability": {
+            "$ref": "#/components/schemas/Availability"
+          },
+          "ticket_url": {
+            "type": "string"
+          },
+          "more_dates": {
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991,
+            "description": "Сколько ещё сеансов этого события в выдаче свёрнуто"
+          },
+          "distance_km": {
+            "type": "number"
+          },
+          "reasons": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ReasonCode"
+            },
+            "description": "Почему карточка в выдаче (объяснимое ранжирование)"
+          },
+          "freshness": {
+            "$ref": "#/components/schemas/Freshness"
+          }
+        },
+        "required": [
+          "id",
+          "starts_at",
+          "is_range",
+          "status",
+          "availability",
+          "more_dates",
+          "reasons",
+          "freshness"
+        ]
+      },
+      "OccurrenceStatus": {
+        "type": "string",
+        "enum": [
+          "scheduled",
+          "rescheduled",
+          "postponed",
+          "cancelled",
+          "sold_out",
+          "unverified",
+          "ended"
+        ]
+      },
+      "Price": {
+        "type": "object",
+        "properties": {
+          "min": {
+            "type": "string",
+            "pattern": "^\\d+(\\.\\d{2})?$",
+            "description": "Сумма в рублях строкой: \"500.00\""
+          },
+          "max": {
+            "type": "string",
+            "pattern": "^\\d+(\\.\\d{2})?$",
+            "description": "Сумма в рублях строкой: \"500.00\""
+          },
+          "is_free": {
+            "type": "boolean"
+          },
+          "currency": {
+            "type": "string",
+            "enum": [
+              "RUB"
+            ]
+          }
+        },
+        "required": [
+          "is_free",
+          "currency"
+        ]
+      },
+      "Problem": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "status": {
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991
+          },
+          "detail": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "type",
+          "title",
+          "status"
+        ]
+      },
+      "Provenance": {
+        "type": "object",
+        "properties": {
+          "trust_level": {
+            "$ref": "#/components/schemas/TrustLevel"
+          },
+          "sources": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ProvenanceSource"
+            }
+          },
+          "last_verified_at": {
+            "type": "string",
+            "description": "RFC 3339 с офсетом региона, например 2026-11-07T11:00:00+05:00"
+          },
+          "freshness": {
+            "$ref": "#/components/schemas/Freshness"
+          }
+        },
+        "required": [
+          "trust_level",
+          "sources",
+          "freshness"
+        ]
+      },
+      "ProvenanceSource": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "title"
+        ]
+      },
+      "QuickReply": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "label": {
+            "type": "string"
+          },
+          "patch": {
+            "type": "object",
+            "additionalProperties": {},
+            "description": "Изменение слотов при нажатии"
+          }
+        },
+        "required": [
+          "id",
+          "label",
+          "patch"
+        ]
+      },
+      "ReasonCode": {
+        "type": "string",
+        "enum": [
+          "age_fit",
+          "budget_fit",
+          "free",
+          "near",
+          "time_fit",
+          "category_match",
+          "pushkin",
+          "accessible",
+          "popular",
+          "new",
+          "last_chance",
+          "on_bashkir",
+          "text_match"
+        ]
+      },
+      "ReportAccepted": {
+        "type": "object",
+        "properties": {
+          "ok": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "ok"
+        ]
+      },
+      "ReportReason": {
+        "type": "string",
+        "enum": [
+          "cancelled",
+          "wrong_time",
+          "wrong_price",
+          "wrong_place",
+          "other"
+        ]
+      },
+      "ReportRequest": {
+        "type": "object",
+        "properties": {
+          "event_id": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+          },
+          "occurrence_id": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+          },
+          "reason": {
+            "$ref": "#/components/schemas/ReportReason"
+          },
+          "comment": {
+            "type": "string",
+            "maxLength": 1000
+          }
+        },
+        "required": [
+          "event_id",
+          "reason"
+        ]
+      },
+      "SearchResult": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/OccurrenceCard"
+            }
+          },
+          "total": {
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991
+          },
+          "next_cursor": {
+            "type": "string"
+          },
+          "applied": {
+            "$ref": "#/components/schemas/AppliedRange"
+          }
+        },
+        "required": [
+          "items",
+          "total",
+          "applied"
+        ]
+      },
+      "SlotChip": {
+        "type": "object",
+        "properties": {
+          "slot": {
+            "type": "string"
+          },
+          "label": {
+            "type": "string"
+          },
+          "source": {
+            "$ref": "#/components/schemas/SlotSource"
+          }
+        },
+        "required": [
+          "slot",
+          "label",
+          "source"
+        ]
+      },
+      "Slots": {
+        "type": "object",
+        "properties": {
+          "intent": {
+            "$ref": "#/components/schemas/AssistantIntent"
+          },
+          "date_from": {
+            "type": "string"
+          },
+          "date_to": {
+            "type": "string"
+          },
+          "date_label": {
+            "type": "string"
+          },
+          "date_source": {
+            "$ref": "#/components/schemas/SlotSource"
+          },
+          "time_of_day": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TimeOfDay"
+            }
+          },
+          "municipality_id": {
+            "type": "string"
+          },
+          "municipality_label": {
+            "type": "string"
+          },
+          "municipality_source": {
+            "$ref": "#/components/schemas/SlotSource"
+          },
+          "near_me": {
+            "type": "boolean"
+          },
+          "budget": {
+            "type": "number"
+          },
+          "budget_per": {
+            "$ref": "#/components/schemas/BudgetPer"
+          },
+          "free_only": {
+            "type": "boolean"
+          },
+          "kids_ages": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "minimum": -9007199254740991,
+              "maximum": 9007199254740991
+            }
+          },
+          "with_kids": {
+            "type": "boolean"
+          },
+          "adults": {
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991
+          },
+          "categories": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CategoryCode"
+            }
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TagCode"
+            }
+          },
+          "pushkin": {
+            "type": "boolean"
+          },
+          "accessible": {
+            "type": "boolean"
+          },
+          "text": {
+            "description": "Остаток запроса для полнотекстового поиска",
+            "type": "string"
+          }
+        },
+        "required": [
+          "intent",
+          "time_of_day",
+          "near_me",
+          "free_only",
+          "kids_ages",
+          "with_kids",
+          "categories",
+          "tags",
+          "pushkin",
+          "accessible"
+        ]
+      },
+      "SlotSource": {
+        "type": "string",
+        "enum": [
+          "user",
+          "inferred",
+          "profile",
+          "default"
+        ]
+      },
+      "SortMode": {
+        "type": "string",
+        "enum": [
+          "relevance",
+          "date",
+          "price",
+          "distance",
+          "popular"
+        ]
+      },
+      "Stats": {
+        "type": "object",
+        "properties": {
+          "events": {
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991
+          },
+          "upcoming_occurrences": {
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991
+          },
+          "venues": {
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991
+          },
+          "municipalities_with_events": {
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991
+          },
+          "free_share": {
+            "type": "number"
+          },
+          "pushkin_share": {
+            "type": "number"
+          },
+          "updated_at": {
+            "type": "string",
+            "description": "RFC 3339 с офсетом региона, например 2026-11-07T11:00:00+05:00"
+          }
+        },
+        "required": [
+          "events",
+          "upcoming_occurrences",
+          "venues",
+          "municipalities_with_events",
+          "free_share",
+          "pushkin_share"
+        ]
+      },
+      "TagCode": {
+        "type": "string",
+        "enum": [
+          "free",
+          "pushkin",
+          "premiere",
+          "family",
+          "youth",
+          "accessible",
+          "on_bashkir",
+          "outdoor",
+          "master_class",
+          "excursion",
+          "festival"
+        ]
+      },
+      "TimeOfDay": {
+        "type": "string",
+        "enum": [
+          "morning",
+          "day",
+          "evening"
+        ]
+      },
+      "TrustLevel": {
+        "type": "string",
+        "enum": [
+          "official_plus",
+          "official",
+          "partner",
+          "aggregated",
+          "extracted"
+        ]
+      },
+      "VenueRef": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+          },
+          "name": {
+            "type": "string"
+          },
+          "address": {
+            "type": "string"
+          },
+          "geo": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            },
+            "minItems": 2,
+            "maxItems": 2,
+            "description": "[lat, lon]"
+          },
+          "municipality_id": {
+            "type": "string"
+          },
+          "municipality": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "name"
+        ]
+      },
+      "WhenPreset": {
+        "type": "string",
+        "enum": [
+          "today",
+          "tomorrow",
+          "weekend",
+          "week",
+          "month"
+        ]
+      }
+    }
+  },
+  "paths": {
+    "/v1/occurrences": {
+      "get": {
+        "summary": "Поиск сеансов с фильтрами (дата, город, цена, возраст, категория…)",
+        "tags": [
+          "Афиша"
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "maxLength": 300
+            },
+            "in": "query",
+            "name": "q",
+            "required": false,
+            "description": "Свободный текст"
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "query",
+            "name": "date_from",
+            "required": false,
+            "description": "YYYY-MM-DD в TZ региона (по умолчанию сегодня)"
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "query",
+            "name": "date_to",
+            "required": false,
+            "description": "YYYY-MM-DD включительно"
+          },
+          {
+            "schema": {
+              "$ref": "#/components/schemas/WhenPreset"
+            },
+            "in": "query",
+            "name": "when",
+            "required": false
+          },
+          {
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/TimeOfDay"
+              }
+            },
+            "in": "query",
+            "name": "time_of_day",
+            "required": false,
+            "style": "form",
+            "explode": false
+          },
+          {
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "in": "query",
+            "name": "municipality",
+            "required": false,
+            "style": "form",
+            "explode": false
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "query",
+            "name": "near",
+            "required": false,
+            "description": "lat,lon"
+          },
+          {
+            "schema": {
+              "type": "number",
+              "minimum": 0.5,
+              "maximum": 200
+            },
+            "in": "query",
+            "name": "radius_km",
+            "required": false
+          },
+          {
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/CategoryCode"
+              }
+            },
+            "in": "query",
+            "name": "categories",
+            "required": false,
+            "style": "form",
+            "explode": false
+          },
+          {
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/TagCode"
+              }
+            },
+            "in": "query",
+            "name": "tags",
+            "required": false,
+            "style": "form",
+            "explode": false
+          },
+          {
+            "schema": {
+              "type": "boolean"
+            },
+            "in": "query",
+            "name": "free",
+            "required": false
+          },
+          {
+            "schema": {
+              "type": "number",
+              "minimum": 0
+            },
+            "in": "query",
+            "name": "price_max",
+            "required": false
+          },
+          {
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 17
+            },
+            "in": "query",
+            "name": "age",
+            "required": false,
+            "description": "Возраст ребёнка: только подходящие по знаку"
+          },
+          {
+            "schema": {
+              "type": "integer",
+              "minimum": -9007199254740991,
+              "maximum": 9007199254740991
+            },
+            "in": "query",
+            "name": "age_rating_max",
+            "required": false
+          },
+          {
+            "schema": {
+              "type": "boolean"
+            },
+            "in": "query",
+            "name": "pushkin",
+            "required": false
+          },
+          {
+            "schema": {
+              "type": "boolean"
+            },
+            "in": "query",
+            "name": "accessible",
+            "required": false
+          },
+          {
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+            },
+            "in": "query",
+            "name": "venue",
+            "required": false
+          },
+          {
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+            },
+            "in": "query",
+            "name": "organization",
+            "required": false
+          },
+          {
+            "schema": {
+              "type": "boolean"
+            },
+            "in": "query",
+            "name": "include_ended",
+            "required": false
+          },
+          {
+            "schema": {
+              "type": "boolean"
+            },
+            "in": "query",
+            "name": "hide_sold_out",
+            "required": false
+          },
+          {
+            "schema": {
+              "$ref": "#/components/schemas/SortMode"
+            },
+            "in": "query",
+            "name": "sort",
+            "required": false
+          },
+          {
+            "schema": {
+              "type": "boolean"
+            },
+            "in": "query",
+            "name": "group",
+            "required": false,
+            "description": "Сворачивать сеансы одного события (по умолчанию да)"
+          },
+          {
+            "schema": {
+              "$ref": "#/components/schemas/Lang"
+            },
+            "in": "query",
+            "name": "lang",
+            "required": false,
+            "description": "Язык интерфейса и контента"
+          },
+          {
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100
+            },
+            "in": "query",
+            "name": "limit",
+            "required": false
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "query",
+            "name": "cursor",
+            "required": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SearchResult"
+                }
+              }
+            }
+          }
+        },
+        "operationId": "searchOccurrences"
+      }
+    },
+    "/v1/events/{id}": {
+      "get": {
+        "summary": "Паспорт события: описание, сеансы, источники, история изменений",
+        "tags": [
+          "Афиша"
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "$ref": "#/components/schemas/Lang"
+            },
+            "in": "query",
+            "name": "lang",
+            "required": false,
+            "description": "Язык интерфейса и контента"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+            },
+            "in": "path",
+            "name": "id",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EventDetail"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          }
+        },
+        "operationId": "getEvent"
+      }
+    },
+    "/v1/categories": {
+      "get": {
+        "summary": "Категории и число событий",
+        "tags": [
+          "Справочники"
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "$ref": "#/components/schemas/Lang"
+            },
+            "in": "query",
+            "name": "lang",
+            "required": false,
+            "description": "Язык интерфейса и контента"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Category"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "operationId": "listCategories"
+      }
+    },
+    "/v1/municipalities": {
+      "get": {
+        "summary": "Муниципалитеты РБ (54 района и 9 городских округов) с числом предстоящих сеансов",
+        "tags": [
+          "Справочники"
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "$ref": "#/components/schemas/Lang"
+            },
+            "in": "query",
+            "name": "lang",
+            "required": false,
+            "description": "Язык интерфейса и контента"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Municipality"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "operationId": "listMunicipalities"
+      }
+    },
+    "/v1/stats": {
+      "get": {
+        "summary": "Размер и свежесть каталога",
+        "tags": [
+          "Справочники"
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Stats"
+                }
+              }
+            }
+          }
+        },
+        "operationId": "getStats"
+      }
+    },
+    "/v1/reports": {
+      "post": {
+        "summary": "Сообщить о неточности в событии (попадает в очередь модерации)",
+        "tags": [
+          "Обратная связь"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReportRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReportAccepted"
+                }
+              }
+            }
+          }
+        },
+        "operationId": "createReport"
+      }
+    },
+    "/feeds/ical": {
+      "get": {
+        "summary": "Подписка на афишу в календаре (iCal) по любым фильтрам поиска",
+        "tags": [
+          "Фиды"
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "maxLength": 300
+            },
+            "in": "query",
+            "name": "q",
+            "required": false,
+            "description": "Свободный текст"
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "query",
+            "name": "date_from",
+            "required": false,
+            "description": "YYYY-MM-DD в TZ региона (по умолчанию сегодня)"
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "query",
+            "name": "date_to",
+            "required": false,
+            "description": "YYYY-MM-DD включительно"
+          },
+          {
+            "schema": {
+              "$ref": "#/components/schemas/WhenPreset"
+            },
+            "in": "query",
+            "name": "when",
+            "required": false
+          },
+          {
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/TimeOfDay"
+              }
+            },
+            "in": "query",
+            "name": "time_of_day",
+            "required": false,
+            "style": "form",
+            "explode": false
+          },
+          {
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "in": "query",
+            "name": "municipality",
+            "required": false,
+            "style": "form",
+            "explode": false
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "query",
+            "name": "near",
+            "required": false,
+            "description": "lat,lon"
+          },
+          {
+            "schema": {
+              "type": "number",
+              "minimum": 0.5,
+              "maximum": 200
+            },
+            "in": "query",
+            "name": "radius_km",
+            "required": false
+          },
+          {
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/CategoryCode"
+              }
+            },
+            "in": "query",
+            "name": "categories",
+            "required": false,
+            "style": "form",
+            "explode": false
+          },
+          {
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/TagCode"
+              }
+            },
+            "in": "query",
+            "name": "tags",
+            "required": false,
+            "style": "form",
+            "explode": false
+          },
+          {
+            "schema": {
+              "type": "boolean"
+            },
+            "in": "query",
+            "name": "free",
+            "required": false
+          },
+          {
+            "schema": {
+              "type": "number",
+              "minimum": 0
+            },
+            "in": "query",
+            "name": "price_max",
+            "required": false
+          },
+          {
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 17
+            },
+            "in": "query",
+            "name": "age",
+            "required": false,
+            "description": "Возраст ребёнка: только подходящие по знаку"
+          },
+          {
+            "schema": {
+              "type": "integer",
+              "minimum": -9007199254740991,
+              "maximum": 9007199254740991
+            },
+            "in": "query",
+            "name": "age_rating_max",
+            "required": false
+          },
+          {
+            "schema": {
+              "type": "boolean"
+            },
+            "in": "query",
+            "name": "pushkin",
+            "required": false
+          },
+          {
+            "schema": {
+              "type": "boolean"
+            },
+            "in": "query",
+            "name": "accessible",
+            "required": false
+          },
+          {
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+            },
+            "in": "query",
+            "name": "venue",
+            "required": false
+          },
+          {
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+            },
+            "in": "query",
+            "name": "organization",
+            "required": false
+          },
+          {
+            "schema": {
+              "type": "boolean"
+            },
+            "in": "query",
+            "name": "include_ended",
+            "required": false
+          },
+          {
+            "schema": {
+              "type": "boolean"
+            },
+            "in": "query",
+            "name": "hide_sold_out",
+            "required": false
+          },
+          {
+            "schema": {
+              "$ref": "#/components/schemas/SortMode"
+            },
+            "in": "query",
+            "name": "sort",
+            "required": false
+          },
+          {
+            "schema": {
+              "type": "boolean"
+            },
+            "in": "query",
+            "name": "group",
+            "required": false,
+            "description": "Сворачивать сеансы одного события (по умолчанию да)"
+          },
+          {
+            "schema": {
+              "$ref": "#/components/schemas/Lang"
+            },
+            "in": "query",
+            "name": "lang",
+            "required": false,
+            "description": "Язык интерфейса и контента"
+          },
+          {
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100
+            },
+            "in": "query",
+            "name": "limit",
+            "required": false
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "query",
+            "name": "cursor",
+            "required": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response"
+          }
+        },
+        "operationId": "getICalFeed"
+      }
+    },
+    "/feeds/rss": {
+      "get": {
+        "summary": "RSS по фильтрам поиска (для СМИ и пабликов)",
+        "tags": [
+          "Фиды"
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "maxLength": 300
+            },
+            "in": "query",
+            "name": "q",
+            "required": false,
+            "description": "Свободный текст"
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "query",
+            "name": "date_from",
+            "required": false,
+            "description": "YYYY-MM-DD в TZ региона (по умолчанию сегодня)"
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "query",
+            "name": "date_to",
+            "required": false,
+            "description": "YYYY-MM-DD включительно"
+          },
+          {
+            "schema": {
+              "$ref": "#/components/schemas/WhenPreset"
+            },
+            "in": "query",
+            "name": "when",
+            "required": false
+          },
+          {
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/TimeOfDay"
+              }
+            },
+            "in": "query",
+            "name": "time_of_day",
+            "required": false,
+            "style": "form",
+            "explode": false
+          },
+          {
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "in": "query",
+            "name": "municipality",
+            "required": false,
+            "style": "form",
+            "explode": false
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "query",
+            "name": "near",
+            "required": false,
+            "description": "lat,lon"
+          },
+          {
+            "schema": {
+              "type": "number",
+              "minimum": 0.5,
+              "maximum": 200
+            },
+            "in": "query",
+            "name": "radius_km",
+            "required": false
+          },
+          {
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/CategoryCode"
+              }
+            },
+            "in": "query",
+            "name": "categories",
+            "required": false,
+            "style": "form",
+            "explode": false
+          },
+          {
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/TagCode"
+              }
+            },
+            "in": "query",
+            "name": "tags",
+            "required": false,
+            "style": "form",
+            "explode": false
+          },
+          {
+            "schema": {
+              "type": "boolean"
+            },
+            "in": "query",
+            "name": "free",
+            "required": false
+          },
+          {
+            "schema": {
+              "type": "number",
+              "minimum": 0
+            },
+            "in": "query",
+            "name": "price_max",
+            "required": false
+          },
+          {
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 17
+            },
+            "in": "query",
+            "name": "age",
+            "required": false,
+            "description": "Возраст ребёнка: только подходящие по знаку"
+          },
+          {
+            "schema": {
+              "type": "integer",
+              "minimum": -9007199254740991,
+              "maximum": 9007199254740991
+            },
+            "in": "query",
+            "name": "age_rating_max",
+            "required": false
+          },
+          {
+            "schema": {
+              "type": "boolean"
+            },
+            "in": "query",
+            "name": "pushkin",
+            "required": false
+          },
+          {
+            "schema": {
+              "type": "boolean"
+            },
+            "in": "query",
+            "name": "accessible",
+            "required": false
+          },
+          {
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+            },
+            "in": "query",
+            "name": "venue",
+            "required": false
+          },
+          {
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+            },
+            "in": "query",
+            "name": "organization",
+            "required": false
+          },
+          {
+            "schema": {
+              "type": "boolean"
+            },
+            "in": "query",
+            "name": "include_ended",
+            "required": false
+          },
+          {
+            "schema": {
+              "type": "boolean"
+            },
+            "in": "query",
+            "name": "hide_sold_out",
+            "required": false
+          },
+          {
+            "schema": {
+              "$ref": "#/components/schemas/SortMode"
+            },
+            "in": "query",
+            "name": "sort",
+            "required": false
+          },
+          {
+            "schema": {
+              "type": "boolean"
+            },
+            "in": "query",
+            "name": "group",
+            "required": false,
+            "description": "Сворачивать сеансы одного события (по умолчанию да)"
+          },
+          {
+            "schema": {
+              "$ref": "#/components/schemas/Lang"
+            },
+            "in": "query",
+            "name": "lang",
+            "required": false,
+            "description": "Язык интерфейса и контента"
+          },
+          {
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100
+            },
+            "in": "query",
+            "name": "limit",
+            "required": false
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "query",
+            "name": "cursor",
+            "required": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response"
+          }
+        },
+        "operationId": "getRSSFeed"
+      }
+    },
+    "/v1/assistant": {
+      "post": {
+        "summary": "ИИ-гид: свободный запрос → уточнение → подборка реальных событий с объяснениями",
+        "tags": [
+          "Гид"
+        ],
+        "description": "Карточки строятся только из базы по ID; объяснения GigaChat проходят верификатор фактов. Без GigaChat работает режим правил (mode=rules).",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AssistantRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AssistantResponse"
+                }
+              }
+            }
+          }
+        },
+        "operationId": "askAssistant"
+      }
+    },
+    "/v1/assistant/status": {
+      "get": {
+        "summary": "Доступность ИИ (для баннера деградации)",
+        "tags": [
+          "Гид"
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AssistantStatus"
+                }
+              }
+            }
+          }
+        },
+        "operationId": "getAssistantStatus"
+      }
+    }
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8000"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Афиша",
+      "description": "Поиск и карточки событий"
+    },
+    {
+      "name": "Справочники"
+    },
+    {
+      "name": "Гид",
+      "description": "ИИ-гид на GigaChat"
+    },
+    {
+      "name": "Фиды"
+    },
+    {
+      "name": "Обратная связь"
+    }
+  ]
+}

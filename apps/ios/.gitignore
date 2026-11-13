@@ -1,0 +1,10 @@
+# Генерируется XcodeGen из project.yml
+Afisha.xcodeproj/
+# Сборки
+build/
+.build/
+.swiftpm/
+DerivedData/
+*.xcresult
+# Снапшоты, записанные при неудачном сравнении
+**/__Snapshots__/**/*.failure.png

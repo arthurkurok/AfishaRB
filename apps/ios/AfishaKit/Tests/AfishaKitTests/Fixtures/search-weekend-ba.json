@@ -1,0 +1,623 @@
+{
+  "items": [
+    {
+      "id": "01a19cbb-292b-7fcc-9444-70be03dc51e0",
+      "event": {
+        "id": "01a19cbb-2916-7260-b069-e3406e3499bd",
+        "title": "Танцевальный вечер «танцуют все»",
+        "summary": "В субботу организуется танцевальный вечер. Этот вечер станет прекрасной возможностью собраться вместе, пообщаться, повеселиться и отдохнуть в хорошем настроении. На танцевальном вечере будут звучать как современные музыкальные ритмы, так и башкирские ретро-мелодии.",
+        "categories": [
+          "education"
+        ],
+        "tags": [
+          "free",
+          "youth"
+        ],
+        "age_rating": 16,
+        "pushkin_card": false,
+        "price": {
+          "min": "0.00",
+          "max": "0.00",
+          "is_free": true,
+          "currency": "RUB"
+        },
+        "image": {
+          "url": "https://cdn.culture.ru/images/7c42b0b1-9976-5a6a-a968-92e0bcd8bc80",
+          "author": "Мансурова Розалина Нуритдиновна",
+          "source": "Личный архив",
+          "license": null,
+          "width": 2048,
+          "height": 1312,
+          "color": "6c1874"
+        },
+        "organization": "МАУ «Культурно-досуговый центр» муниципального района Абзелиловский район Республики Башкортостан"
+      },
+      "venue": {
+        "id": "01a19c9d-8115-74ad-a6ac-517b1de80163",
+        "name": "Рахметовский сельский клуб",
+        "address": "Респ. Башкортостан, Абзелиловский р-н., д. Рахметово, ул. Заки Хасанова, д. 16",
+        "geo": [
+          53.823978,
+          58.886022
+        ],
+        "municipality_id": "abzelilovskii-raion",
+        "municipality": "Әбйәлил районы"
+      },
+      "starts_at": "2026-11-07T00:00:00+05:00",
+      "ends_at": "2026-11-07T01:01:00+05:00",
+      "is_range": false,
+      "status": "scheduled",
+      "status_reason": null,
+      "previous_starts_at": null,
+      "availability": "unknown",
+      "ticket_url": null,
+      "more_dates": 0,
+      "distance_km": null,
+      "reasons": [
+        "free",
+        "time_fit",
+        "new"
+      ],
+      "freshness": "fresh"
+    },
+    {
+      "id": "01a19cb8-85a8-738d-ab55-59613423ca40",
+      "event": {
+        "id": "01a19cb8-858c-729a-954f-a6bcfb522796",
+        "title": "Экскурсия по Сибайскому историко-краеведческому музею",
+        "summary": "Музей приглашает на экскурсию. Здесь вы можете ознакомиться с растительным и животным миром Зауралья, с залом археологии и этнографии, «Довоенным залом», залом боевой славы, где имеются экспозиции «Тыл поселка Сибай в годы войны», «Фронтовые подруги», «Артель «Сибайзолото»…",
+        "categories": [
+          "museum",
+          "kids"
+        ],
+        "tags": [
+          "accessible",
+          "excursion",
+          "pushkin",
+          "youth"
+        ],
+        "age_rating": 6,
+        "pushkin_card": true,
+        "price": {
+          "min": "200.00",
+          "max": "200.00",
+          "is_free": false,
+          "currency": "RUB"
+        },
+        "image": {
+          "url": "https://cdn.culture.ru/images/94160ab1-c9e8-50c6-b754-04f6391f366f",
+          "author": "Сибайский музей",
+          "source": "Сибайский музей",
+          "license": null,
+          "width": 1280,
+          "height": 960,
+          "color": "736e54"
+        },
+        "organization": "МБУКИИ «Сибайский историко-краеведческий музей»"
+      },
+      "venue": {
+        "id": "01a19c9d-6eda-7d60-95b6-f7ca143b02e8",
+        "name": "Сибайский историко-краеведческий музей",
+        "address": "Респ. Башкортостан, г. Сибай, пр-кт. Горняков, д. 45",
+        "geo": [
+          52.719577,
+          58.657491
+        ],
+        "municipality_id": "sibay",
+        "municipality": "Сибай"
+      },
+      "starts_at": "2026-11-07T08:30:00+05:00",
+      "ends_at": "2026-11-07T18:00:00+05:00",
+      "is_range": false,
+      "status": "scheduled",
+      "status_reason": null,
+      "previous_starts_at": null,
+      "availability": "unknown",
+      "ticket_url": "https://vmuzey.com/event/ekspozicii-sibayskogo-istoriko-kraevedcheskogo-muzeya",
+      "more_dates": 0,
+      "distance_km": null,
+      "reasons": [
+        "time_fit",
+        "new"
+      ],
+      "freshness": "fresh"
+    },
+    {
+      "id": "01a19cb9-8ed6-7bd5-8b7d-ddebfa3b4d24",
+      "event": {
+        "id": "01a19cb9-8eae-799d-b64a-d35b9144c9d4",
+        "title": "Выставка «Хранительницы традиций»",
+        "summary": "Выставка живописи заслуженного художника Республики Башкортостан Раушании Бадретдиновой. В экспозиции будут представлены новые картины, вдохновленные произведениями и судьбой Зайнаб Биишевой, а также национальные мотивы.",
+        "categories": [
+          "museum",
+          "kids"
+        ],
+        "tags": [
+          "accessible",
+          "pushkin",
+          "youth"
+        ],
+        "age_rating": 6,
+        "pushkin_card": true,
+        "price": {
+          "min": "150.00",
+          "max": "150.00",
+          "is_free": false,
+          "currency": "RUB"
+        },
+        "image": {
+          "url": "https://cdn.culture.ru/images/b20be913-f4d7-5855-bd1f-71a83f4c99c3",
+          "author": "kulturarb.ru",
+          "source": "https://yandex.ru/images/search?img_url=https%3A%2F%2Fsuzory.ru%2Fattachments%2F06661b6107293ea8f50f6999d9a69c659fe46dc3%2Fstore%2Fcrop%2F0%2F0%2F1280%2F1707%2F1280%2F1707%2F0%2F45c9f12b5a764910aad41e45441c43981740eb9db3e7437defa36d63327c%2F0832638dcb641ebe56b93a77b23b2b1a.jpg&amp;lr=20716&amp;pos=0&amp;rpt=simage&amp;source=serp&amp;stype=image&amp;text=Выставка%20заслуженного%20художника%20Республики%20Башкортостан%20Раушании%20Бадретдиновой%20«Живопись»",
+          "license": null,
+          "width": 806,
+          "height": 768,
+          "color": "aba09c"
+        },
+        "organization": "МБУКИИ «Сибайский историко-краеведческий музей»"
+      },
+      "venue": {
+        "id": "01a19c9d-6eda-7d60-95b6-f7ca143b02e8",
+        "name": "Сибайский историко-краеведческий музей",
+        "address": "Респ. Башкортостан, г. Сибай, пр-кт. Горняков, д. 45",
+        "geo": [
+          52.719577,
+          58.657491
+        ],
+        "municipality_id": "sibay",
+        "municipality": "Сибай"
+      },
+      "starts_at": "2026-11-07T09:00:00+05:00",
+      "ends_at": "2026-11-07T18:00:00+05:00",
+      "is_range": false,
+      "status": "scheduled",
+      "status_reason": null,
+      "previous_starts_at": null,
+      "availability": "unknown",
+      "ticket_url": "https://vmuzey.com/event/vystavka-zhivopisi-hranitelnicy-tradiciy",
+      "more_dates": 0,
+      "distance_km": null,
+      "reasons": [
+        "time_fit",
+        "new"
+      ],
+      "freshness": "fresh"
+    },
+    {
+      "id": "01a19cb8-f291-7eaf-aa98-34bd12c57ff9",
+      "event": {
+        "id": "01a19cb8-f285-7335-8c82-bd46f7ecc7f7",
+        "title": "Книжная выставка «Истоки семейного счастья»",
+        "summary": "2026 год в Республике Башкортостан объявлен Годом большой и дружной семьи. В рамках Года большой и дружной семьи в сельской библиотеке оформлена книжная выставка .",
+        "categories": [
+          "museum",
+          "kids"
+        ],
+        "tags": [
+          "accessible",
+          "family",
+          "free",
+          "youth"
+        ],
+        "age_rating": 6,
+        "pushkin_card": false,
+        "price": {
+          "min": "0.00",
+          "max": "0.00",
+          "is_free": true,
+          "currency": "RUB"
+        },
+        "image": {
+          "url": "https://cdn.culture.ru/images/37de2252-eb72-597d-84b3-e633f595c057",
+          "author": "Ялсина А.Н.",
+          "source": "https://vk.com/biblpozitiv",
+          "license": null,
+          "width": 1280,
+          "height": 960,
+          "color": "8b826f"
+        },
+        "organization": "МБУ «Централизованная система массовых библиотек г. Уфы»"
+      },
+      "venue": {
+        "id": "01a19c9d-4fdb-718d-893f-ba1b1e0fa612",
+        "name": "Модельная библиотека № 36 г. Уфы – Центр молодежного общения «Позитив»",
+        "address": "Респ. Башкортостан, г. Уфа, ул. Генерала Горбатова, д. 3/1",
+        "geo": [
+          54.718374,
+          56.00994
+        ],
+        "municipality_id": "ufa",
+        "municipality": "Өфө"
+      },
+      "starts_at": "2026-11-07T09:00:00+05:00",
+      "ends_at": "2026-11-07T20:00:00+05:00",
+      "is_range": false,
+      "status": "scheduled",
+      "status_reason": null,
+      "previous_starts_at": null,
+      "availability": "unknown",
+      "ticket_url": null,
+      "more_dates": 0,
+      "distance_km": null,
+      "reasons": [
+        "free",
+        "time_fit",
+        "new"
+      ],
+      "freshness": "fresh"
+    },
+    {
+      "id": "01a19cb8-d6b2-724c-9821-8a64011f80c5",
+      "event": {
+        "id": "01a19cb8-d693-7d6e-a96c-681dbffd5ee6",
+        "title": "«Все начинается с семьи»",
+        "summary": "2026 год в Башкортостане объявлен Годом большой и дружной семьи. В связи с этим событием в сельской библиотеке открылась постоянно действующая книжно–иллюстративная выставка, состоящая из четырёх разделов.",
+        "categories": [
+          "museum"
+        ],
+        "tags": [
+          "accessible",
+          "family",
+          "free",
+          "youth"
+        ],
+        "age_rating": 12,
+        "pushkin_card": false,
+        "price": {
+          "min": "0.00",
+          "max": "0.00",
+          "is_free": true,
+          "currency": "RUB"
+        },
+        "image": {
+          "url": "https://cdn.culture.ru/images/2fbe6ff6-4f6f-54be-bebe-a718c8300fe0",
+          "author": "Насырова Зульфия Маратовна",
+          "source": "https://pro.culture.ru/uploads/d5f9d085717c25ef56eb2e959b1d5b5b.jpeg",
+          "license": null,
+          "width": 1200,
+          "height": 900,
+          "color": "84746d"
+        },
+        "organization": "МБУК «Миякинская межпоселенческая центральная библиотека» МР Миякинский район"
+      },
+      "venue": {
+        "id": "01a19c9d-6f3c-739a-a75f-2522fc849240",
+        "name": "Уршакбашкарамалинская сельская библиотека",
+        "address": "Респ. Башкортостан, Миякинский р-н., с. Уршакбашкарамалы, ул. Ленина, д. 58",
+        "geo": [
+          53.62807958843583,
+          55.15337347984314
+        ],
+        "municipality_id": "miyakinskiy-rayon",
+        "municipality": "Миәкә районы"
+      },
+      "starts_at": "2026-11-07T09:00:00+05:00",
+      "ends_at": "2026-11-07T15:00:00+05:00",
+      "is_range": false,
+      "status": "scheduled",
+      "status_reason": null,
+      "previous_starts_at": null,
+      "availability": "unknown",
+      "ticket_url": null,
+      "more_dates": 0,
+      "distance_km": null,
+      "reasons": [
+        "free",
+        "time_fit",
+        "new"
+      ],
+      "freshness": "fresh"
+    },
+    {
+      "id": "01a19cba-01a6-7ece-99f1-a07f49bd1843",
+      "event": {
+        "id": "01a19cba-01a0-76d1-a655-304d04ac98dc",
+        "title": "Художественная выставка «Цвети, моя Республика!»",
+        "summary": "В выставочном зале библиотеки член Союза русских художников Зиля Аксенова представит новую персональную выставку «Цвети, моя Республика!», которая стала признанием в любви родному Башкортостану.",
+        "categories": [
+          "museum"
+        ],
+        "tags": [
+          "accessible",
+          "free"
+        ],
+        "age_rating": 0,
+        "pushkin_card": false,
+        "price": {
+          "min": "0.00",
+          "max": "0.00",
+          "is_free": true,
+          "currency": "RUB"
+        },
+        "image": {
+          "url": "https://cdn.culture.ru/images/725f18e9-2c93-575e-9da7-261adf985ee4",
+          "author": "Из архива учреждения",
+          "source": "https://ufa-lib.ru/",
+          "license": null,
+          "width": 1262,
+          "height": 1064,
+          "color": "737055"
+        },
+        "organization": "МБУ «Централизованная система массовых библиотек г. Уфы»"
+      },
+      "venue": {
+        "id": "01a19c9d-4ee0-7a97-b552-87eed5674228",
+        "name": "Центральная городская библиотека Уфы",
+        "address": "Респ. Башкортостан, г. Уфа, ул. Комсомольская, д. 138",
+        "geo": [
+          54.75942449863486,
+          56.01658054611818
+        ],
+        "municipality_id": "ufa",
+        "municipality": "Өфө"
+      },
+      "starts_at": "2026-11-07T09:00:00+05:00",
+      "ends_at": "2026-11-07T20:00:00+05:00",
+      "is_range": false,
+      "status": "scheduled",
+      "status_reason": null,
+      "previous_starts_at": null,
+      "availability": "unknown",
+      "ticket_url": null,
+      "more_dates": 0,
+      "distance_km": null,
+      "reasons": [
+        "free",
+        "time_fit",
+        "new"
+      ],
+      "freshness": "fresh"
+    },
+    {
+      "id": "01a19cb9-feab-7fb6-a58b-520284916502",
+      "event": {
+        "id": "01a19cb9-fe9d-797b-bd95-209b757ed0cc",
+        "title": "«Наследие чувашского народа»",
+        "summary": "«Наследие чувашского народа»: каждый месяц — новая история! Друзья, в нашем сообществе мы бережно собираем и рассказываем о богатой культуре чувашского народа.",
+        "categories": [
+          "folk"
+        ],
+        "tags": [
+          "accessible",
+          "free"
+        ],
+        "age_rating": 6,
+        "pushkin_card": false,
+        "price": {
+          "min": "0.00",
+          "max": "0.00",
+          "is_free": true,
+          "currency": "RUB"
+        },
+        "image": {
+          "url": "https://cdn.culture.ru/images/e99bc349-cf45-56ff-8541-8f90dd1e4c43",
+          "author": "Бижбулякская ЦБС Ганиева Елена Григорьева директор МАУК",
+          "source": "картинки",
+          "license": null,
+          "width": 2048,
+          "height": 1591,
+          "color": "865843"
+        },
+        "organization": "МАУК Бижбулякская ЦБС"
+      },
+      "venue": {
+        "id": "01a19c9d-5b7c-75aa-80f7-a76498fb1191",
+        "name": "Бижбулякская центральная районная библиотека",
+        "address": "Респ. Башкортостан, Бижбулякский р-н., с. Бижбуляк, ул. Советская, д. 25",
+        "geo": [
+          53.69426934293293,
+          54.26449208173388
+        ],
+        "municipality_id": "bizhbulyakskiy-rayon",
+        "municipality": "Бишбүләк районы"
+      },
+      "starts_at": "2026-11-07T10:00:00+05:00",
+      "ends_at": "2026-11-07T18:00:00+05:00",
+      "is_range": false,
+      "status": "scheduled",
+      "status_reason": null,
+      "previous_starts_at": null,
+      "availability": "unknown",
+      "ticket_url": null,
+      "more_dates": 1,
+      "distance_km": null,
+      "reasons": [
+        "free",
+        "time_fit",
+        "new"
+      ],
+      "freshness": "fresh"
+    },
+    {
+      "id": "01a19c9d-8a80-7de6-b707-b3759cedf603",
+      "event": {
+        "id": "01a19c9d-8a7e-7756-8959-964fc10e187d",
+        "title": "«Талкан.Фест»",
+        "summary": "В Доме культуры деревни Ибраево отмечают праздник хлеба и талкана. Это мероприятие проходит в рамках районного конкурса брендовых событий среди сельских поселений. Почему для бренда выбрали Байдавлетовское сельское поселение?",
+        "categories": [
+          "folk",
+          "kids"
+        ],
+        "tags": [
+          "accessible",
+          "free",
+          "youth"
+        ],
+        "age_rating": 0,
+        "pushkin_card": false,
+        "price": {
+          "min": "0.00",
+          "max": "0.00",
+          "is_free": true,
+          "currency": "RUB"
+        },
+        "image": {
+          "url": "https://cdn.culture.ru/images/be8c52f5-2b5c-556f-a18d-81ab8b04bea7",
+          "author": "МАУК&quot;РДК&quot;",
+          "source": "https://vk.ru/zianrdk",
+          "license": null,
+          "width": 2000,
+          "height": 1310,
+          "color": "c0ac7a"
+        },
+        "organization": "МАУК «Районный Дом культуры» муниципального района Зианчуринский район Республики Башкортостан"
+      },
+      "venue": {
+        "id": "01a19c9d-8a7d-7d63-ac84-21372fbd8415",
+        "name": "Ибраевский сельский дом культуры",
+        "address": "Респ. Башкортостан, Зианчуринский р-н., д. Ибраево, ул. Урмансы,  20,б",
+        "geo": [
+          52.254760569168994,
+          56.95726899871224
+        ],
+        "municipality_id": "zianchurinskiy-rayon",
+        "municipality": "Йәнсура районы"
+      },
+      "starts_at": "2026-11-07T10:00:00+05:00",
+      "ends_at": "2026-11-07T13:00:00+05:00",
+      "is_range": false,
+      "status": "scheduled",
+      "status_reason": null,
+      "previous_starts_at": null,
+      "availability": "unknown",
+      "ticket_url": null,
+      "more_dates": 0,
+      "distance_km": null,
+      "reasons": [
+        "free",
+        "time_fit",
+        "new"
+      ],
+      "freshness": "fresh"
+    },
+    {
+      "id": "01a19c9d-85c0-7222-89f7-ab41a7d59cb0",
+      "event": {
+        "id": "01a19c9d-85bd-7ee3-aac6-52ac6f36b99c",
+        "title": "Волонтерская акция «Поможем семье»",
+        "summary": "В современном ритме жизни очень важно сохранять чуткость и протягивать руку помощи тем, кто в ней особенно нуждается. Волонтерское объединение клуба объявляет старт благотворительной акции «Поможем семье», чтобы поддержать многодетные семьи, одиноких родителей и семьи…",
+        "categories": [
+          "education"
+        ],
+        "tags": [
+          "accessible",
+          "free"
+        ],
+        "age_rating": 18,
+        "pushkin_card": false,
+        "price": {
+          "min": "0.00",
+          "max": "0.00",
+          "is_free": true,
+          "currency": "RUB"
+        },
+        "image": {
+          "url": "https://cdn.culture.ru/images/21e589d8-9166-5298-9fe1-271809a2c379",
+          "author": "Новосепяшевский СМФДК",
+          "source": "архив",
+          "license": null,
+          "width": 1280,
+          "height": 964,
+          "color": "777775"
+        },
+        "organization": "МБУ «Социально-культурный центр» МР Альшеевский район"
+      },
+      "venue": {
+        "id": "01a19c9d-6eff-7125-884d-22f5edc57a39",
+        "name": "Новосепяшевский многофункциональный сельский клуб",
+        "address": "Респ. Башкортостан, Альшеевский р-н., с. Новосепяшево, ул. Центральная, д. 38а",
+        "geo": [
+          54.080524321029515,
+          55.03459852641019
+        ],
+        "municipality_id": "alsheevskiy-rayon",
+        "municipality": "Әлшәй районы"
+      },
+      "starts_at": "2026-11-07T10:00:00+05:00",
+      "ends_at": "2026-11-07T11:00:00+05:00",
+      "is_range": false,
+      "status": "scheduled",
+      "status_reason": null,
+      "previous_starts_at": null,
+      "availability": "unknown",
+      "ticket_url": null,
+      "more_dates": 0,
+      "distance_km": null,
+      "reasons": [
+        "free",
+        "time_fit",
+        "new"
+      ],
+      "freshness": "fresh"
+    },
+    {
+      "id": "01a19cb8-fe7e-7047-b509-7d67500a9d00",
+      "event": {
+        "id": "01a19cb8-fe78-70ae-a16b-f8a51b3473a5",
+        "title": "Вечер народных танцев",
+        "summary": "Народный танец – фольклорный бытовой танец, который исполняется в своей естественной среде и имеет определенные традиционные для данной местности движения, ритмы, костюмы.",
+        "categories": [
+          "education"
+        ],
+        "tags": [
+          "accessible",
+          "family",
+          "free",
+          "youth"
+        ],
+        "age_rating": 16,
+        "pushkin_card": false,
+        "price": {
+          "min": "0.00",
+          "max": "0.00",
+          "is_free": true,
+          "currency": "RUB"
+        },
+        "image": {
+          "url": "https://cdn.culture.ru/images/213332c4-97e9-533e-8285-973f5f26277e",
+          "author": "Заведующая клубом",
+          "source": "Без источника",
+          "license": null,
+          "width": 2048,
+          "height": 1536,
+          "color": "5d697f"
+        },
+        "organization": "МАУ «Культурно-досуговый центр» муниципального района Абзелиловский район Республики Башкортостан"
+      },
+      "venue": {
+        "id": "01a19cb8-d9d3-7377-8451-4243b759b48d",
+        "name": "Кусимовский сельский клуб",
+        "address": "Респ. Башкортостан, Абзелиловский р-н., д. Кусимово, ул. Школьная, д. 10",
+        "geo": [
+          53.626008,
+          58.614731
+        ],
+        "municipality_id": "abzelilovskii-raion",
+        "municipality": "Әбйәлил районы"
+      },
+      "starts_at": "2026-11-07T10:00:00+05:00",
+      "ends_at": "2026-11-07T21:00:00+05:00",
+      "is_range": false,
+      "status": "scheduled",
+      "status_reason": null,
+      "previous_starts_at": null,
+      "availability": "unknown",
+      "ticket_url": null,
+      "more_dates": 0,
+      "distance_km": null,
+      "reasons": [
+        "free",
+        "time_fit",
+        "new"
+      ],
+      "freshness": "fresh"
+    }
+  ],
+  "total": 739,
+  "next_cursor": "MTA",
+  "applied": {
+    "date_from": "2026-11-07",
+    "date_to": "2026-11-08",
+    "timezone": "Asia/Yekaterinburg"
+  }
+}

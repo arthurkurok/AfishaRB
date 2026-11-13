@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Демо: виджет афиши на сайте министерства культуры</title>
+    <!--
+      Демонстрационная страница: так виджет выглядит на «чужом» сайте (типовой шаблон госсайта на 1С-Битрикс).
+      Стили ниже — стили этого условного сайта, а не афиши; виджет изолирован в Shadow DOM и их не наследует (кроме шрифта).
+      Запуск: pnpm --filter @afisha/widget build && pnpm --filter @afisha/widget demo
+    -->
+    <style>
+      :root { --gov-blue: #1f4e8c; --gov-ink: #1b1f24; --gov-muted: #5b6470; --gov-line: #d9dee5; --gov-bg: #f4f6f9; }
+      * { box-sizing: border-box; }
+      body { margin: 0; font-family: "PT Sans", Arial, sans-serif; color: var(--gov-ink); background: var(--gov-bg); line-height: 1.5; }
+      a { color: var(--gov-blue); }
+      .demo-note { background: #fff4cc; color: #3d3100; text-align: center; padding: 8px 16px; font-size: 14px; }
+      header { background: #fff; border-bottom: 3px solid var(--gov-blue); }
+      .wrap { max-width: 1200px; margin: 0 auto; padding: 0 16px; }
+      .top { display: flex; align-items: center; gap: 16px; padding: 16px 0; }
+      .emblem { width: 56px; height: 56px; border-radius: 8px; background: var(--gov-blue); flex: none; }
+      .org { font-size: 20px; font-weight: 700; line-height: 1.2; }
+      .org small { display: block; font-weight: 400; font-size: 14px; color: var(--gov-muted); }
+      nav ul { list-style: none; display: flex; flex-wrap: wrap; gap: 4px 24px; margin: 0; padding: 0 0 12px; }
+      nav a { color: var(--gov-ink); text-decoration: none; font-weight: 600; display: inline-block; padding: 8px 0; }
+      main { display: grid; gap: 24px; padding: 24px 0 48px; }
+      .panel { background: #fff; border: 1px solid var(--gov-line); border-radius: 4px; padding: 20px; }
+      h1 { font-size: 28px; margin: 0 0 8px; }
+      h2 { font-size: 20px; margin: 0 0 12px; }
+      .news { list-style: none; margin: 0; padding: 0; }
+      .news li { padding: 12px 0; border-bottom: 1px solid var(--gov-line); }
+      .news time { color: var(--gov-muted); font-size: 14px; display: block; }
+      footer { background: #1b2a3d; color: #e7ecf3; padding: 24px 0; font-size: 14px; }
+      @media (min-width: 960px) { main { grid-template-columns: minmax(0, 1fr) 340px; } }
+    </style>
+  </head>
+  <body>
+    <p class="demo-note">Демонстрационная страница для проверки встраивания — не официальный сайт.</p>
+    <header>
+      <div class="wrap">
+        <div class="top">
+          <div class="emblem" aria-hidden="true"></div>
+          <p class="org">Министерство культуры<small>Республики Башкортостан · демонстрационный шаблон</small></p>
+        </div>
+        <nav aria-label="Разделы сайта">
+          <ul>
+            <li><a href="#demo-1">О министерстве</a></li>
+            <li><a href="#demo-2">Деятельность</a></li>
+            <li><a href="#demo-3">Документы</a></li>
+            <li><a href="#afisha">Афиша</a></li>
+            <li><a href="#demo-4">Контакты</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <main class="wrap">
+      <div>
+        <section class="panel" id="afisha" aria-labelledby="afisha-h">
+          <h1 id="afisha-h">Афиша учреждений культуры</h1>
+          <p>Спектакли, концерты и выставки республики — данные обновляются автоматически.</p>
+
+          <!-- ↓ Код из конструктора на /developers -->
+          <script src="../dist/afisha.js" type="module" async></script>
+          <afisha-rb
+            data-testid="widget-main"
+            municipality="ufa"
+            layout="carousel"
+            limit="8"
+            lang="ru"
+            theme="auto"
+            api-base="http://localhost:8000"
+            site-base="http://localhost:3000"
+          ></afisha-rb>
+          <!-- ↑ -->
+        </section>
+
+        <section class="panel" aria-labelledby="iframe-h" style="margin-top: 24px">
+          <h2 id="iframe-h">Запасной вариант: iframe (для строгой CSP)</h2>
+          <iframe
+            id="afisha-rb-frame"
+            src="http://localhost:3000/embed?municipality=sterlitamak&amp;layout=grid&amp;limit=4"
+            title="Афиша культуры Башкортостана"
+            loading="lazy"
+            style="display: block; width: 100%; min-height: 360px; border: 0"
+          ></iframe>
+          <script>
+            window.addEventListener("message", (e) => {
+              if (e.origin !== "http://localhost:3000" || !e.data || e.data.type !== "afisha:height") return;
+              document.getElementById("afisha-rb-frame").style.height = e.data.height + "px";
+            });
+          </script>
+        </section>
+      </div>
+
+      <aside>
+        <section class="panel" aria-labelledby="news-h">
+          <h2 id="news-h">Новости</h2>
+          <ul class="news">
+            <li><time datetime="2026-11-02">2 ноября 2026</time><a href="#demo-5">Итоги республиканского конкурса народного творчества</a></li>
+            <li><time datetime="2026-10-30">30 октября 2026</time><a href="#demo-6">В районах республики открылись модельные библиотеки</a></li>
+          </ul>
+        </section>
+        <section class="panel" aria-labelledby="side-h" style="margin-top: 24px">
+          <h2 id="side-h">Бесплатно на этой неделе</h2>
+          <afisha-rb
+            data-testid="widget-side"
+            layout="compact"
+            free="true"
+            limit="4"
+            lang="ba"
+            theme="light"
+            accent="#1f4e8c"
+            radius="4"
+            api-base="http://localhost:8000"
+            site-base="http://localhost:3000"
+          ></afisha-rb>
+        </section>
+      </aside>
+    </main>
+
+    <footer>
+      <div class="wrap">© Демонстрационный шаблон сайта · виджет «Тамаша · Афиша культуры Башкортостана»</div>
+    </footer>
+  </body>
+</html>

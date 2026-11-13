@@ -1,0 +1,63 @@
+.row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 190px), 1fr));
+  gap: var(--space-3);
+}
+
+.tile {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  padding: var(--space-4);
+  background: var(--color-surface);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-m);
+  color: var(--color-ink);
+  text-decoration: none;
+  min-width: 0;
+}
+
+.link {
+  transition: border-color var(--motion-fast) var(--motion-easing);
+}
+.link:hover {
+  border-color: var(--color-ink-2);
+}
+
+.label {
+  font-size: var(--type-caption-size);
+  line-height: var(--type-caption-line);
+  font-weight: 600;
+  color: var(--color-ink-2);
+}
+
+/* Значение — тем же гротеском, пропорциональные цифры (dataviz: hero/stat figure). */
+.value {
+  font-family: var(--font-text-app);
+  font-size: var(--type-h1-size);
+  line-height: var(--type-h1-line);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.note {
+  font-size: var(--type-caption-size);
+  line-height: var(--type-caption-line);
+  color: var(--color-ink-2);
+}
+
+.meter {
+  display: block;
+  block-size: 6px;
+  border-radius: var(--radius-pill);
+  background: var(--viz-track);
+  overflow: hidden;
+  margin-block: var(--space-1);
+}
+.meter > span {
+  display: block;
+  block-size: 100%;
+  background: var(--viz-series);
+  border-radius: var(--radius-pill);
+}

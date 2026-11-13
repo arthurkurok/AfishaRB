@@ -1,0 +1,35 @@
+.state {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-5);
+  padding: var(--space-6) var(--space-5);
+  border-radius: var(--radius-l);
+  background: var(--color-surface);
+  border: 1px dashed var(--color-line);
+}
+
+.mascot {
+  flex: none;
+  width: 120px;
+  height: 120px;
+}
+
+.text {
+  flex: 1 1 260px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.title {
+  font-size: var(--type-h2-size);
+  line-height: var(--type-h2-line);
+}
+
+.action {
+  margin-top: var(--space-2);
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
