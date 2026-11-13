@@ -1107,10 +1107,32 @@ export async function handleAssistant(
   conv.shown = picks.map((p) => p.occurrence.event.id);
 
   const fabricate = /придума|выдума|сочини|нафантазир|сгенерируй событ/iu.test(text ?? "");
+  // ТЗ §3 (сценарий с агентом): возраст не назван — сначала ответ, потом ОДИН уточняющий вопрос с кнопками (ТЗ 7.3)
+  let ageClarify: AssistantResponseV2["clarify"] = null;
+  if (slots.with_kids && slots.kids_ages.length === 0 && !conv.asked.has("kids") && !conv.lastClarify) {
+    const a = await countFor(runner, toQuery({ ...slots, kids_ages: [4] }, req));
+    const b = await countFor(runner, toQuery({ ...slots, kids_ages: [8] }, req));
+    // вопрос уместен, только если возраст реально меняет выдачу; допущение «младше 12» видно в чипах
+    if (differs(a, b)) {
+      conv.asked.add("kids");
+      ageClarify = {
+        slot: "kids",
+        question:
+          lang === "ba" ? CLARIFY_AGE_BA : "Сколько лет ребёнку? От этого зависит возрастной ценз (0+, 6+, 12+).",
+        options: [
+          { id: "age_2", label: "до 3 лет", patch: { kids_ages: [2] } },
+          { id: "age_5", label: "3–5 лет", patch: { kids_ages: [5] } },
+          { id: "age_8", label: "6–11 лет", patch: { kids_ages: [8] } },
+          { id: "age_13", label: "12+", patch: { kids_ages: [13] } },
+        ],
+      };
+    }
+  }
   return finish({
     ...base,
     mode,
     kind: "results",
+    clarify: ageClarify,
     text:
       (fabricate ? "Я не придумываю события — показываю только реальные из официальных источников. " : "") +
       summaryText(Math.max(picks.length, result.total), effective, relaxed, lang),

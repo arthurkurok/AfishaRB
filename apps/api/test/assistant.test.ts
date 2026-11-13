@@ -91,7 +91,8 @@ describe("Гид в режиме правил", () => {
       { text: "Куда пойти в субботу с ребёнком до 1000 рублей", municipality_id: "ufa" },
       { channel: "test" },
     );
-    expect(r1.kind).toBe("clarify");
+    // ТЗ 7.3: полезный ответ возможен — сначала ответ, возраст спрашиваем кнопками вместе с результатами
+    expect(r1.kind).toBe("results");
     expect(r1.clarify?.slot).toBe("kids");
     const r2 = await handleAssistant(
       db,

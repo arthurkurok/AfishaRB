@@ -121,7 +121,19 @@ async function renderAssistant(ctx: Context, db: Db, profile: Profile, r: Assist
       kb.text(f.label, cb(r.conversation_id, f.patch));
       if (i % 2 === 1) kb.row();
     });
-    await ctx.reply("Уточнить подборку:", { reply_markup: kb });
+    await ctx.reply("Ещё варианты:", { reply_markup: kb });
+  }
+  // ТЗ 7.3: сначала ответ, потом предложение сузить — вопрос с кнопками приходит вместе с результатами
+  if (r.clarify) {
+    const kb = new InlineKeyboard();
+    r.clarify.options.forEach((o, i) => {
+      kb.text(o.label, cb(r.conversation_id, o.patch));
+      if (i % 2 === 1) kb.row();
+    });
+    await ctx.reply(`Уточнить подборку: ${escapeHtml(r.clarify.question)}`, {
+      parse_mode: "HTML",
+      reply_markup: kb,
+    });
   }
 }
 
