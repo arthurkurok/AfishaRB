@@ -15,6 +15,7 @@
       "!**/playwright-report",
       "!**/test-results",
       "!apps/web/public/widget",
+      "!apps/api/test/fixtures",
       "!.claude",
       "!**/*.md",
       "!jury",

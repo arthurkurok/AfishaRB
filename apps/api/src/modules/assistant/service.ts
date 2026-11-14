@@ -1175,8 +1175,7 @@ export async function handleAssistant(
     conv.lastClarify = true;
     ageClarify = {
       slot: "kids_ages",
-      question:
-        lang === "ba" ? CLARIFY_AGE_BA : "Сколько лет ребёнку? От этого зависит возрастной ценз (0+, 6+, 12+).",
+      question: lang === "ba" ? CLARIFY_AGE_BA : "Сколько лет ребёнку? От этого зависит возрастной ценз (0+, 6+, 12+).",
       options: [
         { id: "age_2", label: "до 3 лет", patch: { kids_ages: [2] } },
         { id: "age_5", label: "3–5 лет", patch: { kids_ages: [5] } },

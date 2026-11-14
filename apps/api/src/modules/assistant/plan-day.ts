@@ -49,8 +49,8 @@ export function planDay(candidates: OccurrenceCard[], maxStops = 3): PlanStop[] 
   const live = candidates.filter((c) => c.status === "scheduled");
   // сначала сеансы с точным временем (спектакль в 12:00): у них интервал короткий и честный;
   // выставки-интервалы («с 9 до 18») пытаемся добавить потом — только в свободное окно
-  const pool = [...live.filter((c) => !c.is_range), ...live.filter((c) => c.is_range)].sort(
-    (a, b) => a.starts_at.localeCompare(b.starts_at),
+  const pool = [...live.filter((c) => !c.is_range), ...live.filter((c) => c.is_range)].sort((a, b) =>
+    a.starts_at.localeCompare(b.starts_at),
   );
   const plan: PlanStop[] = [];
   const usedCats = new Set<string>();
@@ -61,7 +61,9 @@ export function planDay(candidates: OccurrenceCard[], maxStops = 3): PlanStop[] 
     // пересечение с ЛЮБОЙ уже взятой остановкой (не только последней) — сырое окно сеанса
     const fits = plan.every((p) => {
       const travel = travelMinutes(p.card, c);
-      return w.start.getTime() >= p.end.getTime() + travel * 60_000 || w.end.getTime() + travel * 60_000 <= p.start.getTime();
+      return (
+        w.start.getTime() >= p.end.getTime() + travel * 60_000 || w.end.getTime() + travel * 60_000 <= p.start.getTime()
+      );
     });
     if (!fits) continue;
     const prev = plan.at(-1);

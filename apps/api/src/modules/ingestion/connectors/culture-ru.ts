@@ -3,8 +3,9 @@
  * Временный источник до партнёрского ключа API PRO.Культура (docs/06-data.md §2.1).
  * Сохраняет сырые JSON в data/raw/culture_ru/{pages,events}. Идемпотентен и возобновляем.
  */
-import { mkdir, readdir, rename, rm, stat, writeFile } from "node:fs/promises";
+
 import { createHash } from "node:crypto";
+import { mkdir, readdir, rename, rm, stat, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 import { log } from "../../../lib/log.js";
 

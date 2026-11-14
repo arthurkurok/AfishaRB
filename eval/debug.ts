@@ -7,9 +7,32 @@ import { resolve } from "node:path";
 import { sql } from "drizzle-orm";
 import pg from "pg";
 
+/** Контрольное событие из датасета (как в control.ts). */
+type SeedEvent = {
+  external_id: string;
+  title: string;
+  categories: string[];
+  description?: string;
+  municipality: string;
+  age_rating: number;
+  start_day: string;
+  start_time: string;
+  end_time?: string;
+  price_min?: number;
+  price_max?: number;
+  is_free?: boolean;
+  occurrence_status?: string;
+};
+
 const dataset = JSON.parse(readFileSync(new URL("./datasets/control.json", import.meta.url), "utf8")) as {
   fixed_now: string;
-  cases: Array<{ id: string; group: string; text?: string; turns?: Array<{ text: string }> }>;
+  cases: Array<{
+    id: string;
+    group: string;
+    text?: string;
+    turns?: Array<{ text: string }>;
+    seed?: { events: SeedEvent[] };
+  }>;
 };
 const NOW = new Date(dataset.fixed_now);
 const REPO = resolve(import.meta.dirname, "../..");
@@ -123,9 +146,14 @@ const controlProfileId = (
         ON CONFLICT (channel, external_id) DO UPDATE SET last_seen_at = now() RETURNING id`,
   )
 ).rows[0]!.id;
-const debugSubscribe = async ({ city_id, category }: { city_id?: string; category?: string }) => {
+const debugSubscribe = async (args: {
+  city_id: string | null;
+  category: "theatre" | "music" | "museum" | "kids" | "folk" | "cinema" | "education" | null;
+  period: string | null;
+  replace: boolean;
+}) => {
   await db.execute(
-    sql`INSERT INTO saved_search (profile_id, title, query) VALUES (${controlProfileId}, ${`${city_id ?? "все"} ${category ?? ""}`}, ${JSON.stringify({ municipality: city_id, categories: category ? [category] : [] })}::jsonb)`,
+    sql`INSERT INTO saved_search (profile_id, title, query) VALUES (${controlProfileId}, ${`${args.city_id ?? "все"} ${args.category ?? ""}`}, ${JSON.stringify({ municipality: args.city_id, categories: args.category ? [args.category] : [] })}::jsonb)`,
   );
   return { ok: true };
 };
