@@ -42,7 +42,7 @@ GigaChat · Caddy (TLS) · Docker. Архитектура зафиксирова
 | Виджет для сайтов | <https://antihype.best/ru/developers> | конструктор + сниппет |
 | **Код (GitHub)** | <https://github.com/3r0ha/AfishaRB> | монорепо, main |
 | README | <https://github.com/3r0ha/AfishaRB#readme> | решения, ADR, деплой, демо-сценарий |
-| Презентация (PDF) | [`jury/presentation/presentation.pdf`](presentation/presentation.pdf) | 10 слайдов, 3 минуты |
+| Презентация (PDF) | [`jury/presentation/afisha.pdf`](presentation/afisha.pdf) | 12 слайдов, 3 минуты |
 | Текст выступления | [`jury/presentation/speech.md`](presentation/speech.md) | тайминг по слайдам |
 
 ## Быстрая проверка, что всё живое

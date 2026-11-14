@@ -1,0 +1,13 @@
+/* Шрифты презентации: локальные копии Golos Text (OFL) из apps/web/src/assets/fonts. */
+
+@font-face {
+  font-family: "Golos Text";
+  src: url("fonts/GolosText-Regular.ttf") format("truetype");
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: "Golos Text";
+  src: url("fonts/GolosText-Bold.ttf") format("truetype");
+  font-weight: 700 800;
+}
