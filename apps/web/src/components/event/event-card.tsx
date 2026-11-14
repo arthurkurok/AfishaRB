@@ -62,7 +62,6 @@ export function EventCard({
         <Poster
           image={e.image}
           category={category}
-          seed={e.id}
           alt=""
           sizes={variant === "compact" ? "120px" : "(min-width: 1280px) 300px, (min-width: 600px) 45vw, 92vw"}
           priority={priority}

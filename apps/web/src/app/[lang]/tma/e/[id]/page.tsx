@@ -49,7 +49,6 @@ export default async function TmaEvent({ params }: { params: Promise<{ lang: str
         <Poster
           image={event.image}
           category={category}
-          seed={event.id}
           alt={t("card.coverAlt", { title: event.title })}
           sizes="100vw"
           priority

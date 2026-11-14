@@ -124,7 +124,6 @@ export default async function EventPage({ params }: Props) {
             <Poster
               image={event.image}
               category={category}
-              seed={event.id}
               alt={t("card.coverAlt", { title: event.title })}
               artTitle={t("card.illustrationAlt", { category: t(`categories.${category}`) })}
               sizes="(min-width: 960px) 50vw, 100vw"
