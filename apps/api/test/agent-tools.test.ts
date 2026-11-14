@@ -185,7 +185,9 @@ describe("Реестр инструментов: формальные контр
   });
 
   it("search_events: валидные аргументы → формальные карточки, существующие в БД", async () => {
-    const r = ok(await runTool("search_events", { city: "Уфа", period: "week" }, ctx));
+    // month, а не week: сид — на ближайшей субботе (1–7 дней от сегодня), окно week — 6 дней:
+    // в субботу сид-дата выпадает из week-окна и тест становится календарно-флакующим
+    const r = ok(await runTool("search_events", { city: "Уфа", period: "month" }, ctx));
     const items = r.items as Record<string, unknown>[];
     expect(r.total).toBeGreaterThanOrEqual(3);
     expect(items.length).toBeGreaterThanOrEqual(3);
@@ -346,34 +348,36 @@ describe("ToolRunner: лимит шагов (ТЗ 6.5)", () => {
 
   it("searchCards: собирает кандидатов и пишет шаг трассы с count", async () => {
     const runner = new ToolRunner(ctx);
-    const res = await runner.searchCards({ municipality: ["ufa"], when: "week", limit: 30, lang: "ru" });
+    const res = await runner.searchCards({ municipality: ["ufa"], when: "month", limit: 30, lang: "ru" });
     expect(res.total).toBeGreaterThanOrEqual(3);
     expect(runner.candidateIds.length).toBeGreaterThanOrEqual(3);
     expect(runner.hitLimit).toBe(false);
     const step = runner.traceSteps[0]!;
     expect(step.tool).toBe("search_events");
     expect(step.count).toBeGreaterThanOrEqual(3);
-    expect(step.args).toMatchObject({ city: "Уфа", municipality: ["ufa"], period: "week" });
+    expect(step.args).toMatchObject({ city: "Уфа", municipality: ["ufa"], period: "month" });
   });
 });
 
 describe("Гид: лимит шагов на один ответ (ТЗ 6.5)", () => {
-  it("AFISHA_AGENT_MAX_STEPS=2: конвейер обрезается и отвечает тем, что уже найдено", async () => {
-    config.AFISHA_AGENT_MAX_STEPS = 2;
+  it("AFISHA_AGENT_MAX_STEPS=1: конвейер обрезается и отвечает тем, что уже найдено", async () => {
+    config.AFISHA_AGENT_MAX_STEPS = 1;
     try {
-      // «концерт» даёт категорию music: строгий поиск пуст, релаксация идёт по шагам
-      // (даты → месяц, категории → все) — второй шаг срезается лимитом в 2 вызова
+      // «концерт квантовой физики» не находится; строгий поиск — единственный вызов,
+      // релаксация (свой вызов поиска) срезается лимитом — конвейер обрезан
       const r = await handleAssistant(
         db,
         { text: "концерт квантовой физики в Сибае", municipality_id: "sibay" },
         { channel: "test" },
       );
-      expect(r.trace.steps).toHaveLength(2);
+      // один вызов исчерпал лимит: строгий поиск сделан, релаксация (её вызов) срезана —
+      // честное «пока таких нет» из уже найденного, без выдумок
+      expect(r.trace.steps).toHaveLength(1);
       expect(r.trace.steps.every((s) => s.tool === "search_events")).toBe(true);
       expect(r.kind).toBe("empty"); // честное «пока таких нет», а не выдумка
       const row = await traceRow("концерт квантовой физики в Сибае");
       const agent = row.verifier.agent!;
-      expect(agent.tool_calls).toBe(2);
+      expect(agent.tool_calls).toBe(1);
       expect(agent.limited).toBe(true);
       expect(agent.plan).toContain("relax");
     } finally {
@@ -521,7 +525,10 @@ describe("Гид: трассировка (ТЗ 7.4)", () => {
 
   it("assistant_trace в БД: candidate_ids ⊇ picked_ids, план и шаги — в verifier.agent", async () => {
     const text = "музеи и выставки в Уфе";
-    const r = await handleAssistant(db, { text, municipality_id: "ufa" }, { channel: "test" });
+    // «сейчас» = пятница перед сид-субботой: окно «ближайшая неделя» включает сеансы сида
+    // при любом реальном дне запуска теста (иначе strict-поиск пуст и появляется шаг релаксации)
+    const now = new Date(at(sat, "12:00").getTime() - 24 * 3600_000);
+    const r = await handleAssistant(db, { text, municipality_id: "ufa" }, { channel: "test", now });
     expect(r.kind).toBe("results");
     const row = await traceRow(text);
     expect(row.prompt_version).toBe(PROMPT_VERSION);

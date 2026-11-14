@@ -504,15 +504,17 @@ async function clarifyQuestion(
 async function relaxSearch(runner: ToolRunner, s: Slots, req: AssistantRequest, now: Date) {
   const month = resolveWindow({ when: "month" }, now);
   // Релаксируем только то, что НЕ названо явно с точным значением: время суток, «после 19:00»,
-  // жанр/текст, длительность и КАТЕГОРИЯ — часть сути запроса, их снятие даёт карточки,
-  // нарушающие запрос (ТЗ 9.2: выполнение ограничений; честнее пустой ответ с объяснением,
-  // чем «спектакль → любая категория»). Релаксируем даты и бюджет — об этом честно сообщаем.
+  // текст-жанр, теги и длительность — часть сути запроса, их снятие даёт карточки, нарушающие
+  // запрос (ТЗ 9.2); честнее пустой ответ, чем «вечер → любое время». Даты, бюджет и (последним
+  // делом) категорию — снимаем с честным объявлением: «детский праздник» мапится в folk, а в
+  // муниципалитете детские события могли прийти из источника с другой категорией.
   const steps: { label: string; patch: Partial<Slots> }[] = [
     {
       label: "расширил даты до ближайшего месяца",
       patch: { date_from: month.from, date_to: month.to, date_label: "ближайший месяц" },
     },
     { label: "поднял бюджет на 20 %", patch: { budget: s.budget ? Math.round(s.budget * 1.2) : null } },
+    { label: "показываю все категории", patch: { categories: [] } },
   ];
   let cur = s;
   const relaxed: string[] = [];
@@ -834,6 +836,38 @@ export async function handleAssistant(
 
   if (slots.intent === "help" && !req.patch)
     return finish({ ...base, kind: "help", text: lang === "ba" ? HELP_TEXT_BA : HELP_TEXT, followups: examples() });
+
+  // «А что-нибудь похожее» без контекста диалога: нечему быть похожим — один вопрос (ТЗ 7.3),
+  // а не угадывание; если в запросе есть опоры (категория, город) — отвечаем сразу обычным поиском.
+  // Проверяем раньше smalltalk/offtopic: «а что ещё похожее?» без опор парсится как smalltalk,
+  // но это запрос про культуру, а не оффтоп
+  if (
+    !req.patch &&
+    /похож/u.test(text ?? "") &&
+    conv.shown.length === 0 &&
+    !slots.categories.length &&
+    !slots.tags.length &&
+    !slots.text
+  ) {
+    plan.push("similar_no_context");
+    conv.lastClarify = true;
+    return finish({
+      ...base,
+      kind: "clarify",
+      text: "Похожее к чему? Мы пока ничего не подбирали. Назовите событие, которое понравилось, или спросите, например: «спектакли в Уфе в субботу».",
+      clarify: {
+        slot: "similar",
+        question: "Похожее к чему?",
+        options: [
+          { id: "kids", label: "Что-нибудь для детей", patch: { with_kids: true } },
+          { id: "weekend_ufa", label: "Выходные в Уфе", patch: { __when: "weekend", municipality_id: "ufa" } },
+          { id: "skip", label: "Неважно, покажи что есть", patch: { __skip: true } },
+        ],
+      },
+      chips: [],
+    });
+  }
+
   if ((slots.intent === "smalltalk" || slots.intent === "offtopic") && !req.patch)
     return finish({
       ...base,
@@ -869,34 +903,6 @@ export async function handleAssistant(
       plan.push("unknown_place");
       return finish({ ...base, kind: "empty", text: UNKNOWN_PLACE_TEXT(place), chips: [] });
     }
-  }
-  // «А что-нибудь похожее» без контекста диалога: нечему быть похожим — один вопрос (ТЗ 7.3),
-  // а не угадывание; если в запросе есть опоры (категория, город) — отвечаем сразу обычным поиском
-  if (
-    !req.patch &&
-    /похож/u.test(text ?? "") &&
-    conv.shown.length === 0 &&
-    !slots.categories.length &&
-    !slots.tags.length &&
-    !slots.text
-  ) {
-    plan.push("similar_no_context");
-    conv.lastClarify = true;
-    return finish({
-      ...base,
-      kind: "clarify",
-      text: "Похожее к чему? Мы пока ничего не подбирали. Назовите событие, которое понравилось, или спросите, например: «спектакли в Уфе в субботу».",
-      clarify: {
-        slot: "similar",
-        question: "Похожее к чему?",
-        options: [
-          { id: "kids", label: "Что-нибудь для детей", patch: { with_kids: true } },
-          { id: "weekend_ufa", label: "Выходные в Уфе", patch: { __when: "weekend", municipality_id: "ufa" } },
-          { id: "skip", label: "Неважно, покажи что есть", patch: { __skip: true } },
-        ],
-      },
-      chips: [],
-    });
   }
 
   // Действия, меняющие данные (ТЗ 7.6): сначала подтверждение, выполнение — только после «да»
@@ -995,7 +1001,7 @@ export async function handleAssistant(
       const price = hit.event.price.is_free
         ? "вход свободный"
         : hit.event.price.min !== null && hit.event.price.min !== undefined
-          ? `билеты от ${hit.event.price.min} ₽`
+          ? `билеты от ${Math.round(Number(hit.event.price.min))} ₽`
           : "цена в источнике не указана";
       const dur =
         hit.ends_at !== null && hit.ends_at !== undefined
@@ -1161,25 +1167,23 @@ export async function handleAssistant(
   // ТЗ §3 (сценарий с агентом): возраст не назван — сначала ответ, потом ОДИН уточняющий вопрос с кнопками (ТЗ 7.3)
   let ageClarify: AssistantResponseV2["clarify"] = null;
   if (slots.with_kids && slots.kids_ages.length === 0 && !conv.asked.has("kids") && !conv.lastClarify) {
-    const a = await countFor(runner, toQuery({ ...slots, kids_ages: [4] }, req));
-    const b = await countFor(runner, toQuery({ ...slots, kids_ages: [8] }, req));
-    // вопрос уместен, только если возраст реально меняет выдачу; допущение «младше 12» видно в чипах
-    if (differs(a, b)) {
-      conv.asked.add("kids");
-      // ответ на кнопки возраста («8 лет») — уточнение прошлого запроса, а не новый поиск
-      conv.lastClarify = true;
-      ageClarify = {
-        slot: "kids_ages",
-        question:
-          lang === "ba" ? CLARIFY_AGE_BA : "Сколько лет ребёнку? От этого зависит возрастной ценз (0+, 6+, 12+).",
-        options: [
-          { id: "age_2", label: "до 3 лет", patch: { kids_ages: [2] } },
-          { id: "age_5", label: "3–5 лет", patch: { kids_ages: [5] } },
-          { id: "age_8", label: "6–11 лет", patch: { kids_ages: [8] } },
-          { id: "age_13", label: "12+", patch: { kids_ages: [13] } },
-        ],
-      };
-    }
+    // ТЗ §3: возраст не назван — вопрос с кнопками прикрепляется к ответу всегда (единожды):
+    // возрастной ценз по 436-ФЗ принципиально меняет допустимую выдачу, а допущение «младше 12»
+    // видно в чипах и меняется одной кнопкой
+    conv.asked.add("kids");
+    // ответ на кнопки возраста («8 лет») — уточнение прошлого запроса, а не новый поиск
+    conv.lastClarify = true;
+    ageClarify = {
+      slot: "kids_ages",
+      question:
+        lang === "ba" ? CLARIFY_AGE_BA : "Сколько лет ребёнку? От этого зависит возрастной ценз (0+, 6+, 12+).",
+      options: [
+        { id: "age_2", label: "до 3 лет", patch: { kids_ages: [2] } },
+        { id: "age_5", label: "3–5 лет", patch: { kids_ages: [5] } },
+        { id: "age_8", label: "6–11 лет", patch: { kids_ages: [8] } },
+        { id: "age_13", label: "12+", patch: { kids_ages: [13] } },
+      ],
+    };
   }
   return finish({
     ...base,

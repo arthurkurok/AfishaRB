@@ -33,6 +33,104 @@ const { getDb, closeDb } = await import("../apps/api/src/db/client.js");
 const db = getDb();
 const { handleAssistant } = await import("../apps/api/src/modules/assistant/index.js");
 
+/* --- сид контрольных событий (как в control.ts) + DI подписки/заявки --- */
+const { CatalogWriter } = await import("../apps/api/src/modules/ingestion/pipeline.js");
+const { refreshDerived } = await import("../apps/api/src/modules/lifecycle/index.js");
+const { startOfLocalDay } = await import("../apps/api/src/modules/geo/index.js");
+
+const muniNames = new Map(
+  (
+    await db.execute<{ id: string; name: string }>(sql`SELECT id, name->>'ru' AS name FROM municipality`)
+  ).rows.map((r) => [r.id, r.name]),
+);
+const at = (day: string, hhmm: string) => {
+  const [h, m] = hhmm.split(":").map(Number) as [number, number];
+  return new Date(startOfLocalDay(day).getTime() + (h * 60 + m) * 60_000);
+};
+const seededEvents = dataset.cases.flatMap((c) => (c.seed?.events ?? []).map((ev) => ({ ev })));
+if (seededEvents.length) {
+  const writer = new CatalogWriter(db, "culture_ru", null);
+  await writer.warm();
+  for (const { ev } of seededEvents) {
+    const tags: string[] = [];
+    if (/^экскурси/iu.test(ev.title)) tags.push("excursion");
+    if (/мастер-?класс/iu.test(ev.title)) tags.push("master_class");
+    if (/фестивал/iu.test(ev.title)) tags.push("festival");
+    const start = at(ev.start_day, ev.start_time);
+    const end = ev.end_time ? at(ev.start_day, ev.end_time) : new Date(start.getTime() + 2 * 3600_000);
+    await writer.upsert(
+      {
+        sourceId: "culture_ru",
+        externalId: `ctrl-${ev.external_id}`,
+        title: ev.title,
+        summary: (ev.description ?? "Контрольное событие прогонки").slice(0, 300),
+        descriptionHtml: `<p>${ev.description ?? "Контрольное событие прогонки"}</p>`,
+        categories: ev.categories as never,
+        tags: tags as never,
+        sourceGenres: [],
+        ageRating: ev.age_rating,
+        priceMin: ev.is_free ? null : String(ev.price_min ?? 0),
+        priceMax: ev.is_free ? null : String(ev.price_max ?? ev.price_min ?? 0),
+        isFree: Boolean(ev.is_free) || ((ev.price_min ?? 0) === 0 && (ev.price_max ?? 0) === 0),
+        pushkinCard: false,
+        accessible: false,
+        isPermanent: false,
+        ticketUrl: null,
+        images: [],
+        organization: { externalId: "ctrl-org", name: "Учреждение контроля", shortName: null, externalIds: {} },
+        venues: [
+          {
+            externalId: `ctrl-v-${ev.external_id}`,
+            name: `Площадка «${ev.municipality}» (контроль)`,
+            address: muniNames.get(ev.municipality) ?? ev.municipality,
+            lat: null,
+            lon: null,
+            municipalityId: ev.municipality,
+            municipalityTitle: muniNames.get(ev.municipality) ?? null,
+            cultureLocaleId: null,
+            externalIds: {},
+          },
+        ],
+        sessions: [
+          {
+            externalId: `${ev.external_id}-s1`,
+            venueExternalId: `ctrl-v-${ev.external_id}`,
+            startsAt: start,
+            endsAt: end,
+            isRange: false,
+            ticketUrl: null,
+          },
+        ],
+        sourceUrl: null,
+        sourceUpdatedAt: null,
+        languages: ["ru"],
+      },
+      { id: `ctrl-${ev.external_id}`, rnd: 0.5 },
+    );
+  }
+  await writer.flushLogs();
+  await refreshDerived(db);
+  // Машина времени: refreshDerived помечает прошедшие сеансы «ended» по реальному времени,
+  // а отладка живёт с фиксированным «сейчас» из датасета — отматываем не начавшиеся по часам прогона
+  await db.execute(sql`
+    UPDATE occurrence SET status = 'scheduled', status_reason = NULL
+    WHERE status = 'ended' AND starts_at > ${NOW}`);
+}
+
+const controlProfileId = (
+  await db.execute<{ id: string }>(
+    sql`INSERT INTO profile (channel, external_id, last_seen_at) VALUES ('device', 'debug-run', now())
+        ON CONFLICT (channel, external_id) DO UPDATE SET last_seen_at = now() RETURNING id`,
+  )
+).rows[0]!.id;
+const debugSubscribe = async ({ city_id, category }: { city_id?: string; category?: string }) => {
+  await db.execute(
+    sql`INSERT INTO saved_search (profile_id, title, query) VALUES (${controlProfileId}, ${`${city_id ?? "все"} ${category ?? ""}`}, ${JSON.stringify({ municipality: city_id, categories: category ? [category] : [] })}::jsonb)`,
+  );
+  return { ok: true };
+};
+const debugFeedback = async () => ({ ok: true });
+
 const only = process.argv[2]?.split(",") ?? ["s05"];
 for (const id of only) {
   const c = dataset.cases.find((x) => x.id === id);
@@ -44,7 +142,7 @@ for (const id of only) {
   let convId: string | undefined;
   console.log(`\n===== ${id} (${c.group}) =====`);
   for (const t of turns) {
-    const resp = await handleAssistant(db, { text: t.text, conversation_id: convId }, { channel: "control", now: NOW });
+    const resp = await handleAssistant(db, { text: t.text, conversation_id: convId }, { channel: "control", now: NOW, subscribeFn: debugSubscribe, saveFeedbackFn: debugFeedback });
     convId = resp.conversation_id;
     console.log(`--- user: ${t.text}`);
     console.log(

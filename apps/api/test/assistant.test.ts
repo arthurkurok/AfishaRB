@@ -86,18 +86,21 @@ async function assertGrounded(picks: { occurrence: { id: string; event: { id: st
 
 describe("Гид в режиме правил", () => {
   it("сценарий из ТЗ: уточняет возраст и подбирает 0+ до 1000 ₽ в субботу", async () => {
+    // «сейчас» = пятница перед сид-субботой: парсер «в субботу» даёт сид-дату
+    // при любом реальном дне недели запуска (в субботу «в субботу» = сегодня ≠ сид)
+    const now = new Date(at(sat, "12:00").getTime() - 24 * 3600_000);
     const r1 = await handleAssistant(
       db,
       { text: "Куда пойти в субботу с ребёнком до 1000 рублей", municipality_id: "ufa" },
-      { channel: "test" },
+      { channel: "test", now },
     );
     // ТЗ 7.3: полезный ответ возможен — сначала ответ, возраст спрашиваем кнопками вместе с результатами
     expect(r1.kind).toBe("results");
-    expect(r1.clarify?.slot).toBe("kids");
+    expect(r1.clarify?.slot).toBe("kids_ages");
     const r2 = await handleAssistant(
       db,
       { conversation_id: r1.conversation_id, patch: { kids_ages: [5] } },
-      { channel: "test" },
+      { channel: "test", now },
     );
     expect(r2.kind).toBe("results");
     const titles = r2.picks.map((p) => p.occurrence.event.title);

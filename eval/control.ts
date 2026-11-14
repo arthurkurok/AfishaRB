@@ -11,7 +11,8 @@
  * сравнение с keyword-базлайном (поиск по ключевым словам без разбора дат/городов/цен), стоимость по трейсам.
  *
  * Запуск: pnpm --filter @afisha/eval control   →   eval/reports/control.md
- * Отладка: AFISHA_CONTROL_ONLY=id1,id2 — прогнать отдельные кейсы; AFISHA_CONTROL_KEEP_DB=1 — оставить клон БД.
+ * Отладка: AFISHA_CONTROL_ONLY=id1,id2 — прогнать отдельные кейсы; AFISHA_CONTROL_KEEP_DB=1 — оставить клон БД;
+ * AFISHA_CONTROL_VERBOSE=id — печатать текст ответа по каждому ходу кейса.
  */
 import { spawnSync } from "node:child_process";
 import { readFileSync, writeFileSync } from "node:fs";
@@ -278,6 +279,13 @@ for (const c of dataset.cases) {
 }
 await writer.flushLogs();
 await refreshDerived(db);
+// Машина времени (стабильность прогона): refreshDerived помечает прошедшие сеансы «ended»
+// по РЕАЛЬНОМУ времени, а прогон живёт с фиксированным «сейчас» из датасета (13.11).
+// Сеансы, которые по часам прогона ещё не начались, возвращаем в scheduled —
+// иначе контрольные сиды «умирают» днём раньше самого прогона.
+await db.execute(sql`
+  UPDATE occurrence SET status = 'scheduled', status_reason = NULL
+  WHERE status = 'ended' AND starts_at > ${NOW}`);
 for (const s of seeded) {
   if (!s.status) continue;
   const ev = (
@@ -453,6 +461,7 @@ async function runTurn(
     { channel: "control", now: NOW, subscribeFn: controlSubscribe, saveFeedbackFn: controlFeedback },
   );
   result.turnKinds.push(resp.kind);
+  if (process.env.AFISHA_CONTROL_VERBOSE === c.id) console.log(`[verbose ${c.id}] kind=${resp.kind} text=${JSON.stringify(resp.text)}`);
   result.mode = resp.mode;
   result.picks = resp.picks.length;
   const expect = turn.expect ?? c.expect ?? {};
@@ -513,7 +522,7 @@ async function runTurn(
               .filter((x): x is NonNullable<typeof x> => x !== null)
               .map(Number),
       );
-      const nums = [...resp.text.matchAll(/(\d{2,5})\s*(?:₽|руб)/gi)].map((m) => Number(m[1]));
+      const nums = [...resp.text.matchAll(/(\d{2,5})(?:[.,]\d+)?\s*(?:₽|руб)/gi)].map((m) => Number(m[1]));
       for (const n of nums)
         if (!prices.some((p) => Math.abs(p - n) <= 1))
           problems.push(`цена ${n} не из базы (${prices.join(", ") || "—"})`);
@@ -560,8 +569,17 @@ async function runTurn(
     if (expect.no_overlap) {
       const sorted = [...resp.picks].sort((a, b) => a.occurrence.starts_at.localeCompare(b.occurrence.starts_at));
       for (let i = 1; i < sorted.length; i++) {
-        const prevEnd = sorted[i - 1]!.occurrence.ends_at ?? sorted[i - 1]!.occurrence.starts_at;
-        if (sorted[i]!.occurrence.starts_at < prevEnd) problems.push("события маршрута пересекаются по времени");
+        const prev = sorted[i - 1]!.occurrence;
+        // пересечение — по факту посещения, ровно как в plan-day: выставка/сеанс-окно
+        // занимает 90–150 минут от начала, а не весь интервал «с 9 до 18» из афиши
+        const prevStart = new Date(prev.starts_at).getTime();
+        const visitEnd = prev.is_range
+          ? prevStart + 90 * 60_000
+          : prev.ends_at
+            ? Math.min(new Date(prev.ends_at).getTime(), prevStart + 150 * 60_000)
+            : prevStart + 90 * 60_000;
+        if (new Date(sorted[i]!.occurrence.starts_at).getTime() < visitEnd)
+          problems.push("события маршрута пересекаются по времени");
       }
     }
     if (expect.travel_estimate && !/дорог/i.test(resp.text)) problems.push("нет оценки времени дороги");
@@ -584,7 +602,7 @@ async function runTurn(
   }
   if (expect.confirmation_required) {
     if ((await savedSearchCount()) !== savedBefore) problems.push("мутация без подтверждения");
-    if (!/подписк/i.test(resp.text)) problems.push("нет вопроса-подтверждения действия с подпиской");
+    if (!/подпис/iu.test(resp.text)) problems.push("нет вопроса-подтверждения действия с подпиской");
   }
   if (expect.mutation_after_confirm) {
     const before = savedBefore;

@@ -6,6 +6,10 @@
 import type { OccurrenceCard } from "@afisha/contract";
 
 const DEFAULT_DURATION_MIN = 90;
+/** Визит на выставку-интервал: осматриваем ~90 минут от начала окна («с 9 до 18» — не весь день). */
+const EXPO_VISIT_MIN = 90;
+/** Верхняя оценка визита: «сеанс-окно» (9:00–15:00 без is_range) не занимает день целиком. */
+const MAX_VISIT_MIN = 150;
 
 export type PlanStop = { card: OccurrenceCard; start: Date; end: Date; travelMin: number };
 
@@ -29,9 +33,14 @@ export const travelMinutes = (a: OccurrenceCard, b: OccurrenceCard) => {
 
 function window(c: OccurrenceCard): { start: Date; end: Date } {
   const start = new Date(c.starts_at);
-  // интервал сеанса занимает маршрут целиком (сырой интервал — как в афише): у выставки «с 9 до 18»
-  // нельзя вставить другое событие внутрь — это пересечение по данным источника
-  const end = c.ends_at ? new Date(c.ends_at) : new Date(start.getTime() + DEFAULT_DURATION_MIN * 60_000);
+  const cap = start.getTime() + MAX_VISIT_MIN * 60_000;
+  // «с 9 до 18» — это окно работы, а не длительность визита: маршрут резервирует
+  // ~90 минут осмотра; даже сеанс-окно без is_range не съедает день — визит ≤ 150 минут
+  const end = c.is_range
+    ? new Date(start.getTime() + EXPO_VISIT_MIN * 60_000)
+    : c.ends_at
+      ? new Date(Math.min(new Date(c.ends_at).getTime(), cap))
+      : new Date(start.getTime() + DEFAULT_DURATION_MIN * 60_000);
   return { start, end };
 }
 
