@@ -1,0 +1,298 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Афиша РБ — презентация (3 минуты)</title>
+<style>
+  /* Дизайн-токены проекта (packages/design-tokens/generated/tokens.css) */
+  :root {
+    --color-bg: #f7f6f3;
+    --color-surface: #ffffff;
+    --color-surface-2: #efeeea;
+    --color-ink: #171512;
+    --color-ink-2: #6b6660;
+    --color-line: #e5e3de;
+    --color-accent: #c33124;
+    --color-honey: #f0b32e;
+    --color-meadow: #237a48;
+    --color-focus: #2e64a8;
+    --color-cat-theatre: #b8322a;
+    --color-cat-music: #2e64a8;
+    --color-cat-museum: #8f6209;
+    --color-cat-kids: #a84a14;
+    --color-cat-folk: #2f7a4b;
+    --color-cat-cinema: #6b3a6e;
+    --color-cat-education: #1f6b70;
+    --radius-l: 18px;
+    --radius-m: 14px;
+    --radius-pill: 999px;
+    --space-2: 8px; --space-3: 12px; --space-4: 16px; --space-5: 24px; --space-6: 32px; --space-7: 48px;
+  }
+  @font-face { font-family: "Golos Text"; src: url("fonts/GolosText-Regular.ttf") format("truetype"); font-weight: 400; }
+  @font-face { font-family: "Golos Text"; src: url("fonts/GolosText-Bold.ttf") format("truetype"); font-weight: 700 800; }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: var(--color-bg); color: var(--color-ink);
+    font-family: "Golos Text", system-ui, sans-serif; font-size: 20px; line-height: 1.45; }
+
+  .slide {
+    width: 1280px; height: 720px;
+    padding: 56px 72px;
+    display: flex; flex-direction: column;
+    page-break-after: always; break-after: page;
+    position: relative; overflow: hidden;
+    background: var(--color-bg);
+  }
+  .slide:last-child { page-break-after: auto; break-after: auto; }
+
+  /* срез ҡусҡар — «почерк» продукта (07-design §6) */
+  .cut { position: absolute; top: 0; right: 0; width: 88px; height: 88px; pointer-events: none; }
+  .cut path { fill: var(--color-surface); }
+  .cut path+path { fill: none; stroke: var(--color-surface); stroke-width: 5; stroke-linecap: round; }
+  .slide[data-dark] .cut path { fill: #131110; }
+  .slide[data-dark] .cut path+path { stroke: #131110; }
+
+  h1 { font-size: 64px; font-weight: 800; line-height: 1.08; letter-spacing: -0.5px; }
+  h2 { font-size: 40px; font-weight: 800; line-height: 1.12; margin-bottom: var(--space-5); }
+  h2 .kicker { display: block; font-size: 15px; font-weight: 700; letter-spacing: 2.5px;
+    text-transform: uppercase; color: var(--color-accent); margin-bottom: var(--space-3); }
+  p.lead { font-size: 24px; color: var(--color-ink-2); max-width: 900px; }
+  .muted { color: var(--color-ink-2); }
+  strong { font-weight: 700; }
+  .accent { color: var(--color-accent); }
+
+  .row { display: flex; gap: var(--space-5); flex: 1; min-height: 0; }
+  .col { display: flex; flex-direction: column; gap: var(--space-4); min-width: 0; }
+
+  .shot { border-radius: var(--radius-l); border: 1px solid var(--color-line);
+    box-shadow: 0 16px 40px rgba(23,21,18,.10); overflow: hidden; background: var(--color-surface);
+    display: flex; align-items: flex-start; justify-content: center; }
+  .shot img { width: 100%; height: 100%; object-fit: cover; object-position: top; display: block; }
+  .shot.flat img { object-fit: contain; }
+  .caption { font-size: 15px; color: var(--color-ink-2); text-align: center; margin-top: var(--space-2); }
+
+  .cards { display: grid; gap: var(--space-4); }
+  .card { background: var(--color-surface); border: 1px solid var(--color-line);
+    border-radius: var(--radius-m); padding: var(--space-4) var(--space-5); }
+  .card h3 { font-size: 21px; font-weight: 700; margin-bottom: 4px; }
+  .card p { font-size: 16.5px; color: var(--color-ink-2); }
+  .card .ico { width: 38px; height: 38px; border-radius: 10px; display: inline-flex;
+    align-items: center; justify-content: center; color: #fff; font-size: 19px; margin-bottom: var(--space-2); }
+
+  .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-4); }
+  .stat { background: var(--color-surface); border: 1px solid var(--color-line);
+    border-radius: var(--radius-m); padding: var(--space-4); text-align: left; }
+  .stat b { display: block; font-size: 42px; font-weight: 800; letter-spacing: -1px; }
+  .stat span { font-size: 16px; color: var(--color-ink-2); }
+
+  .pill { display: inline-flex; align-items: center; gap: 8px; min-height: 34px;
+    padding: 4px var(--space-4); border-radius: var(--radius-pill);
+    border: 1px solid var(--color-line); background: var(--color-surface);
+    font-size: 16px; font-weight: 600; white-space: nowrap; }
+  .pill.solid { background: var(--color-ink); color: var(--color-bg); border-color: var(--color-ink); }
+
+  .link { color: var(--color-focus); font-weight: 700; text-decoration: none; }
+
+  footer.slide-meta { position: absolute; left: 72px; right: 72px; bottom: 22px;
+    display: flex; justify-content: space-between; font-size: 13.5px; color: var(--color-ink-2); }
+
+  /* титул */
+  .title-slide { background: var(--color-ink); color: #f5f3f0; justify-content: center; }
+  .title-slide h1 { color: #f5f3f0; font-size: 76px; }
+  .title-slide .sub { font-size: 26px; color: #a9a29a; margin-top: var(--space-4); max-width: 950px; }
+  .title-slide .live { display: inline-flex; align-items: center; gap: 10px; margin-top: var(--space-6);
+    background: var(--color-accent); color: #fff; border-radius: var(--radius-pill);
+    padding: 12px 28px; font-size: 22px; font-weight: 700; }
+  .title-slide .meta { position: absolute; bottom: 40px; left: 72px; font-size: 15px; color: #a9a29a; }
+
+  .two-shots { display: grid; grid-template-columns: 1fr 1.35fr; gap: var(--space-5); flex: 1; min-height: 0; }
+
+  .chat-quote { background: var(--color-surface); border: 1px solid var(--color-line);
+    border-radius: var(--radius-l); padding: var(--space-5); font-size: 18px; }
+  .chat-quote .who { font-weight: 700; font-size: 14px; letter-spacing: 1.5px;
+    text-transform: uppercase; color: var(--color-accent); margin-bottom: 8px; }
+  .chat-quote .who.giga { color: var(--color-focus); }
+
+  .stack { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+</style>
+</head>
+<body>
+
+<!-- 1 · Титул -->
+<section class="slide title-slide" data-dark>
+  <svg class="cut" viewBox="0 0 40 40" aria-hidden="true"><path d="M40 0H6C6 19 21 34 40 34Z"/><path d="M24 30.2C20 36.5 11.5 36.5 11.5 30.5C11.5 25.5 18 25.2 18.2 29.4"/></svg>
+  <h1>Афиша РБ<br>Культура Башкортостана</h1>
+  <p class="sub">Единая достоверная афиша событий республики: сайт с ИИ-гидом, Telegram-бот,
+  рабочее место министерства, открытый API и виджет. Живые данные, не демо.</p>
+  <span class="live">● antihype.best — уже работает</span>
+  <p class="meta">Хакатон «Кибер 102» · кейс 01 · Уфа · 13–15.11.2026 · уровень решения — 4 «Контур»</p>
+</section>
+
+<!-- 2 · Проблема -->
+<section class="slide">
+  <svg class="cut" viewBox="0 0 40 40"><path d="M40 0H6C6 19 21 34 40 34Z"/><path d="M24 30.2C20 36.5 11.5 36.5 11.5 30.5C11.5 25.5 18 25.2 18.2 29.4"/></svg>
+  <h2><span class="kicker">Проблема</span>Культурная жизнь республики — в разрозненных лентах</h2>
+  <div class="row">
+    <div class="col" style="flex:1.1">
+      <div class="card"><h3>65 городов и районов</h3><p>У каждого учреждения — свой сайт и свои анонсы. Афиши района нет нигде целиком.</p></div>
+      <div class="card"><h3>Данные устаревают молча</h3><p>Событие перенесли или отменили — афиша в VK и на сайте об этом не говорит.</p></div>
+      <div class="card"><h3>Человек теряется</h3><p>«Куда сходить в субботу с ребёнком до 1000 рублей?» — на этот вопрос не отвечает ни один сайт.</p></div>
+    </div>
+    <div class="col" style="flex:1; justify-content:center">
+      <div class="chat-quote">
+        <div class="who">житель республики</div>
+        Хочу повести ребёнка на спектакль в выходные, в своём городе, недорого.
+        Где это посмотреть одним взглядом — непонятно. Приходится листать
+        десять сайтов и группы в соцсетях.
+      </div>
+      <p class="caption">Пушкинская карта, бесплатные события, доступная среда — тонут в разрозненных источниках</p>
+    </div>
+  </div>
+  <footer class="slide-meta"><span>Афиша РБ · Культура Башкортостана</span><span>2 / 10</span></footer>
+</section>
+
+<!-- 3 · Продукт -->
+<section class="slide">
+  <svg class="cut" viewBox="0 0 40 40"><path d="M40 0H6C6 19 21 34 40 34Z"/><path d="M24 30.2C20 36.5 11.5 36.5 11.5 30.5C11.5 25.5 18 25.2 18.2 29.4"/></svg>
+  <h2><span class="kicker">Решение</span>Один продукт — пять точек входа</h2>
+  <div class="cards" style="grid-template-columns: 1fr 1fr 1fr">
+    <div class="card"><div class="ico" style="background:var(--color-accent)">С</div><h3>Сайт</h3><p>Афиша, поиск, карточки-паспорта, ИИ-гид. Русский и башкирский.</p><p style="margin-top:8px"><span class="link">antihype.best</span></p></div>
+    <div class="card"><div class="ico" style="background:var(--color-focus)">T</div><h3>Telegram-бот и Mini App</h3><p>Афиша, подписки, дайджесты — там, где люди уже есть.</p><p style="margin-top:8px"><span class="link">@AfishaRB102bot</span></p></div>
+    <div class="card"><div class="ico" style="background:var(--color-meadow)">А</div><h3>Админка</h3><p>«Пульс культуры», модерация дубликатов, кабинет учреждения.</p><p style="margin-top:8px"><span class="link">admin.antihype.best</span></p></div>
+    <div class="card"><div class="ico" style="background:var(--color-cat-education)">API</div><h3>Открытый REST API</h3><p>OpenAPI 3.1, ETag-кэширование, без регистрации.</p><p style="margin-top:8px"><span class="link">api.antihype.best/docs</span></p></div>
+    <div class="card"><div class="ico" style="background:var(--color-cat-cinema)">V</div><h3>Виджет для сайтов</h3><p>Конструктор сниппетов, без внешних трекеров и cookies.</p><p style="margin-top:8px"><span class="link">antihype.best/ru/developers</span></p></div>
+    <div class="card" style="background:var(--color-surface-2)"><h3 style="margin-top:6px">И всё это — один стек</h3><p>Одна база, один контур качества данных, один деплой. RSS и iCal — из коробки.</p></div>
+  </div>
+  <footer class="slide-meta"><span>Афиша РБ · Культура Башкортостана</span><span>3 / 10</span></footer>
+</section>
+
+<!-- 4 · Живые данные -->
+<section class="slide">
+  <svg class="cut" viewBox="0 0 40 40"><path d="M40 0H6C6 19 21 34 40 34Z"/><path d="M24 30.2C20 36.5 11.5 36.5 11.5 30.5C11.5 25.5 18 25.2 18.2 29.4"/></svg>
+  <h2><span class="kicker">Контур данных</span>Каталог собирается и чистится сам</h2>
+  <div class="stats">
+    <div class="stat"><b>8 703</b><span>события в каталоге</span></div>
+    <div class="stat"><b>27 193</b><span>будущих сеанса</span></div>
+    <div class="stat"><b>2 303</b><span>площадки</span></div>
+    <div class="stat"><b>65</b><span>городов и районов</span></div>
+  </div>
+  <div class="row" style="margin-top: var(--space-5); flex:1">
+    <div class="col" style="flex:1; justify-content:center">
+      <div class="card"><h3>Автосбор каждый час</h3><p>Культура.РФ и Башкирский театр оперы и балета: коннекторы идемпотентны и возобновляемы. Защита источника от ботов (PoW-челлендж) решается на сервере.</p></div>
+      <div class="card"><h3>Дедупликация до показа</h3><p>Пары-кандидаты скорятся автоматически, спорные — в очередь модерации. Дубли не доходят до пользователя.</p></div>
+      <div class="card"><h3>Provenance каждого поля</h3><p>Откуда взята цена, дата, площадка — видно в «паспорте» события. Данные устарели — показываем честно.</p></div>
+    </div>
+    <div style="flex:0.9; display:flex; flex-direction:column; gap:12px; justify-content:center">
+      <span class="pill">31 % событий — бесплатные</span>
+      <span class="pill">63 % — Пушкинская карта</span>
+      <span class="pill">RU + BA: два языка интерфейса</span>
+      <span class="pill solid">обновлено сегодня, 19:08</span>
+    </div>
+  </div>
+  <footer class="slide-meta"><span>Афиша РБ · Культура Башкортостана</span><span>4 / 10</span></footer>
+</section>
+
+<!-- 5 · Выбор города + главная -->
+<section class="slide">
+  <svg class="cut" viewBox="0 0 40 40"><path d="M40 0H6C6 19 21 34 40 34Z"/><path d="M24 30.2C20 36.5 11.5 36.5 11.5 30.5C11.5 25.5 18 25.2 18.2 29.4"/></svg>
+  <h2><span class="kicker">Продукт · главная</span>Сначала город — потом вся афиша</h2>
+  <div class="two-shots">
+    <div class="shot"><img src="shots/home-modal.png" alt="Окно выбора города при первом заходе"></div>
+    <div class="shot"><img src="shots/home-ufa.png" alt="Главная с афишей выбранного города"></div>
+  </div>
+  <p class="caption">Первый заход — окно «Где вам интересно?». Дальше ленты, подборки и Гид работают в рамках города: «нет смысла смотреть всё и сразу».</p>
+  <footer class="slide-meta"><span>Афиша РБ · Культура Башкортостана</span><span>5 / 10</span></footer>
+</section>
+
+<!-- 6 · Постеры и карточка -->
+<section class="slide">
+  <svg class="cut" viewBox="0 0 40 40"><path d="M40 0H6C6 19 21 34 40 34Z"/><path d="M24 30.2C20 36.5 11.5 36.5 11.5 30.5C11.5 25.5 18 25.2 18.2 29.4"/></svg>
+  <h2><span class="kicker">Продукт · карточка</span>Постер 2:3, как настоящая афиша</h2>
+  <div class="two-shots" style="grid-template-columns: 1.25fr 1fr">
+    <div class="shot"><img src="shots/search.png" alt="Поиск с постерной выдачей"></div>
+    <div class="shot"><img src="shots/event.png" alt="Карточка события с иллюстрацией категории"></div>
+  </div>
+  <p class="caption">Иллюстрации для событий без фото сгенерированы моделью gpt-image-2: плоский вектор в цвете категории, лёгкий башкирский орнамент, срез ҡусҡар в углу.</p>
+  <footer class="slide-meta"><span>Афиша РБ · Культура Башкортостана</span><span>6 / 10</span></footer>
+</section>
+
+<!-- 7 · Паспорт события -->
+<section class="slide">
+  <svg class="cut" viewBox="0 0 40 40"><path d="M40 0H6C6 19 21 34 40 34Z"/><path d="M24 30.2C20 36.5 11.5 36.5 11.5 30.5C11.5 25.5 18 25.2 18.2 29.4"/></svg>
+  <h2><span class="kicker">Продукт · доверие</span>Паспорт события: откуда данные</h2>
+  <div class="two-shots" style="grid-template-columns: 1.3fr 1fr">
+    <div class="shot"><img src="shots/passport.png" alt="Паспорт события: источники и уровень доверия"></div>
+    <div class="col" style="justify-content:center">
+      <div class="card"><h3>Источники-«печати»</h3><p>Каждое событие знает, из каких источников собрано — и показывает это пользователю.</p></div>
+      <div class="card"><h3>Уровень доверия</h3><p>Официальный источник, подтверждено учреждением, собрано из нескольких — градации честные.</p></div>
+      <div class="card"><h3>История изменений</h3><p>Поле за полем: что изменилось и когда. Переносы и отмены видны сразу.</p></div>
+    </div>
+  </div>
+  <footer class="slide-meta"><span>Афиша РБ · Культура Башкортостана</span><span>7 / 10</span></footer>
+</section>
+
+<!-- 8 · Гид -->
+<section class="slide">
+  <svg class="cut" viewBox="0 0 40 40"><path d="M40 0H6C6 19 21 34 40 34Z"/><path d="M24 30.2C20 36.5 11.5 36.5 11.5 30.5C11.5 25.5 18 25.2 18.2 29.4"/></svg>
+  <h2><span class="kicker">Продукт · ИИ-гид</span>Отвечает по базе, а не «по ощущениям»</h2>
+  <div class="two-shots" style="grid-template-columns: 1.35fr 1fr">
+    <div class="shot"><img src="shots/guide.png" alt="Диалог с гидом: разбор запроса и подборка"></div>
+    <div class="col" style="justify-content:center">
+      <div class="chat-quote" style="padding: var(--space-4)">
+        <div class="who">гиду</div>
+        «Куда пойти в субботу с ребёнком до 1000 рублей в Уфе?»
+      </div>
+      <div class="chat-quote" style="padding: var(--space-4)">
+        <div class="who giga">гид (GigaChat-2-Pro)</div>
+        Нашёл 157 вариантов, проверил возрастной ценз — вот три ближайших, с ценами и датами.
+      </div>
+      <div class="stack">
+        <span class="pill">98/98 контрольных кейсов ТЗ</span>
+        <span class="pill">≈ 5 ₽ за диалог</span>
+        <span class="pill">верификатор: 0 выдумок</span>
+      </div>
+    </div>
+  </div>
+  <p class="caption">Двухуровневая модель: GigaChat-2 разбирает запрос, GigaChat-2-Pro объясняет подборку. Резерв — cloud.ru и детерминированный режим правил: гид не «ложится» никогда.</p>
+  <footer class="slide-meta"><span>Афиша РБ · Культура Башкортостана</span><span>8 / 10</span></footer>
+</section>
+
+<!-- 9 · Админка и карта -->
+<section class="slide">
+  <svg class="cut" viewBox="0 0 40 40"><path d="M40 0H6C6 19 21 34 40 34Z"/><path d="M24 30.2C20 36.5 11.5 36.5 11.5 30.5C11.5 25.5 18 25.2 18.2 29.4"/></svg>
+  <h2><span class="kicker">Продукт · государство</span>Рабочее место сотрудников и карта региона</h2>
+  <div class="two-shots">
+    <div class="shot"><img src="shots/admin-pulse.png" alt="Пульс культуры в админке"></div>
+    <div class="shot"><img src="shots/map.png" alt="Карта афиши города на Leaflet"></div>
+  </div>
+  <p class="caption">Слева — «Пульс культуры» в админке: живые метрики, очередь модерации, ввод событий учреждениями. Справа — карта площадок города (Leaflet + OSM).</p>
+  <footer class="slide-meta"><span>Афиша РБ · Культура Башкортостана</span><span>9 / 10</span></footer>
+</section>
+
+<!-- 10 · Финал -->
+<section class="slide title-slide" data-dark>
+  <svg class="cut" viewBox="0 0 40 40"><path d="M40 0H6C6 19 21 34 40 34Z"/><path d="M24 30.2C20 36.5 11.5 36.5 11.5 30.5C11.5 25.5 18 25.2 18.2 29.4"/></svg>
+  <h2 style="color:#f5f3f0; margin-bottom:var(--space-6)"><span class="kicker" style="color:var(--color-honey)">Итог</span>Развёрнуто. Работает. Обновляется само.</h2>
+  <div class="row" style="align-items:center">
+    <div class="col" style="flex:1.2; gap: var(--space-3)">
+      <span class="pill" style="border-color:#34302c; background:#1c1a18; color:#f5f3f0">Сайт — antihype.best</span>
+      <span class="pill" style="border-color:#34302c; background:#1c1a18; color:#f5f3f0">API — api.antihype.best/docs</span>
+      <span class="pill" style="border-color:#34302c; background:#1c1a18; color:#f5f3f0">Бот — @AfishaRB102bot</span>
+      <span class="pill" style="border-color:#34302c; background:#1c1a18; color:#f5f3f0">Код — github.com/3r0ha/AfishaRB</span>
+      <p class="muted" style="font-size:16px; margin-top:var(--space-4); color:#a9a29a; max-width:560px">
+        PostgreSQL 18 + PostGIS/pgvector · Fastify · Next.js · pg-boss · GigaChat ·
+        10 архитектурных решений (ADR) · автосинк каждый час · TLS, Caddy ·
+        данные: PRO.Культура.РФ и учреждения культуры РБ
+      </p>
+    </div>
+    <div style="flex:0.7; display:flex; flex-direction:column; align-items:center; gap:var(--space-3)">
+      <img src="shots/qr.png" width="230" height="230" alt="QR: antihype.best" style="border-radius:var(--radius-m); background:#fff; padding:10px">
+      <span class="pill" style="border-color:#34302c; background:#1c1a18; color:#f5f3f0">Откройте сейчас — живые данные</span>
+    </div>
+  </div>
+  <p class="meta" style="position:absolute; bottom:40px; left:72px; font-size:15px; color:#a9a29a">
+    Сервис демонстрационный и не является официальным сервисом Министерства культуры Республики Башкортостан.</p>
+</section>
+
+</body>
+</html>
