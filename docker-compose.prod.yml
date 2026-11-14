@@ -112,6 +112,9 @@ services:
     image: afisha-api
     command: ["node", "dist/bot.js"]
     env_file: .env
+    # бот не слушает HTTP — HEALTHCHECK из образа api здесь неприменим
+    healthcheck:
+      disable: true
     environment:
       {
         AFISHA_DATABASE_URL: "postgres://afisha:${PG_PASSWORD}@db:5432/afisha",
