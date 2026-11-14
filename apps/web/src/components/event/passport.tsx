@@ -1,11 +1,11 @@
 /**
- * Блок «Паспорт» (03-functional-spec §1.5 п. 7, 07-design §7): источники-«печати», «проверено N минут назад»,
- * уровень доверия, свежесть и вертикальная лента истории изменений с ромбами-узлами.
+ * Блок «Паспорт» (03-functional-spec §1.5 п. 7, 07-design §7): источники-«печати», уровень доверия
+ * и вертикальная лента истории изменений. Отметка «проверено N назад» убрана (ADR-017, правка владельца):
+ * клиенту важны источник и доверие, а не метрики свежести синхронизации.
  */
 import type { EventDetail } from "@afisha/contract";
-import { formatDateTime, type Lang, relativeTime, type Translate } from "@afisha/i18n";
+import { formatDateTime, type Lang, type Translate } from "@afisha/i18n";
 import { REGION_TZ } from "@/lib/config";
-import { RelativeTime } from "./event-actions";
 import styles from "./passport.module.css";
 
 export function Passport({ event, lang, t, today }: { event: EventDetail; lang: Lang; t: Translate; today: string }) {
@@ -57,17 +57,6 @@ export function Passport({ event, lang, t, today }: { event: EventDetail; lang: 
           <dd>{t(`event.trustLevels.${p.trust_level}`)}</dd>
         </div>
       </dl>
-      <p className={styles.verified} data-freshness={p.freshness}>
-        {p.last_verified_at ? (
-          <>
-            {t("event.verified", { ago: "" }).trim()}{" "}
-            <RelativeTime iso={p.last_verified_at} initial={relativeTime(p.last_verified_at, lang)} />
-          </>
-        ) : (
-          t("event.notVerified")
-        )}
-        <span className={styles.freshness}> · {t(`event.freshness.${p.freshness}`)}</span>
-      </p>
 
       <h3 className={styles.historyTitle}>{t("event.history")}</h3>
       {history.length ? (

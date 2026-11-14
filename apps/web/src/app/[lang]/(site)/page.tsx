@@ -1,5 +1,5 @@
 import type { OccurrenceCard } from "@afisha/contract";
-import { addDays, relativeTime } from "@afisha/i18n";
+import { addDays } from "@afisha/i18n";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { type CardContext, EventCard } from "@/components/event/event-card";
@@ -11,7 +11,7 @@ import { WhenTabs } from "@/components/home/when-tabs";
 import { MuniMap } from "@/components/municipality/muni-map";
 import { RetryButton } from "@/components/states/retry-button";
 import { StateMessage } from "@/components/states/states";
-import { getCategories, getMunicipalities, getStats, safe, searchOccurrences } from "@/lib/api";
+import { getCategories, getMunicipalities, safe, searchOccurrences } from "@/lib/api";
 import { cardContext } from "@/lib/card-context";
 import { formatRub } from "@/lib/format";
 import { localePath } from "@/lib/hrefs";
@@ -68,8 +68,7 @@ export default async function HomePage({ params }: Params) {
   const t = createT(lang);
   const ctx = cardContext(lang, t);
   const base = { lang, limit: "8" };
-  const [stats, categories, municipalities, today, tomorrow, weekend, free, pushkin, kids, ranges] = await Promise.all([
-    safe(getStats()),
+  const [categories, municipalities, today, tomorrow, weekend, free, pushkin, kids, ranges] = await Promise.all([
     safe(getCategories(lang)),
     safe(getMunicipalities(lang)),
     safe(searchOccurrences(q({ ...base, when: "today" }))),
@@ -114,17 +113,6 @@ export default async function HomePage({ params }: Params) {
           <h1 id="home-title" className="display">
             {t("home.title")}
           </h1>
-          <p className={styles.lead}>{t("home.lead")}</p>
-          {stats ? (
-            <p className="caption">
-              {t("home.statsLine", {
-                events: formatRub(stats.events),
-                venues: formatRub(stats.venues),
-                places: stats.municipalities_with_events,
-              })}
-              {stats.updated_at ? ` · ${t("home.updated", { ago: relativeTime(stats.updated_at, lang) })}` : null}
-            </p>
-          ) : null}
         </div>
         <GuideBar t={t} hrefs={ctx.hrefs} />
       </section>

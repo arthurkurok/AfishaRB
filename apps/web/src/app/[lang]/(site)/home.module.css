@@ -11,14 +11,6 @@
   max-width: 56rem;
 }
 
-.lead {
-  font-size: 1.25rem;
-  line-height: 1.45;
-  color: var(--color-ink-2);
-  max-width: 42rem;
-  text-wrap: balance;
-}
-
 .sectionTitle {
   margin-bottom: var(--space-4);
 }

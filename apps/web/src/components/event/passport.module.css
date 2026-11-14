@@ -69,31 +69,6 @@
   align-items: center;
 }
 
-.verified {
-  font-weight: 600;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0 var(--space-1);
-  align-items: baseline;
-}
-.verified::before {
-  content: "";
-  width: 10px;
-  height: 10px;
-  margin-right: var(--space-1);
-  background: var(--color-meadow);
-  border-radius: 50%;
-  align-self: center;
-}
-.verified[data-freshness="stale"]::before,
-.verified[data-freshness="vanished"]::before {
-  background: var(--color-status-unverified);
-}
-.freshness {
-  font-weight: 400;
-  color: var(--color-ink-2);
-}
-
 .historyTitle {
   margin-top: var(--space-2);
 }
