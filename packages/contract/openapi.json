@@ -1200,6 +1200,19 @@
               "string",
               "null"
             ]
+          },
+          "duration_max_min": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": -9007199254740991,
+                "maximum": 9007199254740991
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "«не дольше двух часов» — верхняя граница длительности сеанса"
           }
         },
         "required": [
@@ -1225,7 +1238,8 @@
           "tags",
           "pushkin",
           "accessible",
-          "text"
+          "text",
+          "duration_max_min"
         ]
       },
       "SlotChipInput": {
@@ -3358,6 +3372,19 @@
               "string",
               "null"
             ]
+          },
+          "duration_max_min": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": -9007199254740991,
+                "maximum": 9007199254740991
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "«не дольше двух часов» — верхняя граница длительности сеанса"
           }
         },
         "required": [
@@ -3383,7 +3410,8 @@
           "tags",
           "pushkin",
           "accessible",
-          "text"
+          "text",
+          "duration_max_min"
         ],
         "additionalProperties": false
       },
@@ -4428,6 +4456,17 @@
           },
           {
             "schema": {
+              "type": "integer",
+              "minimum": 15,
+              "maximum": 720
+            },
+            "in": "query",
+            "name": "duration_max_min",
+            "required": false,
+            "description": "Только сеансы не длиннее (в минутах); длительность неизвестна — подходит"
+          },
+          {
+            "schema": {
               "type": "array",
               "items": {
                 "type": "string"
@@ -5025,6 +5064,17 @@
           },
           {
             "schema": {
+              "type": "integer",
+              "minimum": 15,
+              "maximum": 720
+            },
+            "in": "query",
+            "name": "duration_max_min",
+            "required": false,
+            "description": "Только сеансы не длиннее (в минутах); длительность неизвестна — подходит"
+          },
+          {
+            "schema": {
               "type": "array",
               "items": {
                 "type": "string"
@@ -5361,6 +5411,17 @@
             "name": "time_until",
             "required": false,
             "description": "HH:MM — начало не позже этого времени"
+          },
+          {
+            "schema": {
+              "type": "integer",
+              "minimum": 15,
+              "maximum": 720
+            },
+            "in": "query",
+            "name": "duration_max_min",
+            "required": false,
+            "description": "Только сеансы не длиннее (в минутах); длительность неизвестна — подходит"
           },
           {
             "schema": {
