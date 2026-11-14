@@ -4,6 +4,7 @@
  * Сохраняет сырые JSON в data/raw/culture_ru/{pages,events}. Идемпотентен и возобновляем.
  */
 import { mkdir, readdir, rename, rm, stat, writeFile } from "node:fs/promises";
+import { createHash } from "node:crypto";
 import { join } from "node:path";
 import { log } from "../../../lib/log.js";
 
@@ -39,6 +40,8 @@ const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
 export class CultureRuClient {
   buildId: string | null = null;
+  /** Кука challenge-token после решения JS-челленджа Solar Space (защита от DDoS). */
+  private cookie: string | null = null;
   private readonly limiter: Limiter;
 
   constructor(
@@ -52,10 +55,13 @@ export class CultureRuClient {
     const url = new URL(path, BASE);
     for (const [k, v] of Object.entries(params)) url.searchParams.set(k, String(v));
     let delay = 1000;
+    let challenges = 0;
     for (let attempt = 0; attempt < 5; attempt++) {
+      const headers: Record<string, string> = { "User-Agent": UA, Accept: "application/json, text/html" };
+      if (this.cookie) headers.Cookie = this.cookie;
       const res = await this.limiter
         .run(async () => {
-          const r = await fetch(url, { headers: { "User-Agent": UA, Accept: "application/json, text/html" } });
+          const r = await fetch(url, { headers, redirect: "follow" });
           await sleep(200); // вежливость к источнику
           return r;
         })
@@ -63,11 +69,53 @@ export class CultureRuClient {
           log.warn({ url: url.toString(), err: String(err), attempt }, "culture_ru.http_error");
           return null;
         });
+      // Страница проверки Solar Space (HTTP 425, HTML с заданием): решаем PoW, как это делает браузер
+      if (res && res.status === 425 && challenges < 3) {
+        challenges++;
+        try {
+          await this.solveChallenge(res);
+          continue; // повторяем запрос уже с кукой challenge_token
+        } catch (err) {
+          log.warn({ err: String(err), url: url.toString() }, "culture_ru.challenge_failed");
+        }
+      }
       if (res && res.status < 500 && res.status !== 429) return res;
       await sleep(delay);
       delay *= 2;
     }
     throw new Error(`culture.ru недоступен: ${url}`);
+  }
+
+  /**
+   * JS-челлендж Solar Space: SHA-256 proof-of-work. Браузер ищет counter, при котором
+   * sha256(nonce+counter) начинается с `difficulty` нулей, ждёт minTimeMs и ставит куку
+   * `{cookieName}={counter},{hash},{difficulty}`. Повторяем тот же алгоритм на сервере.
+   */
+  private async solveChallenge(res: Response): Promise<void> {
+    const html = await res.text();
+    const cfg = /window\.__jc\s*=\s*\{([^}]*)\}/.exec(html)?.[1] ?? "";
+    const nonce = /nonce\s*:\s*'([^']+)'/.exec(cfg)?.[1];
+    const cookieName = /cookieName\s*:\s*'([^']+)'/.exec(cfg)?.[1];
+    const difficulty = Number(/difficulty\s*:\s*(\d+)/.exec(cfg)?.[1]);
+    const minTimeMs = Number(/minTimeMs\s*:\s*(\d+)/.exec(cfg)?.[1] ?? 3000);
+    if (!nonce || !cookieName || !Number.isInteger(difficulty) || difficulty < 1 || difficulty > 6) {
+      throw new Error(`culture.ru: нераспознанный формат challenge`);
+    }
+    const started = Date.now();
+    const zeros = "0".repeat(difficulty);
+    let counter = 0;
+    let hash = "";
+    while (counter < 2 ** 26) {
+      hash = createHash("sha256").update(`${nonce}${counter}`).digest("hex");
+      if (hash.startsWith(zeros)) break;
+      counter++;
+    }
+    if (!hash.startsWith(zeros)) throw new Error("culture.ru: PoW не решён (превышен лимит попыток)");
+    // задание требует ≥ minTimeMs между выдачей и ответом — уважаем это окно
+    const wait = minTimeMs - (Date.now() - started);
+    if (wait > 0) await sleep(wait);
+    this.cookie = `${cookieName}=${counter},${hash},${difficulty}`;
+    log.info({ difficulty, counter, ms: Date.now() - started }, "culture_ru.challenge_solved");
   }
 
   async refreshBuildId(): Promise<string> {

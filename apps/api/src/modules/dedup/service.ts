@@ -47,7 +47,8 @@ export async function runDedup(db: Db): Promise<DedupStats> {
   const decisions = new Set(
     (
       await db.execute<{ k: string }>(
-        sql`SELECT event_a::text || : || event_b::text AS k FROM match_decision WHERE decision = never_merge`,
+        // ':' и 'never_merge' обязательно в кавычках: голое ':' драйвер трактует как параметр
+        sql`SELECT event_a::text || ':' || event_b::text AS k FROM match_decision WHERE decision = 'never_merge'`,
       )
     ).rows.map((r) => r.k),
   );
