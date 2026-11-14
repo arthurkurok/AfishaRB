@@ -158,7 +158,12 @@
     "cityTitle": "Ваш город",
     "cityLabel": "Город или район",
     "cityChoose": "Открыть афишу",
-    "allPlaces": "Все города и районы на карте"
+    "allPlaces": "Все города и районы на карте",
+    "cityChipSelect": "Выберите город",
+    "cityChipChange": "Сменить город",
+    "cityModalTitle": "Где вам интересно?",
+    "cityModalLead": "Покажем афишу, подборки и Гида для вашего города или района.",
+    "cityModalWhole": "Вся республика"
   },
   "search": {
     "title": "Афиша событий",

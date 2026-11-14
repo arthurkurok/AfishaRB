@@ -1,0 +1,59 @@
+/* Чип текущего города в герое (city-gate): глобальные .chip и .chip-button задают основу,
+   здесь — только поведение кнопки. */
+.chip {
+  margin-top: var(--space-2);
+  cursor: pointer;
+  font-size: var(--type-body-size);
+}
+.chip:hover {
+  border-color: var(--color-ink-2);
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-5);
+}
+
+.cities {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  list-style: none;
+  margin: var(--space-2) 0 0;
+  padding: 0;
+}
+
+.active {
+  background: var(--color-ink);
+  color: var(--color-bg);
+  border-color: var(--color-ink);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3);
+  margin-top: var(--space-2);
+}
+
+.all {
+  font-weight: 600;
+  color: var(--color-ink);
+}
+
+.dialog {
+  width: min(560px, calc(100% - 2 * var(--gutter)));
+  max-height: calc(100dvh - 2 * var(--space-5));
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-l);
+  background: var(--color-surface);
+  color: var(--color-ink);
+  box-shadow: var(--shadow-2);
+}
+.dialog::backdrop {
+  background: color-mix(in srgb, var(--color-ink) 55%, transparent);
+}

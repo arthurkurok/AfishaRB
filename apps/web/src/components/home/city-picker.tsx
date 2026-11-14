@@ -8,7 +8,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useId, useState } from "react";
 import { localePath } from "@/lib/hrefs";
 import { useI18n } from "@/lib/i18n-client";
-import { readPref, writePref } from "@/lib/prefs";
+import { readPref, setCityCookie, writePref } from "@/lib/prefs";
 import styles from "./city-picker.module.css";
 
 export function CityPicker({ municipalities }: { municipalities: Municipality[] }) {
@@ -34,6 +34,7 @@ export function CityPicker({ municipalities }: { municipalities: Municipality[] 
       onSubmit={(e) => {
         e.preventDefault();
         writePref("afisha.city", value);
+        setCityCookie(value); // чтобы главная тоже фильтровала ленты по этому городу
         router.push(localePath(lang, `/m/${value}`));
       }}
     >
