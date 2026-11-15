@@ -83,6 +83,13 @@ admin.antihype.best.  A  201.58.190.98   (или wildcard *.antihype.best)
 (админка доступна до того через SSH-туннель: `ssh -L 3201:127.0.0.1:3201 gvps`).
 Сертификаты для поддоменов Caddy выпустит сам после появления записей.
 
+## Листалка презентации
+
+`https://antihype.best/pitch/` — статика из `/srv/afisha-pitch` на сервере. В блоке `antihype.best`
+Caddyfile адреса `/pitch/*` отдаёт `file_server`, остальное по-прежнему уходит в `127.0.0.1:3200`;
+контейнер сайта не участвует. Выкладка: `node jury/presentation/build.mjs --deploy`.
+Резервная копия Caddyfile до этой правки: `/etc/caddy/Caddyfile.bak-pitch-20261115-001650`.
+
 ## Наблюдение
 
 - `docker compose -f docker-compose.prod.yml -f docker-compose.server.yml ps`
