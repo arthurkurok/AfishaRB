@@ -9,6 +9,7 @@ import OpenAI from "openai";
 import { Agent, fetch as ufetch } from "undici";
 import { config } from "../../lib/config.js";
 import { log } from "../../lib/log.js";
+import { todayLocal } from "../geo/index.js";
 
 export type Tier = "fast" | "smart";
 export type ChatMessage = { role: "system" | "user" | "assistant"; content: string };
@@ -220,7 +221,8 @@ export class AiGateway {
   }
 
   private rollDay(): void {
-    const day = new Date().toISOString().slice(0, 10);
+    // сутки бюджета — по часовому поясу региона, а не UTC (иначе лимит сбрасывается в 05:00 по Уфе)
+    const day = todayLocal();
     if (day !== this.spentDay) {
       this.spentDay = day;
       this.spentTokens = 0;

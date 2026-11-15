@@ -1,6 +1,6 @@
 /**
  * Прогон контрольных запросов к ИИ-гиду (ТЗ: раздел 6.5 — набор запросов, раздел 9.2 — метрики).
- * Датасет: datasets/control.json (98 кейсов, 108 реплик). Прогон при fixed_now из датасета.
+ * Датасет: datasets/control.json (100 кейсов, 109 реплик). Прогон при fixed_now из датасета.
  *
  * Изоляция: изолированный клон рабочей БД (CREATE DATABASE … TEMPLATE, ~2 с) — каталог не загрязняется
  * сид-событиями контрольных кейсов (инъекции в данных, отменённые сеансы). Клон удаляется после прогона.
@@ -76,6 +76,8 @@ type Expect = {
   plan?: boolean;
   no_overlap?: boolean;
   travel_estimate?: boolean;
+  /** В тексте плана — общая стоимость маршрута (или «бесплатно») */
+  total_cost?: boolean;
   context_kept?: boolean;
   confirmation_required?: boolean;
   mutation_after_confirm?: boolean;
@@ -461,7 +463,8 @@ async function runTurn(
     { channel: "control", now: NOW, subscribeFn: controlSubscribe, saveFeedbackFn: controlFeedback },
   );
   result.turnKinds.push(resp.kind);
-  if (process.env.AFISHA_CONTROL_VERBOSE === c.id) console.log(`[verbose ${c.id}] kind=${resp.kind} text=${JSON.stringify(resp.text)}`);
+  if (process.env.AFISHA_CONTROL_VERBOSE === c.id)
+    console.log(`[verbose ${c.id}] kind=${resp.kind} text=${JSON.stringify(resp.text)}`);
   result.mode = resp.mode;
   result.picks = resp.picks.length;
   const expect = turn.expect ?? c.expect ?? {};
@@ -583,6 +586,13 @@ async function runTurn(
       }
     }
     if (expect.travel_estimate && !/дорог/i.test(resp.text)) problems.push("нет оценки времени дороги");
+    if (expect.total_cost && !/стоимость[^.]*₽|бесплатн/i.test(resp.text))
+      problems.push("нет общей стоимости маршрута");
+    // контрольный запрос приложения А: «сделай план…» — планировщик, а не поиск по слову «сделай»
+    if (constraints.intent === "plan_day" && resp.slots.intent !== "plan_day")
+      problems.push(`намерение ${resp.slots.intent} вместо plan_day`);
+    if (/(?<![\p{L}])(сделай|составь|спланиру\p{L}*|план)(?![\p{L}])/u.test(resp.slots.text ?? ""))
+      problems.push(`служебное слово в текстовом слоте: «${resp.slots.text}»`);
   }
 
   // контекст диалога

@@ -48,5 +48,36 @@ export async function markEnded(db: Db): Promise<number> {
     UPDATE occurrence SET status = 'ended'
     WHERE status IN ('scheduled','sold_out','unverified')
       AND coalesce(ends_at, starts_at + interval '3 hours') < now()`);
+  await closeStaleVanishedTasks(db);
+  return res.rowCount ?? 0;
+}
+
+/**
+ * Задачи «исчезнувший сеанс», которые больше не требуют решения, закрываются сами (docs/06-data.md §7):
+ * сеанс уже начался или прошёл, удалён, или его статус сменился без модератора (источник снова показал
+ * сеанс, учреждение отменило или перенесло). Резолюция — код и человекочитаемый текст в payload.
+ */
+export async function closeStaleVanishedTasks(db: Db): Promise<number> {
+  const res = await db.execute(sql`
+    WITH stale AS (
+      SELECT t.id,
+        CASE
+          WHEN o.id IS NULL THEN 'not_found'
+          WHEN o.starts_at <= now() OR o.status = 'ended' THEN 'expired'
+          WHEN o.status IN ('scheduled', 'sold_out') THEN 'source_confirmed'
+          ELSE 'status_changed'
+        END AS resolution
+      FROM moderation_task t LEFT JOIN occurrence o ON o.id = t.entity_id
+      WHERE t.kind = 'vanished' AND t.state = 'open'
+        AND (o.id IS NULL OR o.starts_at <= now() OR o.status <> 'unverified')
+    )
+    UPDATE moderation_task t SET state = 'done', resolution = stale.resolution, resolved_by = 'lifecycle',
+      payload = t.payload || jsonb_build_object('resolution_text', CASE stale.resolution
+        WHEN 'expired' THEN 'Сеанс уже начался или прошёл — подтверждать или отменять нечего'
+        WHEN 'source_confirmed' THEN 'Источник снова показывает сеанс — решение не требуется'
+        WHEN 'not_found' THEN 'Сеанса больше нет в каталоге — решение не требуется'
+        ELSE 'Статус сеанса уже изменён учреждением или модератором' END),
+      updated_at = now()
+    FROM stale WHERE t.id = stale.id`);
   return res.rowCount ?? 0;
 }

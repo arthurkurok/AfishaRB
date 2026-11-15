@@ -2,11 +2,14 @@
  * Telegram-бот на симулированных апдейтах (без сети) и сквозной сценарий:
  * учреждение отменяет сеанс → журнал изменений → подписчик получает уведомление в Telegram.
  */
+
+import type { OccurrenceCard } from "@afisha/contract";
 import { sql } from "drizzle-orm";
 import type { Update } from "grammy/types";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { closeDb, type Db } from "../src/db/client.js";
 import { createBot } from "../src/modules/channels/telegram/bot.js";
+import { cardCaption } from "../src/modules/channels/telegram/texts.js";
 import { processPendingChanges } from "../src/modules/notify/index.js";
 import { changeOccurrenceStatus } from "../src/modules/organizer/index.js";
 import { at, fixture, nextSaturday, resetDb, seed } from "./helpers/db.js";
@@ -106,6 +109,37 @@ describe("Telegram-бот", () => {
     expect(p.consent_at).not.toBeNull();
   });
 
+  it("ТЗ §13: /start и /help помечают сервис как демонстрационный, не официальный сервис министерства", async () => {
+    const bot = makeBot();
+    calls.length = 0;
+    await bot.handleUpdate(msg("/start"));
+    const welcome = textOf(sent().at(-1)!);
+    expect(welcome).toContain(
+      "Демонстрационный сервис, не является официальным сервисом Министерства культуры Республики Башкортостан.",
+    );
+    expect(welcome).toMatch(/рәсми хеҙмәте түгел/);
+    await bot.handleUpdate(msg("/help"));
+    expect(textOf(sent().at(-1)!)).toContain(
+      "Демонстрационный сервис, не является официальным сервисом Министерства культуры Республики Башкортостан.",
+    );
+  });
+
+  it("карточка «уточняется»: причина без повтора статуса", () => {
+    const card = {
+      event: { title: "Лекция", age_rating: 6, price: { is_free: true, min: null }, pushkin_card: false },
+      venue: null,
+      starts_at: `${sat}T11:00:00+05:00`,
+      ends_at: null,
+      is_range: false,
+      status: "unverified",
+      status_reason: "Сеанс исчез из источника — информация уточняется",
+      more_dates: 0,
+    } as unknown as OccurrenceCard;
+    const text = cardCaption(card);
+    expect(text).toContain("Информация уточняется</b> — Сеанс исчез из источника");
+    expect(text.match(/уточняется/gi)).toHaveLength(1);
+  });
+
   it("сценарий ТЗ: уточнение кнопками → карточки реальных событий с объяснениями", async () => {
     const bot = makeBot();
     calls.length = 0;
@@ -199,6 +233,42 @@ describe("Telegram-бот", () => {
       status: string;
     };
     expect(status.status).toBe("cancelled");
+  });
+
+  it("одинаковое изменение нескольких сеансов одного события — одно сообщение подписчику, а не N", async () => {
+    makeBot();
+    calls.length = 0;
+    await processPendingChanges(db); // хвосты прошлых тестов
+    calls.length = 0;
+    const ev = (
+      await db.execute<{ id: string }>(
+        sql`SELECT id FROM event WHERE title->>'ru' = 'Спектакль «Сказание о семи батырах»'`,
+      )
+    ).rows[0]!.id;
+    const profile = (await db.execute<{ id: string }>(sql`SELECT id FROM profile WHERE external_id = ${String(CHAT)}`))
+      .rows[0]!.id;
+    await db.execute(
+      sql`INSERT INTO favorite (profile_id, event_id) VALUES (${profile}, ${ev}) ON CONFLICT DO NOTHING`,
+    );
+    const occs = (
+      await db.execute<{ id: string }>(sql`
+        INSERT INTO occurrence (region_id, event_id, starts_at, status, source_key)
+        SELECT 'ba', ${ev}, now() + (n || ' days')::interval, 'unverified', 'test:batyr:' || n
+        FROM generate_series(3, 5) AS n RETURNING id`)
+    ).rows;
+    for (const o of occs)
+      await db.execute(sql`
+        INSERT INTO change_log (region_id, entity_type, entity_id, event_id, kind, field, old_value, new_value, source_id, actor, reason)
+        VALUES ('ba', 'occurrence', ${o.id}, ${ev}, 'status', 'status', '"scheduled"'::jsonb, '"unverified"'::jsonb,
+                'culture_ru', 'culture_ru', 'Событие исчезло из источника')`);
+    const r = await processPendingChanges(db);
+    expect(r.sent).toBe(1);
+    const notes = sent().filter((c) => /семи батырах/.test(textOf(c)));
+    expect(notes).toHaveLength(1);
+    expect(textOf(notes[0]!)).toMatch(/затронуто сеансов этого события: 3/);
+    const rows = (await db.execute(sql`SELECT status FROM notification WHERE event_id = ${ev}`)).rows;
+    expect(rows).toHaveLength(3); // каждое изменение учтено — повторный прогон ничего не пошлёт
+    expect((await processPendingChanges(db)).sent).toBe(0);
   });
 
   it("перенос создаёт новый сеанс и связь rescheduled_to", async () => {

@@ -10,5 +10,11 @@ export {
 } from "./file-import.js";
 export { BASHOPERA_SOURCE_ID, parseAffiche, parsePriceText } from "./normalize-bashopera.js";
 export { cleanUrl, normalizeCultureRu } from "./normalize-culture-ru.js";
-export { CatalogWriter, ensureReference, SOURCES } from "./pipeline.js";
+export {
+  CatalogWriter,
+  cleanupReplacedSessions,
+  ensureReference,
+  normalizeMissingReasons,
+  SOURCES,
+} from "./pipeline.js";
 export { loadBashopera, loadCultureRu } from "./runner.js";

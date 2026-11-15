@@ -4,7 +4,7 @@
  * Не прошла проверку — фраза заменяется шаблонной, инцидент пишется в трассировку.
  */
 import type { OccurrenceCard } from "@afisha/contract";
-import { humanTime, localParts, weekdayOf } from "../geo/index.js";
+import { addDays, humanTime, localParts, todayLocal, weekdayOf } from "../geo/index.js";
 
 export type Verdict = { ok: boolean; problems: string[] };
 
@@ -42,7 +42,15 @@ function cardDates(c: Pick<OccurrenceCard, "starts_at" | "ends_at" | "is_range">
   return { start, end, sp: localParts(start), ep: localParts(end) };
 }
 
-export function verifyReason(text: string, card: OccurrenceCard): Verdict {
+/** «сегодня / завтра / послезавтра» — сдвиг от сегодняшней даты в поясе региона. */
+const RELATIVE_DAYS: [RegExp, number, string][] = [
+  [/(?<![\p{L}])сегодня(?![\p{L}])/u, 0, "сегодня"],
+  [/(?<![\p{L}])завтра(?![\p{L}])/u, 1, "завтра"],
+  [/(?<![\p{L}])послезавтра(?![\p{L}])/u, 2, "послезавтра"],
+];
+
+/** now — момент запроса: с ним проверяются относительные даты (по часовому поясу региона, не сервера). */
+export function verifyReason(text: string, card: OccurrenceCard, now?: Date): Verdict {
   const problems: string[] = [];
   const t = norm(text);
   if (text.length > 220) problems.push("слишком длинно");
@@ -77,6 +85,15 @@ export function verifyReason(text: string, card: OccurrenceCard): Verdict {
     const candidates = [`${y}-${md}`, `${y + 1}-${md}`];
     const inRange = candidates.some((d) => (card.is_range ? d >= sp.date && d <= ep.date : d === sp.date));
     if (!inRange) problems.push(`дата «${m[0]}» не совпадает`);
+  }
+  if (now) {
+    const today = todayLocal(now);
+    for (const [rx, shift, word] of RELATIVE_DAYS) {
+      if (!rx.test(t)) continue;
+      const d = addDays(today, shift);
+      const ok = card.is_range ? d >= sp.date && d <= ep.date : d === sp.date;
+      if (!ok) problems.push(`«${word}» не совпадает с датой сеанса`);
+    }
   }
   for (const [rx, wd] of WEEKDAYS) {
     if (rx.test(t) && !card.is_range && weekdayOf(sp.date) !== wd) problems.push(`день недели не совпадает`);

@@ -163,8 +163,11 @@ async function applyOne(
   // Выход из «распродано» сбрасывает доступность билетов (иначе ложное «Билетов нет»)
   const availability =
     ch.status === "sold_out" ? "sold_out" : occ.availability === "sold_out" ? "unknown" : occ.availability;
+  // «По плану» без причины: старая причина («исчез из источника») иначе висит на карточке подтверждённого сеанса;
+  // причина решения остаётся в журнале изменений
+  const statusReason = ch.status === "scheduled" ? null : (ch.reason ?? null);
   await tx.execute(sql`
-    UPDATE occurrence SET status = ${ch.status}, status_reason = ${ch.reason ?? null}, availability = ${availability},
+    UPDATE occurrence SET status = ${ch.status}, status_reason = ${statusReason}, availability = ${availability},
            freshness = CASE WHEN ${ch.status} = 'scheduled' THEN 'fresh' ELSE freshness END,
            last_verified_at = ${now}, updated_at = now()
     WHERE id = ${occ.id}`);

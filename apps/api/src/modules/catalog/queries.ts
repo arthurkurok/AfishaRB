@@ -21,6 +21,21 @@ const STATUS_RU: Record<string, string> = {
   ended: "прошло",
 };
 
+/**
+ * Причина без повтора статуса: «Сеанс исчез из источника — информация уточняется» при статусе
+ * «информация уточняется» → «сеанс исчез из источника». Первая буква — строчная: причина идёт после тире.
+ */
+function reasonBeyondStatus(reason: string | null, label: string): string | null {
+  if (!reason) return null;
+  const esc = label.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  const r = reason
+    .replace(new RegExp(`\\s*[—–-]\\s*${esc}\\.?\\s*$`, "iu"), "")
+    .replace(/[.\s]+$/u, "")
+    .trim();
+  if (!r || r.toLowerCase() === label.toLowerCase()) return null;
+  return r.charAt(0).toLowerCase() + r.slice(1);
+}
+
 export function describeChange(c: {
   kind: string;
   field: string | null;
@@ -37,8 +52,11 @@ export function describeChange(c: {
       return "Событие добавлено в афишу";
     case "rescheduled":
       return `Перенесено: ${fmt(c.old_value)} → ${fmt(c.new_value)}`;
-    case "status":
-      return `Статус: ${STATUS_RU[String(c.new_value)] ?? c.new_value}${c.reason ? ` (${c.reason})` : ""}`;
+    case "status": {
+      const label = STATUS_RU[String(c.new_value)] ?? String(c.new_value);
+      const reason = reasonBeyondStatus(c.reason, label);
+      return `Статус: ${label}${reason ? ` — ${reason}` : ""}`;
+    }
     case "cancelled":
       return `Отменено${c.reason ? `: ${c.reason}` : ""}`;
     case "merged":
@@ -59,6 +77,72 @@ export function describeChange(c: {
       return c.reason ?? c.kind;
   }
 }
+
+type HistoryRow = {
+  created_at: string | Date;
+  entity_type: string;
+  kind: string;
+  field: string | null;
+  old_value: unknown;
+  new_value: unknown;
+  reason: string | null;
+  source_id: string | null;
+};
+
+/** Окно, в котором одинаковые изменения разных сеансов считаются одним прогоном источника (или одним решением). */
+const GROUP_WINDOW_MS = 10 * 60_000;
+
+/**
+ * Одинаковые изменения разных сеансов одного события в пределах прогона (kind/field/old/new/reason/source,
+ * соседние по времени) — одна запись с числом сеансов: иначе в паспорте 26 строк «Статус: по плану» подряд.
+ * Строки приходят от новых к старым.
+ */
+export function groupHistory(rows: HistoryRow[]): ChangeEntry[] {
+  const out: (ChangeEntry & { _key: string; _last: number })[] = [];
+  for (const c of rows) {
+    const at = toDate(c.created_at)!;
+    const entry: ChangeEntry = {
+      at: toRegionIso(at)!,
+      kind: c.kind,
+      field: c.field,
+      old: c.old_value ?? null,
+      new: c.new_value ?? null,
+      text: describeChange(c),
+      source: c.source_id,
+    };
+    if (c.entity_type !== "occurrence") {
+      out.push({ ...entry, _key: "", _last: at.getTime() });
+      continue;
+    }
+    // переносы (у каждого сеанса своё время) сворачиваются, только если совпадают и старое, и новое время
+    const key = JSON.stringify([c.kind, c.field, c.old_value, c.new_value, c.reason, c.source_id]);
+    let group: (typeof out)[number] | undefined;
+    for (let i = out.length - 1; i >= 0 && out[i]!._last - at.getTime() <= GROUP_WINDOW_MS; i--)
+      if (out[i]!._key === key) {
+        group = out[i];
+        break;
+      }
+    if (group) {
+      group.occurrences_count = (group.occurrences_count ?? 1) + 1;
+      group._last = at.getTime();
+      continue;
+    }
+    out.push({ ...entry, occurrences_count: 1, _key: key, _last: at.getTime() });
+  }
+  return out.map(({ _key, _last, ...e }) => {
+    const n = e.occurrences_count ?? 1;
+    // число сеансов — и в тексте: клиенты, не знающие поля occurrences_count, покажут его как есть
+    return n > 1 ? { ...e, text: `${e.text} (${n} ${plural(n, "сеанс", "сеанса", "сеансов")})` } : e;
+  });
+}
+
+const plural = (n: number, one: string, few: string, many: string) => {
+  const d = n % 10;
+  const h = n % 100;
+  if (d === 1 && h !== 11) return one;
+  if (d >= 2 && d <= 4 && (h < 12 || h > 14)) return few;
+  return many;
+};
 
 export async function getEventDetail(db: Db, id: string, lang: Lang = "ru"): Promise<EventDetail | null> {
   const ev = (
@@ -93,29 +177,13 @@ export async function getEventDetail(db: Db, id: string, lang: Lang = "ru"): Pro
       .filter(Boolean)
       .sort((a, b) => b!.getTime() - a!.getTime())[0] ?? null;
 
-  const history = (
-    await db.execute<{
-      created_at: string;
-      kind: string;
-      field: string | null;
-      old_value: unknown;
-      new_value: unknown;
-      reason: string | null;
-      source_id: string | null;
-    }>(sql`
-      SELECT created_at, kind, field, old_value, new_value, reason, source_id FROM change_log
-      WHERE event_id = ${id} ORDER BY created_at DESC LIMIT 30`)
-  ).rows.map(
-    (c): ChangeEntry => ({
-      at: toRegionIso(toDate(c.created_at))!,
-      kind: c.kind,
-      field: c.field,
-      old: c.old_value ?? null,
-      new: c.new_value ?? null,
-      text: describeChange(c),
-      source: c.source_id,
-    }),
-  );
+  const history = groupHistory(
+    (
+      await db.execute<HistoryRow>(sql`
+        SELECT created_at, entity_type, kind, field, old_value, new_value, reason, source_id FROM change_log
+        WHERE event_id = ${id} ORDER BY created_at DESC, id DESC LIMIT 1000`)
+    ).rows,
+  ).slice(0, 30);
 
   const images = (ev.images ?? []) as ImageInfo[];
   const freshness = occ.find((o) => o.status !== "ended")?.freshness ?? "stale";

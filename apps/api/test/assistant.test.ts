@@ -116,6 +116,40 @@ describe("Гид в режиме правил", () => {
     await assertGrounded(r2.picks);
   });
 
+  it("город из контекста сайта: слот «profile», снимается чипом и не возвращается следующим запросом", async () => {
+    const now = new Date(at(sat, "12:00").getTime() - 24 * 3600_000);
+    const r1 = await handleAssistant(
+      db,
+      { text: "куда пойти в субботу с ребёнком до 1000 рублей", municipality_id: "ufa" },
+      { channel: "test", now },
+    );
+    expect(r1.slots).toMatchObject({ municipality_id: "ufa", municipality_source: "profile" });
+    expect(r1.text).toMatch(/Уфа/);
+    const chip = r1.chips.find((c) => c.slot === "municipality")!;
+    expect(chip.source).toBe("profile");
+    // сайт по-прежнему присылает выбранный город, но пользователь снял чип — ищем по всей республике
+    const r2 = await handleAssistant(
+      db,
+      { conversation_id: r1.conversation_id, patch: chip.clear!, municipality_id: "ufa" },
+      { channel: "test", now },
+    );
+    expect(r2.slots.municipality_id).toBeNull();
+    expect(r2.picks.some((p) => p.occurrence.venue?.municipality_id === "sibay")).toBe(true);
+    const r3 = await handleAssistant(
+      db,
+      { conversation_id: r1.conversation_id, text: "а в субботу бесплатно?", municipality_id: "ufa" },
+      { channel: "test", now },
+    );
+    expect(r3.slots.municipality_id).toBeNull();
+    // город на сайте сменили — слот «из контекста» следует за ним в новом диалоге
+    const r4 = await handleAssistant(
+      db,
+      { text: "концерты в субботу", municipality_id: "sibay" },
+      { channel: "test", now },
+    );
+    expect(r4.slots).toMatchObject({ municipality_id: "sibay", municipality_source: "profile" });
+  });
+
   it("просьба придумать событие — честный ответ и только реальные карточки", async () => {
     const r = await handleAssistant(db, { text: "Придумай концерт на субботу в Сибае" }, { channel: "test" });
     expect(r.text).toMatch(/не придумываю/);

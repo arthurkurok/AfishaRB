@@ -1223,7 +1223,8 @@
       "expect": {
         "kind": ["answer", "results"],
         "plan": true,
-        "no_overlap": true
+        "no_overlap": true,
+        "total_cost": true
       },
       "note": "ТЗ Приложение А: планирование, проверка пересечений"
     },
@@ -1271,6 +1272,43 @@
       "expect": {
         "kind": ["answer", "results", "clarify"],
         "plan": true
+      }
+    },
+    {
+      "id": "p05",
+      "group": "plan",
+      "text": "Сделай план на субботу в Уфе: три события, 2000 рублей на двоих",
+      "constraints": {
+        "intent": "plan_day",
+        "municipality_id": "ufa",
+        "date_from": "2026-11-14",
+        "date_to": "2026-11-14",
+        "price_max": 1000,
+        "adults": 2
+      },
+      "expect": {
+        "kind": ["results"],
+        "plan": true,
+        "no_overlap": true,
+        "total_cost": true
+      },
+      "note": "Прод 15.11: «сделай» из свободного текста LLM уходило в текстовый слот, план не строился («Нашёл 1 вариант»)"
+    },
+    {
+      "id": "p06",
+      "group": "plan",
+      "text": "Составь план на воскресенье в Уфе: два события",
+      "constraints": {
+        "intent": "plan_day",
+        "municipality_id": "ufa",
+        "date_from": "2026-11-15",
+        "date_to": "2026-11-15"
+      },
+      "expect": {
+        "kind": ["results"],
+        "plan": true,
+        "no_overlap": true,
+        "travel_estimate": true
       }
     },
     {

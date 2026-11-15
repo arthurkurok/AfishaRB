@@ -225,7 +225,10 @@ export function parseDates(t: string, now: Date): DateHit | null {
       from = addDays(from, 7);
       to = addDays(to, 7);
     }
-    return { from, to, label: `выходные, ${humanDate(from, "ru", false)} — ${humanDate(to, "ru", false)}` };
+    // в воскресенье «на выходных» — только сегодня: «выходные, 15 ноября», а не «15 ноября — 15 ноября»
+    const span =
+      from === to ? humanDate(from, "ru", false) : `${humanDate(from, "ru", false)} — ${humanDate(to, "ru", false)}`;
+    return { from, to, label: `выходные, ${span}` };
   }
   for (const [rx, wd] of WEEKDAYS) {
     if (rx.test(t)) {
@@ -689,6 +692,70 @@ export function fixTypos(t: string, munis: MunicipalityRef[]): string {
     .join("");
 }
 
+/** Сколько человек идёт: «на двоих», «вдвоём», «на троих», «нас четверо». */
+export function parsePartySize(t: string): number | null {
+  const m = t.match(
+    /(?<![\p{L}])(?:на\s+(двоих|троих|четверых|пятерых)|(вдвоем|втроем|вчетвером)|нас\s+(двое|трое|четверо|пятеро))(?![\p{L}])/u,
+  );
+  const w = m?.[1] ?? m?.[2] ?? m?.[3];
+  if (!w) return null;
+  if (/^(двоих|вдвоем|двое)$/.test(w)) return 2;
+  if (/^(троих|втроем|трое)$/.test(w)) return 3;
+  if (/^(четверых|вчетвером|четверо)$/.test(w)) return 4;
+  return 5;
+}
+
+/** Сколько событий просят в план дня: «три события», «2 мероприятия». По умолчанию — null (план из 2–3). */
+export function parsePlanStops(text: string): number | null {
+  const t = normalizeText(text);
+  const m = t.match(
+    /(?<![\p{L}\d])(2|3|4|два|две|три|четыре)\s+(?:событи\p{L}*|мероприяти\p{L}*|мест\p{L}*|мест|точк\p{L}*|пункт\p{L}*)/u,
+  );
+  if (!m) return null;
+  const n = { "2": 2, "3": 3, "4": 4, два: 2, две: 2, три: 3, четыре: 4 }[m[1]!] ?? null;
+  return n;
+}
+
+/**
+ * Остаток запроса для полнотекстового поиска: без дат, цен, городов, детей, служебных глаголов
+ * («сделай», «составь») и вопросительных слов. Им же чистится свободный текст от LLM —
+ * иначе «сделай план…» превращается в поиск по слову «сделай» (контрольный запрос ТЗ, приложение А).
+ * t — уже нормализованный текст (normalizeText), muStems — основы распознанного муниципалитета.
+ */
+export function searchRemainder(t: string, muStems: readonly string[] = []): string | null {
+  // Конкретные жанры остаются и в полнотекстовом поиске: «балет» — это не «любой театр»
+  const genres = [
+    ...t.matchAll(
+      /(?<![\p{L}])(балет\p{L}*|опер[аыеу]?|оперетт\p{L}*|мюзикл\p{L}*|джаз\p{L}*|органн\p{L}*|хор(?:ов\p{L}*)?|кукольн\p{L}*|фольклор\p{L}*|стендап\p{L}*|рок)(?![\p{L}])/gu,
+    ),
+  ].map((m) => m[1]!);
+  // Остаток — для полнотекстового поиска (названия, имена, жанры)
+  let rest = t;
+  for (const [rx] of CATEGORY_RULES) rest = rest.replace(new RegExp(`\\S*(${rx.source})\\S*`, "gu"), " ");
+  rest = rest
+    .replace(new RegExp(`\\S*${MONTH_RX}\\S*`, "gu"), " ")
+    .replace(/\d+/g, " ")
+    .replace(STOP, " ")
+    .replace(new RegExp(`\\S*(${KID_WORDS})\\S*`, "gu"), " ");
+  for (const [rx] of WEEKDAYS) rest = rest.replace(new RegExp(`\\S*${rx.source}\\S*`, "gu"), " ");
+  for (const stem of muStems) rest = rest.replace(new RegExp(`\\S*${stem}\\S*`, "gu"), " ");
+  for (const [rx] of TAG_RULES) rest = rest.replace(new RegExp(`\\S*(${rx.source})\\S*`, "gu"), " ");
+  rest = rest.replace(QUESTION_WORDS, " ").replace(PLAN_WORDS, " ").replace(NUM_WORDS_RX, " ");
+  rest = rest
+    .split(/\s+/)
+    .filter(
+      (w) =>
+        w.length >= 4 &&
+        !/^(тыс|пушкин|детям|своим|своей|моим|моей|какой|нибудь|часов|утра|дня|вечера|двоих|всех|семью|после|позже|раньше|позднее|минут|мин|часа|ч)$/.test(
+          w,
+        ),
+    )
+    .join(" ")
+    .trim();
+  rest = [...genres, rest].join(" ").trim();
+  return rest.length >= 3 ? rest : null;
+}
+
 export function parseRules(text: string, now: Date, munis: MunicipalityRef[]): Slots {
   const t = fixTypos(normalizeText(text), munis);
   const s = emptySlots();
@@ -744,6 +811,9 @@ export function parseRules(text: string, now: Date, munis: MunicipalityRef[]): S
   const k = parseKids(t);
   s.with_kids = k.withKids;
   s.kids_ages = k.ages;
+  // «2000 рублей на двоих»: бюджет на всех делится на всех идущих (toQuery), дети входят в их число
+  const party = parsePartySize(t);
+  if (party) s.adults = Math.max(1, party - (s.with_kids ? Math.max(1, s.kids_ages.length) : 0));
   const mu = parseMunicipality(t, munis);
   if (mu) {
     s.municipality_id = mu.id;
@@ -760,37 +830,7 @@ export function parseRules(text: string, now: Date, munis: MunicipalityRef[]): S
   s.pushkin = s.tags.includes("pushkin");
   s.accessible = /доступн\p{L}* сред|коляск|инвалид|незрячи|слабовидящ|глухи|слабослышащ|жестов/u.test(t);
 
-  // Конкретные жанры остаются и в полнотекстовом поиске: «балет» — это не «любой театр»
-  const genres = [
-    ...t.matchAll(
-      /(?<![\p{L}])(балет\p{L}*|опер[аыеу]?|оперетт\p{L}*|мюзикл\p{L}*|джаз\p{L}*|органн\p{L}*|хор(?:ов\p{L}*)?|кукольн\p{L}*|фольклор\p{L}*|стендап\p{L}*|рок)(?![\p{L}])/gu,
-    ),
-  ].map((m) => m[1]!);
-  // Остаток — для полнотекстового поиска (названия, имена, жанры)
-  let rest = t;
-  for (const [rx] of CATEGORY_RULES) rest = rest.replace(new RegExp(`\\S*(${rx.source})\\S*`, "gu"), " ");
-  rest = rest
-    .replace(new RegExp(`\\S*${MONTH_RX}\\S*`, "gu"), " ")
-    .replace(/\d+/g, " ")
-    .replace(STOP, " ")
-    .replace(new RegExp(`\\S*(${KID_WORDS})\\S*`, "gu"), " ");
-  for (const [rx] of WEEKDAYS) rest = rest.replace(new RegExp(`\\S*${rx.source}\\S*`, "gu"), " ");
-  if (mu) for (const stem of mu.stems) rest = rest.replace(new RegExp(`\\S*${stem}\\S*`, "gu"), " ");
-  for (const [rx] of TAG_RULES) rest = rest.replace(new RegExp(`\\S*(${rx.source})\\S*`, "gu"), " ");
-  rest = rest.replace(QUESTION_WORDS, " ").replace(PLAN_WORDS, " ").replace(NUM_WORDS_RX, " ");
-  rest = rest
-    .split(/\s+/)
-    .filter(
-      (w) =>
-        w.length >= 4 &&
-        !/^(тыс|пушкин|детям|своим|своей|моим|моей|какой|нибудь|часов|утра|дня|вечера|двоих|всех|семью|после|позже|раньше|позднее|минут|мин|часа|ч)$/.test(
-          w,
-        ),
-    )
-    .join(" ")
-    .trim();
-  rest = [...genres, rest].join(" ").trim();
-  s.text = rest.length >= 3 ? rest : null;
+  s.text = searchRemainder(t, mu?.stems ?? []);
 
   const recognized =
     s.date_from ||

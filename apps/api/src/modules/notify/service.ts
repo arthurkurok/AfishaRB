@@ -102,8 +102,25 @@ export async function processPendingChanges(
     ).rows;
     let sent = 0;
     let failed = 0;
+    // Одинаковое изменение нескольких сеансов одного события (источник убрал событие с 26 сеансами,
+    // учреждение отменило все показы) — одно сообщение подписчику с числом сеансов, а не 26.
+    // Переносы (у каждого сеанса своё новое время) не сворачиваются.
+    const groups = new Map<string, Row[]>();
     for (const r of rows) {
-      const text = notificationText(r);
+      const key =
+        r.kind === "status"
+          ? `${r.profile_id}|${r.event_id}|status|${JSON.stringify(r.new_value)}|${r.reason ?? ""}`
+          : `${r.change_id}|${r.profile_id}`;
+      groups.set(key, [...(groups.get(key) ?? []), r]);
+    }
+    for (const group of groups.values()) {
+      group.sort((a, b) => new Date(a.starts_at ?? 0).getTime() - new Date(b.starts_at ?? 0).getTime());
+      const r = group[0]!;
+      const one = notificationText(r);
+      const text =
+        one && group.length > 1
+          ? `${one}\nВсего затронуто сеансов этого события: ${group.length}, ближайший — выше.`
+          : one;
       const transport = transports.get(r.channel);
       if (!text || !transport) continue;
       let ok = false;
@@ -121,10 +138,11 @@ export async function processPendingChanges(
       } catch (err) {
         log.warn({ err: String(err), profile: r.profile_id }, "notify.transport_failed");
       }
-      await tx.execute(sql`
-        INSERT INTO notification (profile_id, kind, event_id, change_id, payload, status, sent_at)
-        VALUES (${r.profile_id}, ${r.kind}, ${r.event_id}, ${r.change_id}, ${JSON.stringify({ text })}::jsonb, ${ok ? "sent" : "failed"}, ${ok ? new Date() : null})
-        ON CONFLICT (profile_id, change_id) DO NOTHING`);
+      for (const g of group)
+        await tx.execute(sql`
+          INSERT INTO notification (profile_id, kind, event_id, change_id, payload, status, sent_at)
+          VALUES (${g.profile_id}, ${g.kind}, ${g.event_id}, ${g.change_id}, ${JSON.stringify({ text })}::jsonb, ${ok ? "sent" : "failed"}, ${ok ? new Date() : null})
+          ON CONFLICT (profile_id, change_id) DO NOTHING`);
       if (ok) sent++;
       else failed++;
     }

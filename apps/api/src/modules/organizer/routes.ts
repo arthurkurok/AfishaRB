@@ -16,6 +16,7 @@ import { ImportBody, ImportFormatError, importFile, parseMultipart } from "../in
 import { actorOf, authenticate, isMinistry, type Principal } from "./auth.js";
 import { createCabinetEvent } from "./create-event.js";
 import { extractDraft } from "./extract.js";
+import { listModerationTasks, resolveVanished } from "./moderation.js";
 import { changeOccurrenceStatus, StatusChangeError } from "./status.js";
 
 declare module "fastify" {
@@ -181,19 +182,11 @@ export function registerAdminApi(app: FastifyInstance, db: Db): void {
             querystring: z.object({
               kind: z.string().max(32).optional(),
               state: z.enum(["open", "done", "dismissed"]).default("open"),
+              limit: z.coerce.number().int().min(1).max(1000).default(500),
             }),
           },
         },
-        async (req) =>
-          (
-            await db.execute(sql`
-              SELECT t.*, e1.title->>'ru' AS title_a, e2.title->>'ru' AS title_b
-              FROM moderation_task t
-              LEFT JOIN event e1 ON e1.id = t.entity_id
-              LEFT JOIN event e2 ON e2.id = t.related_id
-              WHERE t.state = ${req.query.state} ${req.query.kind ? sql`AND t.kind = ${req.query.kind}` : sql``}
-              ORDER BY t.priority DESC, t.created_at LIMIT 200`)
-          ).rows,
+        async (req) => listModerationTasks(db, req.query),
       );
 
       r.post(
@@ -205,7 +198,13 @@ export function registerAdminApi(app: FastifyInstance, db: Db): void {
             operationId: "resolveModerationTask",
             summary: "Решение по задаче: объединить дубли / это разные события / подтвердить / отменить / отложить",
             params: z.object({ id: z.uuid() }),
-            body: z.object({ action: z.enum(["merge", "distinct", "dismiss", "confirm", "cancel"]) }),
+            body: z.object({
+              action: z.enum(["merge", "distinct", "dismiss", "confirm", "cancel"]),
+              scope: z
+                .enum(["task", "event"])
+                .default("task")
+                .describe("event — то же решение для всех открытых задач «исчезнувший сеанс» этого события"),
+            }),
           },
         },
         async (req, reply) => {
@@ -218,28 +217,25 @@ export function registerAdminApi(app: FastifyInstance, db: Db): void {
           if (!task) return reply.code(404).send(problem(404, "Задача не найдена"));
           if (task.state !== "open") return reply.code(409).send(problem(409, "Задача уже закрыта"));
           const a = req.body.action;
+          if ((a === "merge" || a === "distinct") && task.kind !== "dedup_review")
+            return reply.code(400).send(problem(400, "«Объединить» и «разные события» — только для возможных дублей"));
+          if ((a === "confirm" || a === "cancel") && task.kind !== "vanished")
+            return reply.code(400).send(problem(400, "«Подтвердить» и «отменить» — только для исчезнувших сеансов"));
           if (task.kind === "dedup_review" && task.related_id) {
             if (a === "merge")
               await mergeEvents(db, task.entity_id, task.related_id, { actor, reason: "Объединено модератором" });
             if (a === "distinct") await recordDistinct(db, task.entity_id, task.related_id, actor);
           }
           if (task.kind === "vanished" && (a === "confirm" || a === "cancel")) {
-            await db.execute(sql`
-              UPDATE occurrence SET status = ${a === "confirm" ? "scheduled" : "cancelled"},
-                freshness = ${a === "confirm" ? "fresh" : "vanished"}, last_verified_at = now(), updated_at = now()
-              WHERE id = ${task.entity_id} AND status = 'unverified'`);
-            await db.execute(sql`
-              INSERT INTO change_log (region_id, entity_type, entity_id, event_id, kind, field, old_value, new_value, source_id, actor, reason)
-              SELECT region_id, 'occurrence', id, event_id, 'status', 'status', '"unverified"'::jsonb,
-                     ${JSON.stringify(a === "confirm" ? "scheduled" : "cancelled")}::jsonb, 'moderator', ${actor},
-                     ${a === "confirm" ? "Модератор подтвердил событие" : "Модератор подтвердил отмену"}
-              FROM occurrence WHERE id = ${task.entity_id}`);
+            const res = await resolveVanished(db, task.id, a, req.body.scope, actor);
+            if ("error" in res) return reply.code(409).send(problem(409, res.error));
+            return { ok: true, resolved: res.resolved };
           }
           await db.execute(
             sql`UPDATE moderation_task SET state = ${a === "dismiss" ? "dismissed" : "done"}, resolution = ${a}, resolved_by = ${actor}, updated_at = now()
-                WHERE id = ${req.params.id}`,
+                WHERE id = ${req.params.id} AND state = 'open'`,
           );
-          return { ok: true };
+          return { ok: true, resolved: 1 };
         },
       );
 

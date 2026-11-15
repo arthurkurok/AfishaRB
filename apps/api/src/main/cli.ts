@@ -6,7 +6,16 @@ import { closeDb, getDb } from "../db/client.js";
 import { config } from "../lib/config.js";
 import { log } from "../lib/log.js";
 import { revalidateMerges, runDedup } from "../modules/dedup/index.js";
-import { fetchBashopera, fetchRegion, importFile, loadBashopera, loadCultureRu } from "../modules/ingestion/index.js";
+import {
+  cleanupReplacedSessions,
+  fetchBashopera,
+  fetchRegion,
+  importFile,
+  loadBashopera,
+  loadCultureRu,
+  normalizeMissingReasons,
+} from "../modules/ingestion/index.js";
+import { closeStaleVanishedTasks } from "../modules/lifecycle/index.js";
 
 const rawDir = join(config.AFISHA_DATA_DIR, "raw", "culture_ru");
 const rawBashopera = join(config.AFISHA_DATA_DIR, "raw", "bashopera");
@@ -42,6 +51,17 @@ const commands: Record<string, (args: string[]) => Promise<unknown>> = {
     if (!path) throw new Error("использование: cli import:file <путь к CSV или JSON-файлу> [--dry-run]");
     const content = await readFile(path, "utf8");
     return importFile(getDb(), { content, filename: basename(path), dryRun });
+  },
+  // Разовая чистка после исправления 15.11.2026 (идемпотентна): дубли сеансов со сменившимся внешним id,
+  // причины «… — информация уточняется», задачи модерации на прошедшие и уже решённые сеансы.
+  // Сначала посмотреть: cli data:cleanup-vanished --dry-run
+  "data:cleanup-vanished": async (args) => {
+    const dryRun = args.includes("--dry-run");
+    const db = getDb();
+    const replaced = await cleanupReplacedSessions(db, { dryRun });
+    const reasons = await normalizeMissingReasons(db, { dryRun });
+    const tasksClosed = dryRun ? "пропущено (--dry-run)" : await closeStaleVanishedTasks(db);
+    return { dryRun, replaced, reasonsNormalized: reasons, tasksClosed };
   },
   dedup: async () => runDedup(getDb()),
   "dedup:revalidate": async () => revalidateMerges(getDb()),

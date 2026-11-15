@@ -88,6 +88,8 @@ export type IngestStats = {
   venuesNew: number;
   orgsNew: number;
   vanished: number;
+  /** Сеансы, у которых источник сменил внешний id (то же время и зал): не «исчезли», а заменены */
+  replaced: number;
   errors: string[];
 };
 export const emptyStats = (): IngestStats => ({
@@ -100,6 +102,7 @@ export const emptyStats = (): IngestStats => ({
   venuesNew: 0,
   orgsNew: 0,
   vanished: 0,
+  replaced: 0,
   errors: [],
 });
 
@@ -437,7 +440,8 @@ export class CatalogWriter {
       await this.db.execute<{ id: string; event_id: string }>(sql`
         UPDATE occurrence SET status = 'scheduled', freshness = 'fresh', status_reason = NULL,
                last_verified_at = greatest(coalesce(last_verified_at, ${observedAt}), ${observedAt}), updated_at = now()
-        WHERE source_key LIKE ${`${prefix}%`} AND status = 'unverified' AND status_reason = ${EVENT_MISSING_REASON}
+        WHERE source_key LIKE ${`${prefix}%`} AND status = 'unverified'
+          AND status_reason = ANY(${pgTextArray(EVENT_MISSING_ANY)}::text[])
           AND coalesce(ends_at, starts_at) > now()
         RETURNING id, event_id`)
     ).rows;
@@ -452,16 +456,22 @@ export class CatalogWriter {
         new: "scheduled",
         reason: "Событие снова подтверждено источником",
       });
-    if (back.length) {
-      await this.db.execute(sql`
-        UPDATE moderation_task SET state = 'done', resolution = 'source_confirmed', resolved_by = ${this.sourceId}, updated_at = now()
-        WHERE kind = 'vanished' AND state = 'open' AND entity_id = ANY(${`{${back.map((b) => b.id).join(",")}}`}::uuid[])`);
-    }
+    await this.closeVanishedTasks(back.map((b) => b.id));
     await this.db.execute(sql`
       UPDATE occurrence SET last_verified_at = greatest(coalesce(last_verified_at, ${observedAt}), ${observedAt}),
              freshness = CASE WHEN freshness = 'vanished' THEN freshness ELSE 'fresh' END
       WHERE source_key LIKE ${`${prefix}%`} AND status NOT IN ('unverified')`);
     await this.refreshProvenance(recordId, observedAt);
+  }
+
+  /** Источник снова показал сеансы — их задачи «исчезнувший сеанс» решены сами собой. */
+  private async closeVanishedTasks(occurrenceIds: string[]) {
+    if (occurrenceIds.length === 0) return;
+    await this.db.execute(sql`
+      UPDATE moderation_task SET state = 'done', resolution = 'source_confirmed', resolved_by = ${this.sourceId},
+             payload = payload || ${JSON.stringify({ resolution_text: "Источник снова показывает сеанс — решение не требуется" })}::jsonb,
+             updated_at = now()
+      WHERE kind = 'vanished' AND state = 'open' AND entity_id = ANY(${`{${occurrenceIds.join(",")}}`}::uuid[])`);
   }
 
   /** Поле подтверждено источником в этом прогоне — обновляем время наблюдения (MJ-4). */
@@ -479,6 +489,12 @@ export class CatalogWriter {
       SELECT ${REGION_ID}, 'validation', 'event', ${eventId}, ${hard ? 80 : 30},
              ${JSON.stringify({ title: ne.title, problems, source: this.sourceId, external_id: ne.externalId })}::jsonb
       WHERE NOT EXISTS (SELECT 1 FROM moderation_task WHERE kind = 'validation' AND state = 'open' AND entity_id = ${eventId})`);
+  }
+
+  /** Дубли-замены: сеанс и его provenance удаляются, открытые задачи по нему закрываются (журнал не пишем — это не изменение афиши). */
+  private async deleteReplaced(ids: string[]) {
+    await deleteReplacedOccurrences(this.db, ids);
+    this.stats.replaced += ids.length;
   }
 
   private async syncSessions(
@@ -502,7 +518,34 @@ export class CatalogWriter {
     const [ev] = await this.db.select({ clusterId: event.clusterId }).from(event).where(eq(event.id, eventId));
     const targetEventId = ev?.clusterId ?? eventId;
     const now = new Date();
+    // Источник сменил внешний id сеанса, а время (±15 мин) и зал те же — это тот же сеанс: переносим ключ
+    // на существующую запись вместо «исчез» + новый дубль (прод 15.11: «День рождения кота Леопольда»)
+    const incoming = new Set(ne.sessions.map((s) => `${prefix}${s.externalId}`));
+    const orphans = [...existing.values()].filter(
+      (o) =>
+        !incoming.has(o.sourceKey!) &&
+        !o.isRange &&
+        o.startsAt > now &&
+        (o.status === "scheduled" ||
+          o.status === "sold_out" ||
+          (o.status === "unverified" && MISSING_ANY.includes(o.statusReason ?? ""))),
+    );
+    for (const s of ne.sessions) {
+      const key = `${prefix}${s.externalId}`;
+      if (existing.has(key) || s.isRange || orphans.length === 0) continue;
+      const vId = venues.get(s.venueExternalId ?? "")?.id ?? null;
+      const i = orphans.findIndex(
+        (o) =>
+          (o.venueId ?? null) === vId && Math.abs(o.startsAt.getTime() - s.startsAt.getTime()) <= REPLACED_TOLERANCE_MS,
+      );
+      if (i === -1) continue;
+      const [twin] = orphans.splice(i, 1);
+      await this.db.update(occurrence).set({ sourceKey: key }).where(eq(occurrence.id, twin!.id));
+      existing.delete(twin!.sourceKey!);
+      existing.set(key, { ...twin!, sourceKey: key });
+    }
     const seen = new Set<string>();
+    const restored: string[] = [];
     for (const s of ne.sessions) {
       const key = `${prefix}${s.externalId}`;
       seen.add(key);
@@ -554,6 +597,7 @@ export class CatalogWriter {
       if (occ.status === "unverified") {
         patch.status = "scheduled";
         patch.statusReason = null;
+        restored.push(occ.id);
         this.log({
           entityType: "occurrence",
           entityId: occ.id,
@@ -605,9 +649,35 @@ export class CatalogWriter {
       if (Object.keys(changedFields).length)
         await this.provenance("occurrence", occ.id, changedFields, recordId, observedAt);
     }
-    // Сеанс исчез из карточки источника до своей даты → «уточняется»
+    await this.closeVanishedTasks(restored);
+    // Сеанс исчез из карточки источника до своей даты → «уточняется»; но если в карточке есть живой сеанс
+    // на то же время в том же зале (старая запись-дубль после смены id) — это замена, удаляем дубль молча
+    const live = [...existing.entries()].filter(([key]) => seen.has(key)).map(([, o]) => o);
+    const replacedBy = (o: typeof occurrence.$inferSelect) =>
+      !o.isRange &&
+      live.some(
+        (k) =>
+          k.id !== o.id &&
+          (k.venueId ?? null) === (o.venueId ?? null) &&
+          Math.abs(k.startsAt.getTime() - o.startsAt.getTime()) <= REPLACED_TOLERANCE_MS,
+      );
+    const stale = [...existing].filter(
+      ([key, occ]) =>
+        !seen.has(key) &&
+        occ.startsAt > now &&
+        (occ.status === "scheduled" ||
+          occ.status === "sold_out" ||
+          (occ.status === "unverified" && MISSING_ANY.includes(occ.statusReason ?? ""))) &&
+        replacedBy(occ),
+    );
+    if (stale.length) await this.deleteReplaced(stale.map(([, o]) => o.id));
+    const staleIds = new Set(stale.map(([, o]) => o.id));
     const vanished = [...existing].filter(
-      ([key, occ]) => !seen.has(key) && occ.startsAt > now && (occ.status === "scheduled" || occ.status === "sold_out"),
+      ([key, occ]) =>
+        !seen.has(key) &&
+        !staleIds.has(occ.id) &&
+        occ.startsAt > now &&
+        (occ.status === "scheduled" || occ.status === "sold_out"),
     );
     for (const [, occ] of vanished)
       this.log({
@@ -635,8 +705,17 @@ export class CatalogWriter {
   }
 }
 
-export const EVENT_MISSING_REASON = "Событие исчезло из источника — информация уточняется";
-export const SESSION_MISSING_REASON = "Сеанс исчез из источника — информация уточняется";
+// Причины статуса «уточняется»: сам статус уже говорит «информация уточняется», в причине его не повторяем
+export const EVENT_MISSING_REASON = "Событие исчезло из источника";
+export const SESSION_MISSING_REASON = "Сеанс исчез из источника";
+/** Прежние формулировки (до 15.11.2026) — остаются в уже записанных сеансах, по ним тоже узнаём «исчезнувшие». */
+export const LEGACY_EVENT_MISSING_REASON = "Событие исчезло из источника — информация уточняется";
+export const LEGACY_SESSION_MISSING_REASON = "Сеанс исчез из источника — информация уточняется";
+const EVENT_MISSING_ANY = [EVENT_MISSING_REASON, LEGACY_EVENT_MISSING_REASON];
+const MISSING_ANY = [...EVENT_MISSING_ANY, SESSION_MISSING_REASON, LEGACY_SESSION_MISSING_REASON];
+const pgTextArray = (xs: readonly string[]) => `{${xs.map((x) => `"${x.replace(/(["\\])/g, "\\$1")}"`).join(",")}}`;
+/** Сеанс с новым внешним id на то же время (± столько) и в том же зале — замена, а не исчезновение. */
+const REPLACED_TOLERANCE_MS = 15 * 60_000;
 
 const MONTH_STEMS = [
   "январ",
@@ -730,4 +809,68 @@ export async function finishRun(
       lastStats: { ...rest, status, errors: errors.length },
     })
     .where(eq(source.id, sourceId));
+}
+
+async function deleteReplacedOccurrences(db: Exec, ids: string[]): Promise<void> {
+  if (ids.length === 0) return;
+  const arr = `{${ids.join(",")}}`;
+  await db.execute(sql`
+    UPDATE moderation_task SET state = 'done', resolution = 'replaced', resolved_by = 'ingestion',
+           payload = payload || ${JSON.stringify({ resolution_text: "Источник заменил сеанс таким же (то же время и зал) — решение не требуется" })}::jsonb,
+           updated_at = now()
+    WHERE state = 'open' AND entity_type = 'occurrence' AND entity_id = ANY(${arr}::uuid[])`);
+  await db.execute(
+    sql`DELETE FROM field_provenance WHERE entity_type = 'occurrence' AND entity_id = ANY(${arr}::uuid[])`,
+  );
+  await db.execute(sql`DELETE FROM occurrence WHERE id = ANY(${arr}::uuid[])`);
+}
+
+/**
+ * Разовая чистка дублей, возникших до исправления (CLI `ingest:cleanup-replaced`): сеанс «уточняется»
+ * (исчез из источника) удаляется, если у того же события от того же источника есть живой сеанс
+ * в том же зале на то же время (±15 мин). Без журнала, уведомлений и задач модератору.
+ */
+export async function cleanupReplacedSessions(
+  db: Db,
+  opts: { dryRun?: boolean } = {},
+): Promise<{ replaced: number; examples: { event_id: string; title: string; starts_at: string }[] }> {
+  const rows = (
+    await db.execute<{ id: string; event_id: string; title: string; starts_at: string }>(sql`
+      SELECT DISTINCT ON (o.id) o.id, o.event_id, e.title->>'ru' AS title, o.starts_at::text AS starts_at
+      FROM occurrence o
+      JOIN event e ON e.id = o.event_id
+      JOIN occurrence k ON k.event_id = o.event_id AND k.id <> o.id
+        AND split_part(k.source_key, ':', 1) = split_part(o.source_key, ':', 1)
+        AND k.status IN ('scheduled', 'sold_out')
+        AND k.venue_id IS NOT DISTINCT FROM o.venue_id
+        AND NOT k.is_range
+        AND abs(extract(epoch FROM (k.starts_at - o.starts_at))) * 1000 <= ${REPLACED_TOLERANCE_MS}
+      WHERE o.status = 'unverified' AND NOT o.is_range AND o.starts_at > now()
+        AND o.status_reason = ANY(${pgTextArray(MISSING_ANY)}::text[])
+      ORDER BY o.id`)
+  ).rows;
+  if (!opts.dryRun && rows.length)
+    await db.transaction((tx) =>
+      deleteReplacedOccurrences(
+        tx,
+        rows.map((r) => r.id),
+      ),
+    );
+  return { replaced: rows.length, examples: rows.slice(0, 10).map(({ id: _id, ...r }) => r) };
+}
+
+/** Прежние причины «… — информация уточняется» → короткие (статус уже говорит «уточняется»). Журнал не трогаем: он append-only. */
+export async function normalizeMissingReasons(db: Db, opts: { dryRun?: boolean } = {}): Promise<number> {
+  const pairs = [
+    [LEGACY_EVENT_MISSING_REASON, EVENT_MISSING_REASON],
+    [LEGACY_SESSION_MISSING_REASON, SESSION_MISSING_REASON],
+  ] as const;
+  let n = 0;
+  for (const [from, to] of pairs) {
+    const res = opts.dryRun
+      ? await db.execute(sql`SELECT 1 FROM occurrence WHERE status_reason = ${from}`)
+      : await db.execute(sql`UPDATE occurrence SET status_reason = ${to} WHERE status_reason = ${from}`);
+    n += res.rowCount ?? 0;
+  }
+  return n;
 }

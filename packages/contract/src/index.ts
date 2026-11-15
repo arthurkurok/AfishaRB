@@ -154,6 +154,14 @@ export const ChangeEntry = z.object({
   new: z.unknown().nullable(),
   text: z.string().describe("Человекочитаемое описание изменения"),
   source: z.string().nullable(),
+  occurrences_count: z
+    .number()
+    .int()
+    .min(1)
+    .optional()
+    .describe(
+      "Для изменений сеансов: сколько сеансов затронуто. Одинаковые изменения разных сеансов одного прогона источника свёрнуты в одну запись",
+    ),
 });
 export type ChangeEntry = z.infer<typeof ChangeEntry>;
 
@@ -338,7 +346,12 @@ export const AssistantRequest = z.object({
   patch: z.record(z.string(), z.unknown()).optional().describe("Нажатие быстрого ответа или изменение чипа"),
   event_id: Uuid.optional().describe("Вопрос о конкретном событии"),
   lang: Lang.optional(),
-  municipality_id: z.string().optional().describe("Город по умолчанию из профиля"),
+  municipality_id: z
+    .string()
+    .optional()
+    .describe(
+      "Город из контекста канала: выбранный на сайте или в Mini App город, город профиля в боте. Становится слотом municipality_source=profile; пользователь снимает его чипом («вся республика»), после этого поле в этом диалоге не применяется",
+    ),
   near: z.string().optional(),
 });
 export type AssistantRequest = z.infer<typeof AssistantRequest>;

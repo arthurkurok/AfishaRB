@@ -62,9 +62,9 @@ const { refreshDerived } = await import("../apps/api/src/modules/lifecycle/index
 const { startOfLocalDay } = await import("../apps/api/src/modules/geo/index.js");
 
 const muniNames = new Map(
-  (
-    await db.execute<{ id: string; name: string }>(sql`SELECT id, name->>'ru' AS name FROM municipality`)
-  ).rows.map((r) => [r.id, r.name]),
+  (await db.execute<{ id: string; name: string }>(sql`SELECT id, name->>'ru' AS name FROM municipality`)).rows.map(
+    (r) => [r.id, r.name],
+  ),
 );
 const at = (day: string, hhmm: string) => {
   const [h, m] = hhmm.split(":").map(Number) as [number, number];
@@ -170,7 +170,11 @@ for (const id of only) {
   let convId: string | undefined;
   console.log(`\n===== ${id} (${c.group}) =====`);
   for (const t of turns) {
-    const resp = await handleAssistant(db, { text: t.text, conversation_id: convId }, { channel: "control", now: NOW, subscribeFn: debugSubscribe, saveFeedbackFn: debugFeedback });
+    const resp = await handleAssistant(
+      db,
+      { text: t.text, conversation_id: convId },
+      { channel: "control", now: NOW, subscribeFn: debugSubscribe, saveFeedbackFn: debugFeedback },
+    );
     convId = resp.conversation_id;
     console.log(`--- user: ${t.text}`);
     console.log(

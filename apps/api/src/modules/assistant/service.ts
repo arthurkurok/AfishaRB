@@ -26,13 +26,21 @@ import { config } from "../../lib/config.js";
 import { pseudonym } from "../../lib/ids.js";
 import { kvGet, kvSet } from "../../lib/kv.js";
 import { log } from "../../lib/log.js";
-import { CITY_ORDER, COLLOQUIAL, humanDate, humanTime, stemsFor } from "../geo/index.js";
+import { CITY_ORDER, COLLOQUIAL, humanDate, humanTime, stemsFor, todayLocal } from "../geo/index.js";
 import { resolveWindow } from "../search/index.js";
 import { answerEventQuestion } from "./event-qa.js";
 import { AiBlacklistError, getGateway, type Tier } from "./gateway.js";
 import { maskPii } from "./mask.js";
-import { planDay } from "./plan-day.js";
-import { emptySlots, findInvalidDate, type MunicipalityRef, parseRules } from "./rules-parser.js";
+import { planDayDetailed } from "./plan-day.js";
+import {
+  emptySlots,
+  findInvalidDate,
+  type MunicipalityRef,
+  normalizeText,
+  parsePlanStops,
+  parseRules,
+  searchRemainder,
+} from "./rules-parser.js";
 import {
   ACTION_CANCEL_TEXT,
   ACTION_FAILED_PREFIX,
@@ -356,8 +364,17 @@ function applyPatch(slots: Slots, patch: Record<string, unknown>): Slots {
   return s as Slots;
 }
 
+/** Сколько человек идёт: взрослые (по умолчанию один) и дети. */
+const partySize = (s: Slots) => Math.max(1, (s.adults ?? 1) + (s.with_kids ? Math.max(1, s.kids_ages.length) : 0));
+const PARTY_WORD: Record<number, string> = { 2: "на двоих", 3: "на троих", 4: "на четверых" };
+const partyWord = (n: number) => PARTY_WORD[n] ?? `на ${n} человек`;
+const rub = (n: number) => `${Math.round(n).toLocaleString("ru-RU")} ₽`;
+/** «Без долгих переездов» — соседние остановки плана не дальше получаса пути. */
+const SHORT_HOPS_RE =
+  /без\s+(?:долг\p{L}*\s+)?переезд|недалеко друг от друга|рядом друг с другом|поблизости друг от друга/iu;
+
 function toQuery(s: Slots, req: AssistantRequest): SearchQuery {
-  const people = Math.max(1, (s.adults ?? 1) + (s.with_kids ? Math.max(1, s.kids_ages.length) : 0));
+  const people = partySize(s);
   const priceMax = s.budget === null ? undefined : s.budget_per === "total" ? Math.floor(s.budget / people) : s.budget;
   return {
     date_from: s.date_from ?? undefined,
@@ -669,7 +686,7 @@ export async function handleAssistant(
   });
 
   /* ---------- Стоимость (ТЗ 6.5): ₽ по токенам; лимит диалога и лимит на пользователя в сутки ---------- */
-  const spendKey = `ai-spend:${now.toISOString().slice(0, 10)}:${conv.id}`;
+  const spendKey = `ai-spend:${todayLocal(now)}:${conv.id}`;
   let dailyRub = (await kvGet<number>(spendKey)) ?? 0;
   let limitHit = false;
   const budgetLeft = () =>
@@ -804,11 +821,19 @@ export async function handleAssistant(
         const x = LlmSlots.safeParse(r.json);
         if (x.success) {
           if (slots.categories.length === 0) slots.categories = x.data.categories;
-          if (!slots.text && x.data.free_text && x.data.free_text.length >= 3)
-            slots.text = x.data.free_text.slice(0, 80);
+          // Свободный текст модели чистим так же, как остаток правил: «сделай», «план», даты и город —
+          // не опоры полнотекстового поиска (иначе «сделай план…» ищет слово «сделай» и находит одно событие)
+          if (!slots.text && x.data.free_text) {
+            const stems = munis.find((m) => m.id === slots.municipality_id)?.stems ?? [];
+            const clean = searchRemainder(normalizeText(x.data.free_text), stems);
+            if (clean && clean.length >= 3) slots.text = clean.slice(0, 80);
+          }
           if (x.data.with_kids) slots.with_kids = true;
-          if (slots.intent === "smalltalk" || x.data.intent === "offtopic" || x.data.intent === "help")
+          // Намерения, распознанные правилами по явным словам («план на…», «отменили ли…»), модель не перебивает
+          const ruleIntent = slots.intent === "plan_day" || slots.intent === "event_question";
+          if (!ruleIntent && (slots.intent === "smalltalk" || x.data.intent === "offtopic" || x.data.intent === "help"))
             slots.intent = x.data.intent;
+          else if (slots.intent === "search" && x.data.intent === "plan_day") slots.intent = "plan_day";
         }
       } catch (err) {
         if (!(err instanceof AiBlacklistError)) mode = "rules";
@@ -816,9 +841,13 @@ export async function handleAssistant(
       }
     }
   }
-  if (!slots.municipality_id && req.municipality_id) {
+  // Город из контекста канала (выбран на сайте, в Mini App, в профиле бота) — слот с источником profile.
+  // Пользователь снял его чипом или назвал город сам (source = user) — контекст в этом диалоге больше не навязываем;
+  // сменил город на сайте — обновляем слот, пока он остаётся «из контекста»
+  if (req.municipality_id && slots.municipality_source !== "user") {
     const m = munis.find((x) => x.id === req.municipality_id);
-    if (m) Object.assign(slots, { municipality_id: m.id, municipality_label: m.name, municipality_source: "profile" });
+    if (m && (!slots.municipality_id || slots.municipality_source === "profile"))
+      Object.assign(slots, { municipality_id: m.id, municipality_label: m.name, municipality_source: "profile" });
   }
   if (!slots.date_label) Object.assign(slots, { date_label: "ближайшая неделя", date_source: "default" });
   conv.slots = slots;
@@ -995,7 +1024,8 @@ export async function handleAssistant(
     const parts = hits.map((hit) => {
       const d = humanDate(hit.starts_at.slice(0, 10)).toLowerCase();
       const st = label[hit.status] ?? hit.status;
-      const reason = hit.status_reason ? ` Причина по данным источника: ${hit.status_reason.toLowerCase()}.` : "";
+      const why = hit.status_reason?.replace(/\s*[—–-]\s*информация уточняется\.?\s*$/iu, "").trim();
+      const reason = why ? ` Причина по данным источника: ${why.toLowerCase()}.` : "";
       // время, цена и длительность — только из карточки; неизвестное не называем вовсе
       const time = humanTime(new Date(hit.starts_at));
       const price = hit.event.price.is_free
@@ -1064,7 +1094,9 @@ export async function handleAssistant(
     });
   }
 
-  // «Спланируй мне день»: маршрут из 2–3 событий одного дня без пересечений и с учётом дороги
+  // «Спланируй мне день»: маршрут из 2–4 событий одного дня без пересечений, с учётом дороги и бюджета.
+  // Не сложился — честно говорим, что мешает (бюджет, пересечения, мало событий), и показываем варианты.
+  let planNote = "";
   if (slots.intent === "plan_day") {
     plan.push("plan_day");
     const wide = await runner.searchCards({ ...toQuery(effective, req), limit: 100, sort: "date" });
@@ -1075,18 +1107,51 @@ export async function handleAssistant(
       (slots.date_from && byDay.has(slots.date_from)
         ? slots.date_from
         : [...byDay.entries()].sort((a, b) => b[1].length - a[1].length)[0]?.[0]) ?? "";
-    const stops = planDay(byDay.get(day) ?? []);
-    if (stops.length >= 2) {
-      const timeline = stops
+    const dayCards = byDay.get(day) ?? [];
+    const people = partySize(effective);
+    const budgetTotal =
+      effective.budget !== null && effective.budget_per === "total" && !effective.free_only ? effective.budget : null;
+    const wanted = Math.min(4, Math.max(2, parsePlanStops(text ?? "") ?? 3));
+    const maxTravelMin = SHORT_HOPS_RE.test(text ?? "") ? 30 : null;
+    let built = planDayDetailed(dayCards, { maxStops: wanted, budgetTotal, people, maxTravelMin });
+    let overBudget = false;
+    if (built.stops.length < 2 && budgetTotal !== null) {
+      const free = planDayDetailed(dayCards, { maxStops: wanted, people, maxTravelMin });
+      if (free.stops.length >= 2) {
+        built = free;
+        overBudget = true;
+      }
+    }
+    const dayLabel = day ? humanDate(day).toLowerCase() : "этот день";
+    if (built.stops.length >= 2) {
+      plan.push(overBudget ? "plan_day:over_budget" : "plan_day:ok");
+      const timeline = built.stops
         .map(
           (st, i) => `${humanTime(st.start)} — ${st.card.event.title}${i > 0 ? ` (дорога ≈ ${st.travelMin} мин)` : ""}`,
         )
         .join("; ");
+      const forWhom = people > 1 ? ` ${partyWord(people)}` : "";
+      const notes: string[] = [];
+      if (overBudget && budgetTotal !== null)
+        notes.push(
+          `В бюджет ${rub(budgetTotal)}${forWhom} два события не укладываются даже по минимальным ценам билетов — показываю ближайший по цене маршрут.`,
+        );
+      if (built.total === null)
+        notes.push("Цена части событий в источнике не указана — общую стоимость посчитать нельзя.");
+      else if (built.total === 0) notes.push("Все события маршрута бесплатные.");
+      else
+        notes.push(
+          `Стоимость — от ${rub(built.total)}${forWhom} по минимальным ценам билетов${budgetTotal !== null && !overBudget ? `, в бюджете ${rub(budgetTotal)}` : ""}.`,
+        );
+      if (built.stops.length < wanted)
+        notes.push(
+          `${wanted} события без пересечений${budgetTotal !== null && !overBudget ? " и в рамках бюджета" : ""} не помещаются — в маршруте ${built.stops.length}.`,
+        );
       return finish({
         ...base,
         kind: "results",
-        text: `Маршрут — ${humanDate(day).toLowerCase()}: ${timeline}. Время на дорогу оценено по расстоянию между площадками.`,
-        picks: stops.map((st) => ({
+        text: `Маршрут — ${dayLabel}: ${timeline}. Время на дорогу оценено по расстоянию между площадками. ${notes.join(" ")}`,
+        picks: built.stops.map((st) => ({
           occurrence: st.card,
           reason_codes: st.card.reasons as ReasonCode[],
           reason_text: templateReason(st.card, st.card.reasons as ReasonCode[], slots),
@@ -1095,6 +1160,15 @@ export async function handleAssistant(
         followups: followupsFor(slots),
       });
     }
+    plan.push("plan_day:failed");
+    const live = dayCards.filter((c) => c.status === "scheduled").length;
+    planNote =
+      live < 2
+        ? `Для плана нужно хотя бы два события, а на ${dayLabel} по вашим условиям ${live === 1 ? "нашлось только одно" : "подходящих нет"}. `
+        : built.skips.travel > 0
+          ? `Без долгих переездов маршрут на ${dayLabel} не складывается: подходящие события далеко друг от друга. `
+          : `Маршрут на ${dayLabel} не складывается: подходящие события идут одновременно. `;
+    planNote += "Показываю варианты по отдельности. ";
   }
 
   const picks: AssistantPick[] = [];
@@ -1130,7 +1204,7 @@ export async function handleAssistant(
             continue;
           }
           verifier.checked++;
-          const v = verifyReason(p.reason, card);
+          const v = verifyReason(p.reason, card, now);
           if (!v.ok) {
             verifier.rejected++;
             verifier.problems.push(...v.problems);
@@ -1190,6 +1264,7 @@ export async function handleAssistant(
     kind: "results",
     clarify: ageClarify,
     text:
+      planNote +
       (fabricate ? "Я не придумываю события — показываю только реальные из официальных источников. " : "") +
       summaryText(Math.max(picks.length, result.total), effective, relaxed, lang),
     picks,

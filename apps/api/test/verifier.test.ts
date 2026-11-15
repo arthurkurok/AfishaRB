@@ -61,3 +61,21 @@ describe("verifier", () => {
     expect(verifySummary("Нашёл 12 вариантов", 5).ok).toBe(false);
   });
 });
+
+describe("verifier: относительные даты считаются в поясе региона", () => {
+  // «сейчас» — пятница 6 ноября 2026, 23:30 по Уфе (18:30 UTC): по UTC это тоже 6-е, а «завтра» — суббота 7-е
+  const fri = new Date("2026-11-06T18:30:00Z");
+  it("«завтра» для субботнего сеанса в пятницу — верно, «сегодня» — нет", () => {
+    expect(verifyReason("Завтра в 11:00 — кукольный спектакль.", card, fri).ok).toBe(true);
+    expect(verifyReason("Уже сегодня в 11:00.", card, fri).problems.join()).toMatch(/сегодня/);
+    expect(verifyReason("Послезавтра в 11:00.", card, fri).problems.join()).toMatch(/послезавтра/);
+  });
+  it("после полуночи по Уфе (но до полуночи UTC) «сегодня» — уже суббота", () => {
+    const satEarly = new Date("2026-11-06T19:30:00Z"); // 00:30 субботы по Уфе
+    expect(verifyReason("Сегодня в 11:00.", card, satEarly).ok).toBe(true);
+    expect(verifyReason("Завтра в 11:00.", card, satEarly).ok).toBe(false);
+  });
+  it("без «сейчас» относительные даты не проверяются (обратная совместимость)", () => {
+    expect(verifyReason("Завтра в 11:00.", card).ok).toBe(true);
+  });
+});

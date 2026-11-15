@@ -2,10 +2,13 @@
 import { describe, expect, it } from "vitest";
 import {
   type MunicipalityRef,
+  normalizeText,
   parseBudget,
   parseDates,
   parseKids,
+  parsePlanStops,
   parseRules,
+  searchRemainder,
 } from "../src/modules/assistant/rules-parser.js";
 import { stemsFor } from "../src/modules/geo/index.js";
 
@@ -121,5 +124,37 @@ describe("полный разбор", () => {
     expect(s.date_from).toBe("2026-11-03");
     expect(s.municipality_id).toBe("ufa");
     expect(s.categories).toContain("music");
+  });
+});
+
+describe("план дня (ТЗ, приложение А)", () => {
+  it("«сделай план…»: намерение plan_day, служебные глаголы не уходят в поиск, «на двоих» — двое", () => {
+    for (const q of [
+      "Сделай план на субботу в Уфе: три события, 2000 рублей на двоих",
+      "Составь план на субботу в Уфе",
+      "Сделай план на воскресенье: три события, 2000 рублей на двоих, без долгих переездов",
+      "спланируй мне субботу в Уфе",
+    ]) {
+      const s = parseRules(q, NOW, MUNIS);
+      expect(s.intent, q).toBe("plan_day");
+      expect(s.text, q).toBeNull();
+    }
+    const s = parseRules("Сделай план на субботу в Уфе: три события, 2000 рублей на двоих", NOW, MUNIS);
+    expect(s).toMatchObject({ adults: 2, budget: 2000, budget_per: "total", municipality_id: "ufa" });
+    expect(parseRules("план на субботу с ребёнком, 1500 рублей на двоих", NOW, MUNIS).adults).toBe(1);
+  });
+
+  it("сколько событий просят и чистка свободного текста модели", () => {
+    expect(parsePlanStops("Сделай план: три события")).toBe(3);
+    expect(parsePlanStops("маршрут на воскресенье: два события")).toBe(2);
+    expect(parsePlanStops("план на субботу")).toBeNull();
+    expect(searchRemainder(normalizeText("сделай"))).toBeNull();
+    expect(searchRemainder(normalizeText("составь план"))).toBeNull();
+    expect(searchRemainder(normalizeText("балет"))).toBe("балет");
+  });
+
+  it("в воскресенье «на выходных» — метка без «15 ноября — 15 ноября»", () => {
+    const sunday = new Date("2026-11-15T05:00:00Z");
+    expect(parseDates("на выходных", sunday)!.label).toBe("выходные, 15 ноября");
   });
 });
