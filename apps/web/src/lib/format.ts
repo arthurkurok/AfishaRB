@@ -66,6 +66,31 @@ export function statusLabel(
   return t(`status.${kind}`);
 }
 
+const normText = (s: string) =>
+  s
+    .toLowerCase()
+    .replaceAll("ё", "е")
+    .replace(/[\s.,;:!—–-]+/g, " ")
+    .trim();
+
+/**
+ * Причина статуса для показа рядом с бейджем. Если причина повторяет название статуса — `null`;
+ * хвост «… — информация уточняется» при бейдже «Информация уточняется» отрезается, чтобы не дублировать бейдж.
+ */
+export function reasonText(reason: string | null | undefined, statusLabelText: string | null): string | null {
+  const r = reason?.trim();
+  if (!r) return null;
+  if (!statusLabelText) return r;
+  const label = normText(statusLabelText);
+  if (normText(r) === label) return null;
+  const parts = r.split(/\s+[—–-]\s+/);
+  if (parts.length > 1 && normText(parts.at(-1) ?? "") === label) {
+    const head = parts.slice(0, -1).join(" — ").trim();
+    return head || null;
+  }
+  return r;
+}
+
 /** Сеанс нельзя посетить: отменён, прошёл или отложен без даты. */
 export function isInactive(status: OccurrenceStatus): boolean {
   return status === "cancelled" || status === "ended" || status === "postponed";

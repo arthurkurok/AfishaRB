@@ -56,7 +56,7 @@
   flex: none;
   border-radius: var(--radius-s);
   background: color-mix(in srgb, var(--cat) 12%, var(--color-surface));
-  color: var(--cat);
+  color: color-mix(in srgb, var(--cat), var(--color-ink) var(--cat-text-mix));
 }
 
 .name {

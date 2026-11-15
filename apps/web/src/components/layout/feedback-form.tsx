@@ -57,7 +57,7 @@ export function FeedbackForm() {
       <p className="caption">{t("feedback.hint")}</p>
       <label className={`caption ${styles.kind}`}>
         {t("feedback.kind")}
-        <select value={kind} onChange={(e) => setKind(e.target.value as FeedbackBody["kind"])}>
+        <select className="select" value={kind} onChange={(e) => setKind(e.target.value as FeedbackBody["kind"])}>
           {KINDS.map((k) => (
             <option key={k.value} value={k.value}>
               {t(`feedback.${k.label}`)}
@@ -68,7 +68,7 @@ export function FeedbackForm() {
       <label className={styles.textLabel}>
         <span className="caption">{t("feedback.text")}</span>
         <textarea
-          className={styles.text}
+          className={`textarea ${styles.text}`}
           rows={3}
           maxLength={2000}
           value={text}

@@ -58,7 +58,7 @@
   font-size: var(--type-caption-size);
   line-height: var(--type-caption-line);
   font-weight: 700;
-  color: var(--cat);
+  color: color-mix(in srgb, var(--cat), var(--color-ink) var(--cat-text-mix));
 }
 
 .title {

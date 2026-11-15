@@ -5,29 +5,11 @@
  * кнопка становится тумблером: повторное нажатие отписывает (подписка удаляется на сервере целиком).
  */
 import type { CategoryCode, Subscription, SubscriptionPeriod } from "@afisha/contract";
-import type { Lang } from "@afisha/i18n";
 import { useEffect, useState } from "react";
 import { createSubscription, deleteSubscription, listSubscriptions } from "@/lib/api";
 import { useI18n } from "@/lib/i18n-client";
 import { deviceId } from "@/lib/prefs";
 import styles from "./subscribe-button.module.css";
-
-const L: Record<Lang, { subscribe: string; subscribed: string; busy: string; error: string; hint: string }> = {
-  ru: {
-    subscribe: "Подписаться на этот фильтр",
-    subscribed: "Подписан(а) — дайджест новых событий раз в сутки",
-    busy: "…",
-    error: "Не получилось — попробуйте ещё раз",
-    hint: "Новые события по фильтру — не чаще одного сообщения в сутки. Отписаться — этой же кнопкой.",
-  },
-  ba: {
-    subscribe: "Ошо фильтрға яҙылырға",
-    subscribed: "Яҙылдығыҙ — яңы саралар дайджесты көнөнә бер тапҡыр",
-    busy: "…",
-    error: "Сыҡманы — тағы бер ҡабатлап ҡарағыҙ",
-    hint: "Фильтр буйынса яңы саралар — көнөнә бер хаттан да күберәк түгел. Баш тартырға — шул уҡ төймә менән.",
-  },
-};
 
 /** Та же подписка уже есть в списке устройства? (сравнение по фильтрам, не по названию) */
 const isSame = (
@@ -49,8 +31,15 @@ export function SubscribeButton({
   categories: CategoryCode[];
   period: SubscriptionPeriod | null;
 }) {
-  const { lang } = useI18n();
-  const t = L[lang];
+  const { t: tr } = useI18n();
+  // Строки — из packages/i18n (ru и ba), как во всём интерфейсе
+  const t = {
+    subscribe: tr("search.subscribeFilter"),
+    subscribed: tr("search.subscribedFilter"),
+    busy: "…",
+    error: tr("search.subscribeError"),
+    hint: tr("search.subscribeHint"),
+  };
   const [state, setState] = useState<"checking" | "idle" | "busy" | "subscribed" | "error">("checking");
   const [subId, setSubId] = useState<string | null>(null);
   const catKey = [...categories].sort().join(",");

@@ -41,6 +41,11 @@ export default async function TmaLayout({
         <main id="main" className={styles.main}>
           {children}
         </main>
+        <footer className={styles.foot}>
+          <p className="caption" data-testid="disclaimer">
+            {t("footer.disclaimer")}
+          </p>
+        </footer>
       </div>
     </TmaProvider>
   );

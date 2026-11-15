@@ -14,7 +14,7 @@ import { askAssistant } from "@/lib/api";
 import { REGION_TZ } from "@/lib/config";
 import { hrefs, localePath, type Surface } from "@/lib/hrefs";
 import { useI18n } from "@/lib/i18n-client";
-import { readPref } from "@/lib/prefs";
+import { readGuideCity } from "@/lib/prefs";
 import styles from "./guide-chat.module.css";
 
 type Turn =
@@ -125,7 +125,8 @@ export function GuideChat({
         return userText ? [...clean, { id: nextId(), role: "user", text: userText }] : clean;
       });
       try {
-        const city = readPref("afisha.city") ?? undefined;
+        // Город с главной (кука afisha_city) или из настроек браузера — Гид ищет в нём, а не по всей республике
+        const city = readGuideCity();
         const res = await askAssistant(
           {
             conversation_id: conversationId,

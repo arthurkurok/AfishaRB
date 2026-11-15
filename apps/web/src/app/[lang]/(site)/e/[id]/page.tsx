@@ -83,7 +83,11 @@ export default async function EventPage({ params }: Props) {
   const status = next ? statusLabel(next, t, lang, REGION_TZ) : null;
   const badge = next ? dateBadge(next, lang, REGION_TZ, today) : null;
   const ticketUrl = next?.ticket_url ?? event.ticket_url;
-  const canBuy = ticketUrl && next && !["cancelled", "ended", "sold_out", "postponed"].includes(next.status);
+  const canBuy =
+    ticketUrl &&
+    next &&
+    !["cancelled", "ended", "sold_out", "postponed"].includes(next.status) &&
+    next.availability !== "sold_out";
   const pageUrl = `${SITE_URL}${localePath(lang, `/e/${event.id}`)}`;
   const route = next?.venue ? routeLinks(next.venue.geo, next.venue.address) : null;
   const contentLang = lang === CONTENT_LANG ? undefined : CONTENT_LANG;

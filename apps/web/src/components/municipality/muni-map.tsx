@@ -7,6 +7,7 @@
 import type { Municipality } from "@afisha/contract";
 import "leaflet/dist/leaflet.css";
 import { useEffect, useMemo, useRef } from "react";
+import { useI18n } from "@/lib/i18n-client";
 import styles from "./muni-map.module.css";
 
 export function MuniMap({
@@ -24,7 +25,11 @@ export function MuniMap({
   /** false — декоративная карта (клик по маркеру не ведёт на страницу города). */
   interactive?: boolean;
 }) {
-  const hostRef = useRef<HTMLDivElement | null>(null);
+  const { t } = useI18n();
+  const attribution = t("municipality.mapAttribution", {
+    osm: `<a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>`,
+  });
+  const hostRef = useRef<HTMLElement | null>(null);
   const withGeo = useMemo(
     () => municipalities.filter((m): m is Municipality & { center: [number, number] } => !!m.center),
     [municipalities],
@@ -52,7 +57,7 @@ export function MuniMap({
       });
       L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
         maxZoom: 12,
-        attribution: '&copy; участники <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+        attribution: `&copy; ${attribution}`,
       }).addTo(map);
 
       const points: [number, number][] = [];
@@ -84,8 +89,9 @@ export function MuniMap({
     })();
 
     return () => controller.abort();
-  }, [withGeo, hrefBase, highlight, labelTop, interactive]);
+  }, [withGeo, hrefBase, highlight, labelTop, interactive, attribution]);
 
   if (withGeo.length === 0) return null;
-  return <div ref={hostRef} className={styles.map} role="img" aria-label="Карта городов и районов" />;
+  // Не role="img": внутри интерактивные кнопки масштаба и ссылка атрибуции Leaflet (axe: nested-interactive)
+  return <section ref={hostRef} className={styles.map} aria-label={t("municipality.mapLabel")} />;
 }

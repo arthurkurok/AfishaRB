@@ -78,7 +78,8 @@ export function DedupReview({
         const res = await resolveTask(task.id, action);
         setResult({ ok: res.ok, text: res.message });
         setConfirmMerge(false);
-        if (res.ok) {
+        // Решение принято или задача уже неактуальна (её закрыли) — к следующей задаче
+        if (res.ok || res.stale) {
           if (nextHref) router.push(nextHref);
           else router.refresh();
         }

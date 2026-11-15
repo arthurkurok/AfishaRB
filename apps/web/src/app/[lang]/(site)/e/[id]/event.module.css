@@ -85,7 +85,7 @@
   font-size: var(--type-h2-size);
   line-height: 1.2;
   font-weight: 700;
-  color: var(--cat);
+  color: color-mix(in srgb, var(--cat), var(--color-ink) var(--cat-text-mix));
 }
 .whenText::first-letter {
   text-transform: uppercase;

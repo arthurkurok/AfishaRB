@@ -114,8 +114,8 @@ export function CardSkeleton({ variant = "default" }: { variant?: "default" | "c
       <div className={`${styles.media} skeleton`} />
       <div className={styles.body}>
         <div className="skeleton" style={{ height: 16, width: "45%" }} />
-        <div className="skeleton" style={{ height: 18, width: "90%", marginTop: 8 }} />
-        <div className="skeleton" style={{ height: 14, width: "65%", marginTop: 8 }} />
+        <div className="skeleton" style={{ height: 18, width: "90%", marginTop: "var(--space-2)" }} />
+        <div className="skeleton" style={{ height: 14, width: "65%", marginTop: "var(--space-2)" }} />
       </div>
     </div>
   );

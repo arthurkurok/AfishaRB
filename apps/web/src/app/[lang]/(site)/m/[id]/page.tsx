@@ -6,7 +6,7 @@ import { Collection } from "@/components/home/collection";
 import { GuideBar } from "@/components/home/guide-bar";
 import { WhenTabs } from "@/components/home/when-tabs";
 import { MuniMap } from "@/components/municipality/muni-map";
-import { StateMessage } from "@/components/states/states";
+import { FeedError, StateMessage } from "@/components/states/states";
 import { getMunicipalities, safe, searchOccurrences } from "@/lib/api";
 import { cardContext } from "@/lib/card-context";
 import { API_BASE } from "@/lib/config";
@@ -70,7 +70,9 @@ export default async function MunicipalityPage({ params }: Props) {
   ).map(([w, label, res]) => ({
     id: w,
     label,
-    content: res?.items.length ? (
+    content: !res ? (
+      <FeedError t={t} />
+    ) : res.items.length ? (
       <>
         <ul className="card-grid">
           {res.items.map((item, i) => (
@@ -79,7 +81,7 @@ export default async function MunicipalityPage({ params }: Props) {
             </li>
           ))}
         </ul>
-        <p style={{ marginTop: 24 }}>
+        <p style={{ marginTop: "var(--space-5)" }}>
           <Link className="btn btn--secondary" href={ctx.hrefs.search({ when: w as When, municipality: [m.id] })}>
             {t("home.seeAllWhen", { period: label })} · {t("common.events", { count: res.total })}
           </Link>

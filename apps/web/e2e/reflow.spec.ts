@@ -34,7 +34,8 @@ test("башкирские буквы рисуются фирменным шри
   const { fonts } = await client.send("CSS.getPlatformFontsForNode", { nodeId });
   const families = fonts.map((f) => f.familyName);
   expect(
-    families.every((f) => /Commissioner/i.test(f)),
+    // Один шрифт — Golos Text (ADR-017), Commissioner удалён
+    families.every((f) => /Golos/i.test(f)),
     families.join(", "),
   ).toBe(true);
 

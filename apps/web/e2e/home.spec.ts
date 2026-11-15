@@ -2,6 +2,11 @@ import { expect, test } from "@playwright/test";
 import { expectAccessible } from "./helpers";
 
 test.describe("Главная", () => {
+  // Окно выбора города при первом заходе (fb66d4d) делает страницу инертной — считаем, что город уже спрашивали
+  test.beforeEach(async ({ page }) => {
+    await page.addInitScript(() => window.localStorage.setItem("afisha.cityAsked", "1"));
+  });
+
   test("Гид, переключатель дней, зонтик курая, подборки", async ({ page }) => {
     await page.goto("/");
     await expect(page.getByRole("heading", { level: 1 })).toHaveText("Куда сходить в Башкортостане");
@@ -28,6 +33,10 @@ test.describe("Главная", () => {
     await expect(page.getByRole("heading", { name: "Пушкинская карта", level: 2 })).toBeVisible();
     await expect(page.getByRole("heading", { name: "Детям", level: 2 })).toBeVisible();
     await expect(page.getByLabel("Город или район")).toBeVisible();
+    // ТЗ §13: сервис не выдаётся за официальный сервис министерства
+    await expect(page.getByRole("contentinfo").getByTestId("disclaimer")).toContainText(
+      "Не является официальным сервисом Министерства культуры",
+    );
     await expectAccessible(page);
   });
 

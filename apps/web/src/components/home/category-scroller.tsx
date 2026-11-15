@@ -26,8 +26,8 @@ export function CategoryScroller({
   const byCode = new Map(categories.map((c) => [c.code, c]));
   const codes: CategoryCode[] = CATEGORY_CODES.filter((c) => byCode.has(c) || categories.length === 0);
   return (
-    <nav className={styles.nav} aria-labelledby={title ? "categories-title" : undefined}>
-      {title ? <h2 className="sr-only">{title}</h2> : null}
+    // Навигации нужно имя: без него скринридер объявит безымянный «navigation» рядом с главным меню
+    <nav className={styles.nav} aria-label={title ?? t("home.categoriesTitle")}>
       <ul className={styles.list}>
         {codes.map((code) => {
           const c = byCode.get(code);

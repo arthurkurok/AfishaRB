@@ -5,7 +5,7 @@
 import type { EventDetail } from "@afisha/contract";
 import { formatDate, formatDateTime, formatUntil, type Lang, regionParts, type Translate } from "@afisha/i18n";
 import { REGION_TZ } from "@/lib/config";
-import { decodeEntities, statusKind, statusLabel } from "@/lib/format";
+import { decodeEntities, reasonText, statusKind, statusLabel } from "@/lib/format";
 import styles from "./sessions.module.css";
 import { StatusBadge } from "./status-badge";
 
@@ -26,6 +26,8 @@ function Row({
 }) {
   const kind = statusKind(o);
   const label = statusLabel(o, t, lang, REGION_TZ);
+  // Причина не повторяет бейдж: «… — информация уточняется» рядом с «Информация уточняется» не нужна
+  const reason = reasonText(o.status_reason, label);
   const start = regionParts(o.starts_at, REGION_TZ);
   const when =
     o.is_range && o.ends_at
@@ -33,26 +35,29 @@ function Row({
       : formatDateTime(o.starts_at, lang, today, REGION_TZ);
   return (
     <li className={styles.row} data-status={o.status}>
-      <div className={styles.when}>
-        <span className={o.status === "cancelled" || o.status === "ended" ? styles.struck : undefined}>{when}</span>
-        {o.status === "rescheduled" && o.previous_starts_at ? (
-          <span className={styles.prev}>
-            {t("status.wasDate", { date: "" })}
-            <s>{formatDateTime(o.previous_starts_at, lang, today, REGION_TZ)}</s>
+      <div className={styles.info}>
+        <div className={styles.when}>
+          <span className={`${styles.date} ${o.status === "cancelled" || o.status === "ended" ? styles.struck : ""}`}>
+            {when}
           </span>
+          {o.status === "rescheduled" && o.previous_starts_at ? (
+            <span className={styles.prev}>
+              {t("status.wasDate", { date: "" })}
+              <s>{formatDateTime(o.previous_starts_at, lang, today, REGION_TZ)}</s>
+            </span>
+          ) : null}
+        </div>
+        {reason ? <p className={styles.reason}>{t("event.statusReason", { reason })}</p> : null}
+        {o.venue && o.venue.name !== mainVenue ? (
+          <div className={styles.venue} lang={lang === "ru" ? undefined : "ru"}>
+            {decodeEntities(o.venue.name)}
+          </div>
         ) : null}
       </div>
-      {o.venue && o.venue.name !== mainVenue ? (
-        <div className={styles.venue} lang={lang === "ru" ? undefined : "ru"}>
-          {decodeEntities(o.venue.name)}
-        </div>
-      ) : null}
       <div className={styles.side}>
         {kind && label ? <StatusBadge kind={kind} label={label} /> : null}
-        {o.status_reason ? (
-          <span className="caption">{t("event.statusReason", { reason: o.status_reason })}</span>
-        ) : null}
-        {o.ticket_url && !["cancelled", "ended", "sold_out"].includes(o.status) ? (
+        {/* «Билетов нет» и кнопка «Билеты» рядом противоречат друг другу — кнопку не показываем */}
+        {o.ticket_url && !["cancelled", "ended", "sold_out"].includes(o.status) && o.availability !== "sold_out" ? (
           <a href={o.ticket_url} target="_blank" rel="noopener noreferrer" className="btn btn--secondary btn--small">
             {t("event.tickets")}
             <span className="sr-only"> {t("common.newTab")}</span>

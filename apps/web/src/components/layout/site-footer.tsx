@@ -41,6 +41,9 @@ export function SiteFooter({ lang, t }: { lang: Lang; t: Translate }) {
           <FeedbackForm />
         </div>
         <p className={`caption ${styles.sources}`}>{t("footer.sources")}</p>
+        <p className={`caption ${styles.sources}`} data-testid="disclaimer">
+          {t("footer.disclaimer")}
+        </p>
       </div>
     </footer>
   );

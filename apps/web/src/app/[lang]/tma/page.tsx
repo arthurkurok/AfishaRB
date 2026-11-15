@@ -3,7 +3,7 @@ import { EventCard } from "@/components/event/event-card";
 import { CategoryScroller } from "@/components/home/category-scroller";
 import { GuideBar } from "@/components/home/guide-bar";
 import { WhenTabs } from "@/components/home/when-tabs";
-import { StateMessage } from "@/components/states/states";
+import { FeedError, StateMessage } from "@/components/states/states";
 import { getCategories, safe, searchOccurrences } from "@/lib/api";
 import { cardContext } from "@/lib/card-context";
 import { createT, resolveLang } from "@/lib/i18n";
@@ -32,25 +32,26 @@ export default async function TmaHome({ params }: { params: Promise<{ lang: stri
   ).map(([id, label, res]) => ({
     id,
     label,
-    content:
-      res && "items" in res && res.items.length ? (
-        <>
-          <ul className="stack" style={{ listStyle: "none", margin: 0, padding: 0 }}>
-            {res.items.map((item) => (
-              <li key={item.id}>
-                <EventCard item={item} ctx={ctx} variant="compact" />
-              </li>
-            ))}
-          </ul>
-          <p style={{ marginTop: 16 }}>
-            <Link href={ctx.hrefs.search({ when: id as When })} className="btn btn--secondary btn--block">
-              {t("home.seeAllWhen", { period: label })}
-            </Link>
-          </p>
-        </>
-      ) : (
-        <StateMessage title={t("state.emptyTitle")} text={t("state.emptyText")} headingLevel={3} />
-      ),
+    content: !res ? (
+      <FeedError t={t} />
+    ) : "items" in res && res.items.length ? (
+      <>
+        <ul className="stack" style={{ listStyle: "none", margin: 0, padding: 0 }}>
+          {res.items.map((item) => (
+            <li key={item.id}>
+              <EventCard item={item} ctx={ctx} variant="compact" />
+            </li>
+          ))}
+        </ul>
+        <p style={{ marginTop: "var(--space-4)" }}>
+          <Link href={ctx.hrefs.search({ when: id as When })} className="btn btn--secondary btn--block">
+            {t("home.seeAllWhen", { period: label })}
+          </Link>
+        </p>
+      </>
+    ) : (
+      <StateMessage title={t("state.emptyTitle")} text={t("state.emptyText")} headingLevel={3} />
+    ),
   }));
   return (
     <>

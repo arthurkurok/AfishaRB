@@ -52,8 +52,10 @@ test.describe("Telegram Mini App", () => {
     await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
     expect(await page.evaluate(() => document.documentElement.style.getPropertyValue("--color-bg"))).toBe("#17212b");
     await expect(page.getByRole("tab", { name: "Сегодня" })).toBeVisible();
+    await expect(page.getByTestId("disclaimer")).toContainText("Не является официальным сервисом");
 
-    await page.getByRole("link", { name: "Афиша" }).first().click();
+    // exact: ссылка-бренд «Афиша РБ» тоже содержит слово «Афиша»
+    await page.getByRole("link", { name: "Афиша", exact: true }).click();
     await expect(page).toHaveURL(/\/tma\/search/);
     await expect
       .poll(() => page.evaluate(() => (window as unknown as { __tgCalls: string[] }).__tgCalls))

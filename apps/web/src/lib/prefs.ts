@@ -34,6 +34,38 @@ export function deviceId(): string {
   return id;
 }
 
+const CITY_SLUG = /^[a-z0-9-]{2,80}$/;
+
+/** Слаг города из строки document.cookie (кука afisha_city). Чистая функция — покрыта тестами. */
+export function cityFromCookie(cookie: string): string | null {
+  for (const part of cookie.split(";")) {
+    const [name, ...rest] = part.trim().split("=");
+    if (name !== "afisha_city") continue;
+    const value = rest.join("=").trim();
+    return CITY_SLUG.test(value) ? value : null;
+  }
+  return null;
+}
+
+/**
+ * Город по умолчанию для Гида (AssistantRequest.municipality_id): сначала кука afisha_city — по ней главная
+ * фильтрует ленты, — затем localStorage. Нет ни того ни другого — undefined, Гид ищет по всей республике.
+ */
+export function guideCity(cookie: string, stored: string | null): string | undefined {
+  return cityFromCookie(cookie) ?? (stored && CITY_SLUG.test(stored) ? stored : undefined);
+}
+
+/** Город для Гида в браузере. */
+export function readGuideCity(): string | undefined {
+  let cookie = "";
+  try {
+    cookie = document.cookie;
+  } catch {
+    /* куки недоступны — берём из localStorage */
+  }
+  return guideCity(cookie, readPref("afisha.city"));
+}
+
 /** Кука выбранного города: её читают серверные компоненты (главная фильтрует ленты по городу). */
 export function setCityCookie(id: string | null): void {
   try {

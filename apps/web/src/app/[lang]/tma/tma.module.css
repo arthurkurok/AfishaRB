@@ -66,6 +66,14 @@
   min-width: 0;
 }
 
+.foot {
+  padding: 0 var(--space-4);
+}
+.foot p {
+  margin: 0;
+  max-width: 60ch;
+}
+
 :global([data-tma="true"]) .bar {
   border-bottom: 0;
 }

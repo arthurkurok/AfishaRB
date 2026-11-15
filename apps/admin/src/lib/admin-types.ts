@@ -91,6 +91,26 @@ export const ModerationTask = z.object({
   updated_at: Timestamp,
   title_a: z.string().nullable(),
   title_b: z.string().nullable(),
+  // Поля API от 15.11 (необязательные: админка работает и с прежней версией API)
+  /** Событие задачи: для дублей и замечаний — сама сущность, для сеанса — его событие */
+  event_id: z.string().nullable().optional(),
+  /** Сколько открытых задач «исчезнувший сеанс» у этого события */
+  group_size: Count.optional(),
+  /** Сеанс задачи (null — задача на событие) */
+  occurrence: z
+    .object({
+      id: z.string(),
+      event_id: z.string().nullable(),
+      starts_at: z.string().nullable(),
+      ends_at: z.string().nullable(),
+      status: z.string().nullable(),
+      status_reason: z.string().nullable(),
+      venue: z.object({ id: z.string(), name: z.string().nullable(), address: z.string().nullable() }).nullable(),
+      municipality_id: z.string().nullable(),
+      municipality: z.string().nullable(),
+    })
+    .nullable()
+    .optional(),
 });
 export type ModerationTask = z.infer<typeof ModerationTask>;
 
@@ -143,8 +163,16 @@ export const StatusChangeResult = z.object({
 
 export const CreatedEvent = z.object({ event_id: z.string() });
 
-export const ModerationAction = z.enum(["merge", "distinct", "dismiss"]);
+/** Решения по задаче: дубли — merge/distinct, исчезнувший сеанс — confirm/cancel, любая задача — dismiss. */
+export const ModerationAction = z.enum(["merge", "distinct", "dismiss", "confirm", "cancel"]);
 export type ModerationAction = z.infer<typeof ModerationAction>;
+
+/** Охват решения: task — только эта задача, event — все открытые «исчезнувшие сеансы» события. */
+export const ModerationScope = z.enum(["task", "event"]);
+export type ModerationScope = z.infer<typeof ModerationScope>;
+
+/** Ответ на решение: resolved — сколько задач закрыто (в прежней версии API поля нет). */
+export const ResolveResponse = z.object({ ok: z.literal(true), resolved: Count.optional() });
 
 /** Отчёт импорта файла (POST /admin/import): счётчики и отклонённые строки с причинами. */
 export const ImportReport = z.object({

@@ -8,19 +8,52 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { DedupReview } from "@/components/moderation/dedup-review";
 import { ModerationTabs } from "@/components/moderation/moderation-tabs";
+import { TaskReview, type TaskReviewView } from "@/components/moderation/task-review";
 import { Icon } from "@/components/ui/icons";
-import { listModerationTasks } from "@/lib/admin-api";
+import { listModerationTasks, MODERATION_LIMIT } from "@/lib/admin-api";
 import { REGION_TZ, siteEventUrl } from "@/lib/config";
 import { ago } from "@/lib/datetime";
 import { categoryLabel, taskKindLabel } from "@/lib/labels";
 import { compareEvents, dedupPayload, neighbours } from "@/lib/moderation";
 import { getEvent } from "@/lib/public-api";
 import { requireSession } from "@/lib/session";
+import { payloadFacts, taskTitle, validationProblems, vanishedView } from "@/lib/task-view";
 import styles from "./moderation.module.css";
 
 export const metadata: Metadata = { title: "Модерация" };
 
 const str = (v: string | string[] | undefined) => (typeof v === "string" ? v : "");
+
+type Task = Awaited<ReturnType<typeof listModerationTasks>>[number];
+
+/** Карточка задачи любого вида, кроме дублей: человекочитаемые поля вместо payload. */
+function taskView(t: Task): TaskReviewView {
+  const queuedAgo = ago(t.created_at);
+  if (t.kind === "vanished") {
+    const { eventId, ...v } = vanishedView(t, REGION_TZ);
+    return { variant: "vanished", id: t.id, queuedAgo, ...v, eventUrl: eventId ? siteEventUrl(eventId) : null };
+  }
+  return {
+    variant: "other",
+    id: t.id,
+    kind: t.kind,
+    kindLabel: taskKindLabel(t.kind),
+    title: taskTitle(t),
+    problems: validationProblems(t.payload),
+    facts: payloadFacts(t.payload, REGION_TZ),
+    queuedAgo,
+  };
+}
+
+/** Строка очереди: название события (или вид задачи) и, для исчезнувшего сеанса, его дата. */
+function queueLabel(t: Task): string {
+  const title = taskTitle(t) ?? taskKindLabel(t.kind);
+  if (t.kind === "vanished") {
+    const v = vanishedView(t, REGION_TZ);
+    return v.when ? `${title} · ${v.when}` : title;
+  }
+  return t.title_b ? `${title} ↔ ${t.title_b}` : title;
+}
 
 export default async function ModerationPage({
   searchParams,
@@ -58,7 +91,13 @@ export default async function ModerationPage({
       <div className="page-head">
         <div>
           <h1>Модерация</h1>
-          <p className="muted">Открытых задач: {all.length}. Решения записываются в журнал изменений.</p>
+          <p className="muted">
+            Открытых задач:{" "}
+            {all.length >= MODERATION_LIMIT
+              ? `не меньше ${MODERATION_LIMIT}, показаны первые ${MODERATION_LIMIT}`
+              : all.length}
+            . Решения записываются в журнал изменений.
+          </p>
         </div>
       </div>
       <ModerationTabs current="tasks" />
@@ -105,15 +144,13 @@ export default async function ModerationPage({
           nextHref={nb.next ? href(nb.next) : null}
         />
       ) : (
-        <section className="card stack" aria-labelledby="task-title">
-          <p className="caption">
-            Задача {nb.position} из {queue.length}
-          </p>
-          <h2 id="task-title">{taskKindLabel(current.kind)}</h2>
-          <p>{current.title_a ?? "Без названия"}</p>
-          <pre className={styles.payload}>{JSON.stringify(current.payload, null, 2)}</pre>
-          <p className="caption">Для этого вида задач решение в интерфейсе пока не предусмотрено API.</p>
-        </section>
+        <TaskReview
+          task={taskView(current)}
+          position={nb.position}
+          total={queue.length}
+          prevHref={nb.prev ? href(nb.prev) : null}
+          nextHref={nb.next ? href(nb.next) : null}
+        />
       )}
 
       {queue.length > 1 ? (
@@ -125,8 +162,7 @@ export default async function ModerationPage({
               return (
                 <li key={t.id}>
                   <Link href={href(t.id)} aria-current={t.id === current?.id ? "true" : undefined}>
-                    {t.title_a ?? taskKindLabel(t.kind)}
-                    {t.title_b ? ` ↔ ${t.title_b}` : ""}
+                    {queueLabel(t)}
                   </Link>
                   <span className="caption">
                     {taskKindLabel(t.kind)}

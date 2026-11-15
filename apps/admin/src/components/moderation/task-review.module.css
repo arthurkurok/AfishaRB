@@ -1,0 +1,89 @@
+.task {
+  border-bottom: 4px solid var(--color-status-unverified);
+}
+.task[data-variant="other"] {
+  border-bottom-color: var(--color-honey);
+}
+
+.head {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+.head h2 {
+  overflow-wrap: anywhere;
+}
+
+.subhead {
+  font-size: var(--type-title-size);
+  line-height: var(--type-title-line);
+  font-weight: 700;
+}
+
+/* Поля задачи: подпись над значением, сетка из 1–4 колонок. */
+.facts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr));
+  gap: var(--space-2);
+  margin: 0;
+}
+.facts div {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  padding: var(--space-3);
+  border-radius: var(--radius-m);
+  background: var(--color-surface-2);
+  min-width: 0;
+}
+.facts dt {
+  font-size: var(--type-caption-size);
+  line-height: var(--type-caption-line);
+  font-weight: 700;
+  color: var(--color-ink-2);
+}
+.facts dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+.when {
+  font-weight: 700;
+}
+.when::first-letter {
+  text-transform: uppercase;
+}
+
+.problems {
+  margin: 0;
+  padding-left: var(--space-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.confirm {
+  border-left-color: var(--color-status-cancelled);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+}
+.actions kbd {
+  margin-left: var(--space-1);
+}
+
+.live:empty {
+  display: none;
+}
+
+.keys {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-1) var(--space-4);
+  padding-top: var(--space-2);
+  border-top: 1px solid var(--color-line);
+}

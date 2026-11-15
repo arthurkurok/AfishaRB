@@ -12,7 +12,7 @@ import { GuideBar } from "@/components/home/guide-bar";
 import { WhenTabs } from "@/components/home/when-tabs";
 import { MuniMap } from "@/components/municipality/muni-map";
 import { RetryButton } from "@/components/states/retry-button";
-import { StateMessage } from "@/components/states/states";
+import { FeedError, StateMessage } from "@/components/states/states";
 import { getCategories, getMunicipalities, safe, searchOccurrences } from "@/lib/api";
 import { cardContext } from "@/lib/card-context";
 import { formatRub } from "@/lib/format";
@@ -98,7 +98,9 @@ export default async function HomePage({ params }: Params) {
   ).map(([id, label, res]) => ({
     id,
     label,
-    content: res?.items.length ? (
+    content: !res ? (
+      <FeedError t={t} />
+    ) : res.items.length ? (
       <>
         <Grid items={res.items} ctx={ctx} eager={id === "today"} />
         <p className={styles.more}>

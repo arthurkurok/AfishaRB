@@ -12,7 +12,8 @@ test.describe("Паспорт события", () => {
     await expect(page.getByRole("heading", { name: /Даты и время/ })).toBeVisible();
     const passport = page.getByRole("region", { name: "Паспорт события" });
     await expect(passport.getByText("Источники")).toBeVisible();
-    await expect(passport.getByText(/Проверено/)).toBeVisible();
+    // «Проверено N дней назад» убрано из паспорта 14.11 (98dbde9) — остаются источники, доверие и история
+    await expect(passport.getByText("Уровень доверия")).toBeVisible();
     await expect(passport.getByRole("heading", { name: "История изменений" })).toBeVisible();
 
     // JSON-LD schema.org/Event с eventStatus.

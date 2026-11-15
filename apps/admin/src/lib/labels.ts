@@ -37,6 +37,7 @@ export function statusText(status: OccurrenceStatus): string {
 const TASK_KIND: Record<string, string> = {
   dedup_review: "Возможные дубли",
   vanished: "Исчезнувшие события",
+  validation: "Ошибки в данных источника",
   low_trust: "Новые события с низким доверием",
   source_error: "Ошибки источников",
   report: "Жалобы пользователей",

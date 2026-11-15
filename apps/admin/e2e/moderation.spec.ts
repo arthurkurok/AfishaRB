@@ -41,6 +41,30 @@ test.describe("модерация", () => {
     await task.getByLabel("Горячие клавиши").check();
   });
 
+  test("исчезнувший сеанс: карточка без сырого JSON, понятные решения", async ({ page, context }) => {
+    await signIn(context, "ministry");
+    await page.goto("/moderation?kind=vanished");
+    const task = page.getByTestId("moderation-task");
+    test.skip((await task.count()) === 0, "в очереди нет исчезнувших сеансов");
+    await expect(task.locator("#task-title")).not.toHaveText(/^\s*(Без названия)?\s*$/);
+    await expect(page.locator("pre")).toHaveCount(0);
+    await expect(task).not.toContainText('"source"');
+    await expect(task).not.toContainText("не предусмотрено API");
+    await expect(task.getByText("Источник", { exact: true })).toBeVisible();
+    const upcoming = (await task.getByRole("button", { name: /Подтвердить: идёт по плану/ }).count()) > 0;
+    if (upcoming) {
+      await expect(task.getByRole("button", { name: /Отменить сеанс/ })).toBeVisible();
+      // Отмена — только после подтверждения; данные в этом тесте не меняем
+      await page.keyboard.press("2");
+      await expect(task.getByRole("button", { name: "Да, отменить сеанс" })).toBeFocused();
+      await page.keyboard.press("Escape");
+      await expect(task.getByRole("button", { name: "Да, отменить сеанс" })).toHaveCount(0);
+    } else {
+      await expect(task.getByRole("button", { name: "Закрыть", exact: true })).toBeVisible();
+    }
+    await expectAccessible(page);
+  });
+
   test("жалобы и обратная связь", async ({ page, context }) => {
     await signIn(context, "ministry");
     await page.goto("/moderation/reports");

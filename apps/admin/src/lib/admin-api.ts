@@ -13,8 +13,10 @@ import {
   EventDraft,
   ImportReport,
   type ModerationAction,
+  type ModerationScope,
   ModerationTask,
   ReportRow,
+  ResolveResponse,
   type StatusChangeBody,
   StatusChangeResult,
 } from "./admin-types";
@@ -59,16 +61,20 @@ export function getDashboard(days: number, next = "/") {
   return admin(`/admin/dashboard?days=${days}`, Dashboard, { next });
 }
 
+/** Сколько открытых задач запрашиваем (API: по умолчанию 500, максимум 1000). */
+export const MODERATION_LIMIT = 500;
+
 export function listModerationTasks(opts: { kind?: string; state?: string } = {}, next = "/moderation") {
-  const params = new URLSearchParams({ state: opts.state ?? "open" });
+  const params = new URLSearchParams({ state: opts.state ?? "open", limit: String(MODERATION_LIMIT) });
   if (opts.kind) params.set("kind", opts.kind);
   return admin(`/admin/moderation/tasks?${params}`, ModerationTask.array(), { next });
 }
 
-export function resolveModerationTask(id: string, action: ModerationAction) {
-  return admin(`/admin/moderation/tasks/${encodeURIComponent(id)}/resolve`, StatusChangeResult.pick({ ok: true }), {
+export function resolveModerationTask(id: string, action: ModerationAction, scope: ModerationScope = "task") {
+  return admin(`/admin/moderation/tasks/${encodeURIComponent(id)}/resolve`, ResolveResponse, {
     method: "POST",
-    body: { action },
+    // scope отправляем только при «ко всем сеансам события»: прежняя версия API его не знает
+    body: scope === "event" ? { action, scope } : { action },
     next: "/moderation",
   });
 }

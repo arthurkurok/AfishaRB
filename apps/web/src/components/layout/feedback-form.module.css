@@ -1,39 +1,24 @@
+/* Поля — библиотечные .select и .textarea (globals.css), здесь только раскладка. Цвета и размеры — токены. */
 .form {
   display: grid;
-  gap: 10px;
+  gap: var(--space-3);
   max-width: 420px;
 }
 
-.kind {
-  display: grid;
-  gap: 4px;
-}
-
-.kind select {
-  padding: 8px 10px;
-  border: 1px solid var(--line, #d8d3cb);
-  border-radius: 10px;
-  background: var(--bg, #fff);
-  font: inherit;
-}
-
+.kind,
 .textLabel {
   display: grid;
-  gap: 4px;
+  gap: var(--space-1);
 }
 
 .text {
-  padding: 10px;
-  border: 1px solid var(--line, #d8d3cb);
-  border-radius: 10px;
-  background: var(--bg, #fff);
-  font: inherit;
-  resize: vertical;
+  min-height: 0;
 }
 
 .row {
   display: flex;
-  gap: 8px;
+  flex-wrap: wrap;
+  gap: var(--space-2);
   align-items: center;
 }
 
@@ -47,9 +32,9 @@
 }
 
 .status {
-  color: var(--ok, #2e7d32);
+  color: var(--color-meadow);
 }
 
 .error {
-  color: var(--danger, #c62828);
+  color: var(--color-status-cancelled);
 }

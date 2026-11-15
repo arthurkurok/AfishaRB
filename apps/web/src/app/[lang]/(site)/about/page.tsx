@@ -48,6 +48,9 @@ export default async function AboutPage({ params }: Props) {
       <header className={styles.head}>
         <h1>{t("about.title")}</h1>
         <p className={styles.lead}>{t("about.lead")}</p>
+        <p className="muted" data-testid="disclaimer">
+          {t("footer.disclaimer")}
+        </p>
         {lang === "ba" ? (
           <p className="notice">
             {t("about.translationText")} <a href="#translation">{t("about.translationAction")}</a>
